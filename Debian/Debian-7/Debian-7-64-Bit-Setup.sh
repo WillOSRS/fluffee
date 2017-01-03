@@ -5,7 +5,7 @@ read -p "What would you like your ssh password to be? " sshpassword
 read -p "What would you like your vnc password to be? " vncpassword
 apt-get update
 apt-get -y install sudo wget nano locales debconf-utils
-wget --no-check-cert 'https://dl.dropboxusercontent.com/u/81527571/Debian%207%20(64%20bit)/Keyboard_settings.conf'
+wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
 dpkg-reconfigure keyboard-configuration -f noninteractive
@@ -77,10 +77,7 @@ sudo apt-get -y install curl lxtask
 sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
 sudo chown $name Bots
-curl -k -o /home/$name/Desktop/Bots/OSBot.jar https://osbot.org/mvc/get
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
-wget -O /home/$name/Desktop/Bots/TopBot.jar http://topbot.org/resources/topbot.jar
-wget -O /home/$name/Desktop/Bots/EpicBot.jar http://loft1.epicbot.com/epicbot.jar
 wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
 sudo chown $name Bots
@@ -113,10 +110,10 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://dl.dropboxusercontent.com/u/81527571/Debian%207%20(64%20Bit)/xstartup.txt?dl=1'
-sudo mv xstartup.txt?dl=1 /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://dl.dropboxusercontent.com/u/81527571/Debian%207%20(64%20Bit)/tightvncserver.txt?dl=1'
-sudo mv tightvncserver.txt?dl=1 /etc/init.d/tightvncserver
+sudo wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/xstartup.txt'
+sudo mv xstartup.txt /etc/init.d/xstartup
+sudo wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tightvncserver.txt'
+sudo mv tightvncserver.txt /etc/init.d/tightvncserver
 sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
 sudo chown root:root /etc/init.d/tightvncserver
 sudo chmod 755 /etc/init.d/tightvncserver
