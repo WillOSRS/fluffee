@@ -47,44 +47,44 @@ sed -i '/\/usr\/share\/fonts\/X11\/75dpi/a );' /usr/local/bin/vncserver &> /dev/
 sed -i "s/75dp2i/75dpi/g" /usr/local/bin/vncserver &> /dev/null
 sed -i "s/100dp2i/100dpi/g" /usr/local/bin/vncserver &> /dev/null
 echo "Setting up VNC..."
-mkdir /home/$name/.vnc &> /dev/null
-echo $vncpassword >/home/$name/.vnc/file &> /dev/null
-vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd &> /dev/null
-chown $name /home/$name/.vnc &> /dev/null
-chown $name /home/$name/.vnc/passwd &> /dev/null
-chgrp $name /home/$name/.vnc &> /dev/null
-chgrp $name /home/$name/.vnc/passwd &> /dev/null
-chmod 600 /home/$name/.vnc/passwd &> /dev/null
+mkdir /home/$name/.vnc
+echo $vncpassword >/home/$name/.vnc/file
+vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
+chown $name /home/$name/.vnc
+chown $name /home/$name/.vnc/passwd
+chgrp $name /home/$name/.vnc
+chgrp $name /home/$name/.vnc/passwd
+chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup &> /dev/null
-sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup &> /dev/null
+sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
+sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
-sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo chown root:root /etc/init.d/tightvncserver
+sudo chmod 755 /etc/init.d/tightvncserver
+sudo /etc/init.d/tightvncserver start
+sudo update-rc.d tightvncserver defaults
 echo "Downloading TRiBot and OSBuddy..."
-sudo mkdir /home/$name/Desktop/ &> /dev/null
-sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
-cd /home/$name/Desktop/ &> /dev/null
-sudo chown $name Bots &> /dev/null
+sudo mkdir /home/$name/Desktop/
+sudo mkdir /home/$name/Desktop/Bots/
+cd /home/$name/Desktop/
+sudo chown $name Bots
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
 wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
-cd /home/$name/Desktop &> /dev/null
-sudo chown $name Bots &> /dev/null
-sudo chmod 777 Bots &> /dev/null
+cd /home/$name/Desktop
+sudo chown $name Bots
+sudo chmod 777 Bots
 echo "Setting up Java..."
 echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
 echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 &> /dev/null
 apt-get update &> /dev/null
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections &> /dev/null
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 apt-get -y install oracle-java8-installer &> /dev/null
 sudo apt-get -y install oracle-java8-set-default &> /dev/null
 chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/security/java.policy &> /dev/null
-cd /usr/local &> /dev/null
+cd /usr/local
 echo "Installing Firefox x86..."
 wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
@@ -92,26 +92,26 @@ ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
 apt-get remove -y xscreensaver &> /dev/null
 echo "Housekeeping, like allowing .jar double clicks..."
-mkdir /home/$name/.local/ &> /dev/null
-mkdir /home/$name/.local/share/ &> /dev/null
-mkdir /home/$name/.local/share/applications/ &> /dev/null
-echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list &> /dev/null
-echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list &> /dev/null
-echo "" >> /home/$name/.local/share/applications/mimeapps.list &> /dev/null
-echo "[Default Applications]" >> /home/$name/.local/share/applications/mimeapps.list &> /dev/null
-echo "application/zip=JB-java-jdk8.desktop" >> /home/$name/.local/share/applications/mimeapps.list &> /dev/null
-chmod 644 /home/$name/.local/share/applications/mimeapps.list &> /dev/null
-sed -i "s/NoDisplay=true/NoDisplay=false/g" /usr/share/applications/JB-java-jdk8.desktop &> /dev/null
-sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver &> /dev/null
-sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver &> /dev/null
-sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver &> /dev/null
-sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver &> /dev/null
+mkdir /home/$name/.local/
+mkdir /home/$name/.local/share/
+mkdir /home/$name/.local/share/applications/
+echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
+echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
+echo "" >> /home/$name/.local/share/applications/mimeapps.list
+echo "[Default Applications]" >> /home/$name/.local/share/applications/mimeapps.list
+echo "application/zip=JB-java-jdk8.desktop" >> /home/$name/.local/share/applications/mimeapps.list
+chmod 644 /home/$name/.local/share/applications/mimeapps.list
+sed -i "s/NoDisplay=true/NoDisplay=false/g" /usr/share/applications/JB-java-jdk8.desktop
+sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
+sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
+sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
+sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt' &> /dev/null
-sudo mv xstartup.txt /etc/init.d/xstartup &> /dev/null
+sudo mv xstartup.txt /etc/init.d/xstartup
 sudo wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt' &> /dev/null
-sudo mv tightvncserver.txt /etc/init.d/tightvncserver &> /dev/null
-sed -i "s/bots/$name/g" /etc/init.d/tightvncserver &> /dev/null
-sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
-sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
+sudo mv tightvncserver.txt /etc/init.d/tightvncserver
+sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
+sudo chown root:root /etc/init.d/tightvncserver
+sudo chmod 755 /etc/init.d/tightvncserver
 sudo /etc/init.d/tightvncserver start &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
