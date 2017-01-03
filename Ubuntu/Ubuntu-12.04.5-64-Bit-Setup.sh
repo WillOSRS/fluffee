@@ -55,18 +55,18 @@ chown $name /home/$name/.vnc/passwd
 chgrp $name /home/$name/.vnc
 chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
+su  - $name -c "vncserver" &> /dev/null
+su  - $name -c "vncserver -kill :1" &> /dev/null
 sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start
-sudo update-rc.d tightvncserver defaults
+su  - $name -c "vncserver" &> /dev/null
+su  - $name -c "vncserver -kill :1" &> /dev/null
+sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
+sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
+sudo /etc/init.d/tightvncserver start &> /dev/null
+sudo update-rc.d tightvncserver defaults &> /dev/null
 echo "Downloading TRiBot and OSBuddy..."
-sudo mkdir /home/$name/Desktop/
+sudo mkdir /home/$name/Desktop/ &> /dev/null
 sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
 sudo chown $name Bots
