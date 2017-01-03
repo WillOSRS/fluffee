@@ -92,13 +92,14 @@ while(( sshport < 1000 )); do
 done
 
 read -p "What would you like your user account to be named? Must be all letters, and lowercase " name
-remainder=$(tr -d A-Z <<<$name)
+remainder=$(tr -d a-z <<<$name)
 while [ ! -z $remainder ];do
     read -p "Invalid value entered. Please try again. Must be all letters, and lowercase " name
-    remainder=$(tr -d A-Z <<<$var)
+    remainder=$(tr -d a-z <<<$var)
 done
 read -p "What would you like your SSH password to be? " sshpassword
 read -p "What would you like your VNC password to be? " vncpassword
 
+wget $LINK
 chmod +x $FILE
 ./$FILE $name $sshport $vncport $sshpassword $vncpassword
