@@ -1,10 +1,10 @@
 #!/bin/bash
 
-read -p "What would you like your user account to be named? Must be lowercase " name
-read -p "What port would you like to use to ssh to your server? " sshport
-read -p "What port would you like to use to vnc to your server? " vncport
-read -p "What would you like your ssh password to be? " sshpassword
-read -p "What would you like your vnc password to be? " vncpassword
+name=$1
+sshport=$2
+vncport=$3
+sshpassword=$4
+vncpassword=$5
 apt-get update
 apt-get -y install sudo wget nano libxslt1.1
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
