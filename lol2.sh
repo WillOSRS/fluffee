@@ -84,18 +84,18 @@ echo "Fluffee's VPS Setup Script 2.0, has auto detected $OS"
 read -p "Desired VNC port must be greater than 1000: " vncport
 
 while(( vncport < 1000 )); do
-    read -p "Please enter a port greater than 1000 " vncport
+    read -p "Please enter a port greater than 1000: " vncport
 done
 
-read -p "Desired SSH port must be greater than 1000: " sshport
-while(( sshport < 1000 )); do
-    read -p "Please enter a port that is greater than 1000 " sshport
+read -p "Desired SSH port must be greater than 1000, and different from VNC port: " sshport
+while(( sshport < 1000 && sshport != vncport)); do
+    read -p "Please enter a port that is greater than 1000 and different from VNC port: " sshport
 done
 
 read -p "Desired user account name, must be all lowercase letters: " name
 remainder=$(tr -d a-z <<<$name)
 while [ ! -z $remainder ];do
-    read -p "Invalid value entered. Please try again. Must be all letters, and lowercase " name
+    read -p "Invalid value entered. Please try again. Must be all lowercase letters: " name
     remainder=$(tr -d a-z <<<$name)
 done
 read -p "Desired SSH password: " sshpassword
