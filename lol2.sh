@@ -81,25 +81,25 @@ else
 fi
 
 echo "Fluffee's VPS Setup Script 2.0, has auto detected $OS"
-read -p "What port would you like to use to VNC to your server? Port must be greater than 1000 " vncport
+read -p "Desired VNC port must be greater than 1000: " vncport
 
 while(( vncport < 1000 )); do
     read -p "Please enter a port greater than 1000 " vncport
 done
 
-read -p "What port would you like to use to ssh to your server? Port must be greater than 1000 " sshport
+read -p "Desired SSH port must be greater than 1000: " sshport
 while(( sshport < 1000 )); do
     read -p "Please enter a port that is greater than 1000 " sshport
 done
 
-read -p "What would you like your user account to be named? Must be all letters, and lowercase " name
+read -p "Desired user account name, must be all lowercase letters: " name
 remainder=$(tr -d a-z <<<$name)
 while [ ! -z $remainder ];do
     read -p "Invalid value entered. Please try again. Must be all letters, and lowercase " name
     remainder=$(tr -d a-z <<<$name)
 done
-read -p "What would you like your SSH password to be? " sshpassword
-read -p "What would you like your VNC password to be? " vncpassword
+read -p "Desired SSH password: " sshpassword
+read -p "Desired VNC password: " vncpassword
 
 echo "Running OS specific install script"
 wget $LINK &> /dev/null
