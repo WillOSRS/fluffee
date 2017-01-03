@@ -85,7 +85,7 @@ apt-get -y install oracle-java8-installer &> /dev/null
 sudo apt-get -y install oracle-java8-set-default &> /dev/null
 chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/security/java.policy &> /dev/null
 cd /usr/local
-echo "Installing Firefox x86..."
+echo "Installing Firefox x64..."
 wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
