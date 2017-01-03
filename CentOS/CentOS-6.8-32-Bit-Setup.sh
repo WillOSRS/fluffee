@@ -1,3 +1,5 @@
+#!/bin/bash
+
 read -p "What would you like your user account to be named? Must be lowercase " name
 read -p "What port would you like to use to ssh to your server? " sshport
 read -p "What port would you like to use to vnc to your server? " vncport
