@@ -63,7 +63,7 @@ sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
 sudo chown $name Bots
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
-wget -O /home/$name/Desktop/Bots/TopBot.jar http://topbot.org/resources/topbot.jar
+wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots

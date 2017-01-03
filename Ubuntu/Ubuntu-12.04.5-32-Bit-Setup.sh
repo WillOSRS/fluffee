@@ -63,7 +63,7 @@ sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
 sudo chown $name Bots
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
-wget -O /home/$name/Desktop/Bots/TopBot.jar http://topbot.org/resources/topbot.jar
+wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
@@ -95,10 +95,10 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://dl.dropboxusercontent.com/u/81527571/Debian%207%20(32%20Bit)/xstartup.txt?dl=1'
-sudo mv xstartup.txt?dl=1 /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://dl.dropboxusercontent.com/u/81527571/Debian%207%20(32%20Bit)/tightvncserver.txt?dl=1'
-sudo mv tightvncserver.txt?dl=1 /etc/init.d/tightvncserver
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt'
+sudo mv xstartup.txt /etc/init.d/xstartup
+sudo wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt'
+sudo mv tightvncserver.txt /etc/init.d/tightvncserver
 sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
 sudo chown root:root /etc/init.d/tightvncserver
 sudo chmod 755 /etc/init.d/tightvncserver
