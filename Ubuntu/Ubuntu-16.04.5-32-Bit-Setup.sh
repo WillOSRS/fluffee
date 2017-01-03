@@ -106,6 +106,6 @@ sudo chmod 755 /etc/init.d/tightvncserver
 sudo /etc/init.d/tightvncserver start
 sudo update-rc.d tightvncserver defaults
 sed -i "s/KDE;/KDE;LXDE/g" /etc/xdg/autostart/lxpolkit.desktop
-rm tightvnc-1.3.10_unixsrc.tar.gz
-rm -rf vnc_unixsrc
-rm -f Ubuntu-16.04.5-32-Bit-Setup.sh
+rm -f 'tightvnc-1.3.10_unixsrc.tar.gz'
+rm -rf 'vnc_unixsrc'
+rm -f 'Ubuntu-16.04.5-32-Bit-Setup.sh'
