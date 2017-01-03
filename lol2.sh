@@ -88,14 +88,14 @@ done
 
 read -p "What port would you like to use to ssh to your server? Port must be greater than 1000 " sshport
 while(( sshport < 1000 )); do
-    read -p "Please enter a port that is greater than 1000 " vncport
+    read -p "Please enter a port that is greater than 1000 " sshport
 done
 
 read -p "What would you like your user account to be named? Must be all letters, and lowercase " name
 remainder=$(tr -d a-z <<<$name)
 while [ ! -z $remainder ];do
     read -p "Invalid value entered. Please try again. Must be all letters, and lowercase " name
-    remainder=$(tr -d a-z <<<$var)
+    remainder=$(tr -d a-z <<<$name)
 done
 read -p "What would you like your SSH password to be? " sshpassword
 read -p "What would you like your VNC password to be? " vncpassword
@@ -103,3 +103,4 @@ read -p "What would you like your VNC password to be? " vncpassword
 wget $LINK
 chmod +x $FILE
 ./$FILE $name $sshport $vncport $sshpassword $vncpassword
+rm -f 'tightvnc-1.3.10_unixsrc.tar.gz'
