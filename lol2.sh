@@ -1,5 +1,6 @@
 #!/bin/bash
-
+clear
+echo "Welcome to Fluffee's Server Setup Script"
 UNAME=$(uname -m)
 if [ -f /etc/redhat-release ]; then
     DISTRO=$(cat /etc/redhat-release | sed s/\release.*//)
@@ -100,7 +101,11 @@ done
 read -p "What would you like your SSH password to be? " sshpassword
 read -p "What would you like your VNC password to be? " vncpassword
 
-wget $LINK
+echo "Running OS specific install script"
+wget $LINK &> /dev/null
 chmod +x $FILE
+clear
 ./$FILE $name $sshport $vncport $sshpassword $vncpassword
 rm -f 'tightvnc-1.3.10_unixsrc.tar.gz'
+rm -rf 'vnc_unixsrc'
+rm -f 'Ubuntu-16.04.5-32-Bit-Setup.sh'
