@@ -88,7 +88,7 @@ while(( vncport < 1000 )); do
 done
 
 read -p "Desired SSH port must be greater than 1000, and different from VNC port: " sshport
-while(( sshport < 1000 && sshport != vncport)); do
+while(( sshport < 1000 || sshport == vncport )); do
     read -p "Please enter a port that is greater than 1000 and different from VNC port: " sshport
 done
 
