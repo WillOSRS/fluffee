@@ -115,11 +115,12 @@ rm -rf 'vnc_unixsrc'
 rm -f $FILE
 clear
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
-echo "SSH Username: $name"
-echo "SSH Password: $sshpassword"
-echo "VNC Password: $vncpassword"
-echo "SSH Port:     $sshport"
-echo "VNC Port:     $vncport"
+echo "Operating System: $OS"
+echo "SSH Username:     $name"
+echo "SSH Password:     $sshpassword"
+echo "VNC Password:     $vncpassword"
+echo "SSH Port:         $sshport"
+echo "VNC Port:         $vncport"
 echo ""
 echo "You can now connect to your server via VNC"
 echo "Root logins are disabled, and the new SSH port must be used after this session"
