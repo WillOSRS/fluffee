@@ -9,8 +9,9 @@ echo -n "Installing updates..."
 apt-get update
 echo " Done"
 echo -n "Installing required packages..."
+apt-get -y upgrade
 apt-get -y install sudo wget nano locales debconf-utils
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
+wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
 dpkg-reconfigure keyboard-configuration -f noninteractive
@@ -31,14 +32,14 @@ chmod 600 /etc/ssh/sshd_config
 service ssh restart
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxde lxtask
+apt-get -y install xorg lxde
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo
 sudo gpasswd -a $name netdev
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev
+sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev
 wget http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz
 tar xzf tightvnc-1.3.10_unixsrc.tar.gz
 cd vnc_unixsrc
@@ -73,7 +74,6 @@ chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
-sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
@@ -89,11 +89,15 @@ sudo systemctl enable myvncserver.service
 sudo update-rc.d tightvncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
+sudo apt-get -y install curl lxtask
 sudo mkdir /home/$name/Desktop/
 sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
 sudo chown $name Bots
+curl -k -o /home/$name/Desktop/Bots/OSBot.jar https://osbot.org/mvc/get
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
+wget -O /home/$name/Desktop/Bots/TopBot.jar http://topbot.org/resources/topbot.jar
+wget -O /home/$name/Desktop/Bots/EpicBot.jar http://loft1.epicbot.com/epicbot.jar
 wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
 sudo chown $name Bots
