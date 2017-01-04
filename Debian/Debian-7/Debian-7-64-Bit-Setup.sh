@@ -11,17 +11,17 @@ echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano locales debconf-utils &> /dev/null
 wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
-debconf-set-selections < Keyboard_settings.conf
+debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
-dpkg-reconfigure keyboard-configuration -f noninteractive
+dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG="en_US.UTF-8"'>/etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
-source ~/.bashrc
-dpkg-reconfigure --frontend=noninteractive locales
-update-locale LANG=en_US.UTF-8
+source ~/.bashrc &> /dev/null
+dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
+update-locale LANG=en_US.UTF-8 &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
