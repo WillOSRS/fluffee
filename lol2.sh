@@ -112,7 +112,7 @@ echo " -------------------- Fluffee's TRiBot Server Setup Script ---------------
 ./$FILE $name $sshport $vncport $sshpassword $vncpassword
 rm -f 'tightvnc-1.3.10_unixsrc.tar.gz'
 rm -rf 'vnc_unixsrc'
-rm -f '$FILE'
+rm -f $FILE
 clear
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
 echo "SSH Username: $name"
@@ -120,3 +120,8 @@ echo "SSH Password: $sshpassword"
 echo "VNC Password: $vncpassword"
 echo "SSH Port:     $sshport"
 echo "VNC Port:     $vncport"
+echo ""
+echo "You can now connect to your server via VNC"
+echo "Root logins are disabled, and the new SSH port must be used after this session"
+echo "You must also SSH in with the new SSH username and password"
+echo "Please see the thread or message me on TRiBot for more help :)"
