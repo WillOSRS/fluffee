@@ -12,6 +12,7 @@ fi
 DISTRO="$(echo -e "${DISTRO}" | tr -d '[:space:]')"
 if [ "$UNAME" = "x86_64" ]; then
     if [ "$DISTRO" = "Ubuntu" ]; then
+		apt-get install -y bc &> /dev/null
         OS="Ubuntu $VERSION x64"
 		if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
 		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup.sh"
@@ -24,6 +25,7 @@ if [ "$UNAME" = "x86_64" ]; then
 			FILE=Ubuntu-16.04.5-64-Bit-Setup.sh
 		fi
     elif [ "$DISTRO" = "Debian" ]; then
+		apt-get install -y bc &> /dev/null
         OS="Debian $VERSION x64"
 		if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
 		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-64-Bit-Setup.sh"
@@ -33,6 +35,7 @@ if [ "$UNAME" = "x86_64" ]; then
 			FILE=Debian-8-64-Bit-Setup.sh
 		fi
     elif [ "$DISTRO" = "CentOS" ]; then
+		yum -y install bc &> /dev/null
         OS="CentOS $VERSION x64"
 		if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
 		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-64-Bit-Setup.sh"
@@ -46,6 +49,7 @@ if [ "$UNAME" = "x86_64" ]; then
     fi
 else
    if [ "$DISTRO" = "Ubuntu" ]; then
+		apt-get install -y bc &> /dev/null
         OS="Ubuntu $VERSION x86"
 		if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
 		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup.sh"
@@ -58,6 +62,7 @@ else
 			FILE=Ubuntu-16.04.5-32-Bit-Setup.sh
 		fi
     elif [ "$DISTRO" = "Debian" ]; then
+		apt-get install -y bc &> /dev/null
         OS="Debian $VERSION x86"
 		if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
 		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-32-Bit-Setup.sh"
@@ -67,6 +72,7 @@ else
 			FILE=Debian-8-32-Bit-Setup.sh
 		fi
     elif [ "$DISTRO" = "CentOS" ]; then
+		yum -y install bc &> /dev/null
         OS="CentOS $VERSION x86"
 		if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
 		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-32-Bit-Setup.sh"
