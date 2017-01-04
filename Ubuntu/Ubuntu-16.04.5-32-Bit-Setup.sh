@@ -74,7 +74,7 @@ sudo update-rc.d tightvncserver defaults &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
-sudo mkdir /home/$name/Desktop/Bots/
+sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
 cd /home/$name/Desktop/
 sudo chown $name Bots
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
@@ -116,7 +116,7 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt' &> /dev/null
+sudo wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt' &> /dev/null
 sudo mv xstartup.txt /etc/init.d/xstartup
 sudo wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt' &> /dev/null
 sudo mv tightvncserver.txt /etc/init.d/tightvncserver
