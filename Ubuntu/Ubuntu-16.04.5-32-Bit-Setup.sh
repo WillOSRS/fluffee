@@ -5,24 +5,29 @@ sshport=$2
 vncport=$3
 sshpassword=$4
 vncpassword=$5
-echo "Installing updates..."
+echo -n "Installing updates..."
 apt-get update &> /dev/null
-echo "Installing required packages..."
+echo " Done"
+echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
-echo "Setting up SSH..."
+echo " Done"
+echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
 chmod 600 sshd_config &> /dev/null
 service ssh restart &> /dev/null
-echo "Installing LXDE..."
+echo " Done"
+echo -n "Installing LXDE..."
 apt-get -y install xorg lxde lxtask &> /dev/null
-echo "Creating the user..."
+echo " Done"
+echo -n "Creating the user..."
 name=${name,,} &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
-echo "Installing TightVNC 1.3.10 (Non broken version)..."
+echo " Done"
+echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null
 wget http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
@@ -46,7 +51,8 @@ sed -i '/\/usr\/share\/fonts\/X11\/100dpi/a /usr/share/fonts/X11/75dpi' /usr/loc
 sed -i '/\/usr\/share\/fonts\/X11\/75dpi/a );' /usr/local/bin/vncserver &> /dev/null
 sed -i "s/75dp2i/75dpi/g" /usr/local/bin/vncserver &> /dev/null
 sed -i "s/100dp2i/100dpi/g" /usr/local/bin/vncserver &> /dev/null
-echo "Setting up VNC..."
+echo " Done"
+echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
 echo $vncpassword >/home/$name/.vnc/file
 vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
@@ -65,7 +71,8 @@ sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
 sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
 sudo /etc/init.d/tightvncserver start &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
-echo "Downloading TRiBot and OSBuddy..."
+echo " Done"
+echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
 sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
@@ -75,7 +82,8 @@ wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loade
 cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
-echo "Setting up Java..."
+echo " Done"
+echo -n "Setting up Java..."
 echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
 echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 &> /dev/null
@@ -85,13 +93,15 @@ apt-get -y install oracle-java8-installer &> /dev/null
 sudo apt-get -y install oracle-java8-set-default &> /dev/null
 chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/security/java.policy &> /dev/null
 cd /usr/local
-echo "Installing Firefox x86..."
+echo " Done"
+echo -n "Installing Firefox x86..."
 wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
 apt-get remove -y xscreensaver &> /dev/null
-echo "Housekeeping, like allowing .jar double clicks..."
+echo " Done"
+echo -n "Housekeeping, like allowing .jar double clicks..."
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
@@ -116,3 +126,4 @@ sudo chmod 755 /etc/init.d/tightvncserver
 sudo /etc/init.d/tightvncserver start &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
 sed -i "s/KDE;/KDE;LXDE/g" /etc/xdg/autostart/lxpolkit.desktop
+echo " Done"
