@@ -80,7 +80,10 @@ else
     fi
 fi
 
+
 echo "Fluffee's VPS Setup Script 2.0, has auto detected $OS"
+clear
+echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
 read -p "Desired VNC port must be greater than 1000: " vncport
 
 while(( vncport < 1000 )); do
@@ -105,7 +108,15 @@ echo "Running OS specific install script"
 wget $LINK &> /dev/null
 chmod +x $FILE
 clear
+echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
 ./$FILE $name $sshport $vncport $sshpassword $vncpassword
 rm -f 'tightvnc-1.3.10_unixsrc.tar.gz'
 rm -rf 'vnc_unixsrc'
-rm -f 'Ubuntu-16.04.5-32-Bit-Setup.sh'
+rm -f '$FILE'
+clear
+echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
+echo "SSH Username: $name"
+echo "SSH Password: $sshpassword"
+echo "VNC Password: $vncpassword"
+echo "SSH Port:     $sshport"
+echo "VNC Port:     $vncport"
