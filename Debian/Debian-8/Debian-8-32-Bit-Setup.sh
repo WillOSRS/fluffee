@@ -6,7 +6,7 @@ read -p "What would you like your vnc password to be? " vncpassword
 apt-get update
 apt-get -y upgrade
 apt-get -y install sudo wget nano locales debconf-utils
-wget --no-check-cert 'https://dl.dropboxusercontent.com/u/81527571/Debian%208%20(32%20Bit)/Keyboard_settings.conf'
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
 dpkg-reconfigure keyboard-configuration -f noninteractive
