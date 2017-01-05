@@ -47,8 +47,8 @@ echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
 service vncserver start &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
-sudo mkdir /home/$name/Desktop/
-sudo mkdir /home/$name/Desktop/Bots/
+sudo mkdir /home/$name/Desktop/ &> /dev/null
+sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
 cd /home/$name/Desktop/
 sudo chown $name Bots
 wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
