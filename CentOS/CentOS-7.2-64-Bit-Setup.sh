@@ -44,10 +44,9 @@ echo "        exec /bin/xfce4-session" >> /etc/X11/xinit/Xclients
 echo "    fi" >> /etc/X11/xinit/Xclients
 echo "}" >> /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
-systemctl enable vncserver@:1.service &> /dev/null
-mkdir /home/$name/.config &> /dev/null
 mkdir /home/$name/.config/xfce4 &> /dev/null
 echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
+systemctl enable vncserver@:1.service &> /dev/null
 systemctl start vncserver@:1.service &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
@@ -80,8 +79,6 @@ echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
 echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
 echo "NoDisplay=false" >> JB-java-jdk8.desktop
 sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
-mkdir /home/$name/.local &> /dev/null
-mkdir /home/$name/.local/share &> /dev/null
 mkdir /home/$name/.local/share/applications &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
