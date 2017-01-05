@@ -47,6 +47,7 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
 mkdir /home/$name/.config &> /dev/null
 mkdir /home/$name/.config/xfce4 &> /dev/null
 echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
+systemctl daemon-reload
 systemctl enable vncserver@:1.service &> /dev/null
 systemctl start vncserver@:1.service &> /dev/null
 echo " Done"
