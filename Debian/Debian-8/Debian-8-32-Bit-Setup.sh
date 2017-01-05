@@ -32,24 +32,24 @@ chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxde &> /dev/null
+apt-get -y install xorg lxde lxtask &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev
-wget http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz
-tar xzf tightvnc-1.3.10_unixsrc.tar.gz
-cd vnc_unixsrc
-xmkmf
-make World
-cd Xvnc
-./configure
-make
-cd ..
-./vncinstall /usr/local/bin /usr/local/man
+sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+wget http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
+tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
+cd vnc_unixsrc &> /dev/null
+xmkmf &> /dev/null
+make World &> /dev/null
+cd Xvnc &> /dev/null
+./configure &> /dev/null
+make &> /dev/null
+cd .. &> /dev/null
+./vncinstall /usr/local/bin /usr/local/man &> /dev/null
 sed -i -r '/unix\/:7100";/a $fontPath = join ',',qw(' /usr/local/bin/vncserver
 sed -i "s/join ,,qw/join ',,qw/g" /usr/local/bin/vncserver
 sed -i "s/join ',,qw/join ',',qw/g" /usr/local/bin/vncserver
@@ -72,56 +72,53 @@ chown $name /home/$name/.vnc/passwd
 chgrp $name /home/$name/.vnc
 chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
+su  - $name -c "vncserver" &> /dev/null
+su  - $name -c "vncserver -kill :1" &> /dev/null
+sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
+su  - $name -c "vncserver" &> /dev/null
+su  - $name -c "vncserver -kill :1" &> /dev/null
 cd /usr/local/bin/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver'
-sudo chown $name myvncserver
-sudo chmod +x /usr/local/bin/myvncserver
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver' &> /dev/null
+sudo chown $name myvncserver &> /dev/null
+sudo chmod +x /usr/local/bin/myvncserver &> /dev/null
 cd /lib/systemd/system/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service'
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service' &> /dev/null
 sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
-sudo systemctl daemon-reload
-sudo systemctl enable myvncserver.service
-sudo update-rc.d tightvncserver defaults
+sudo systemctl daemon-reload &> /dev/null
+sudo systemctl enable myvncserver.service &> /dev/null
+sudo update-rc.d tightvncserver defaults &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
-sudo apt-get -y install curl lxtask
-sudo mkdir /home/$name/Desktop/
-sudo mkdir /home/$name/Desktop/Bots/
+sudo mkdir /home/$name/Desktop/ &> /dev/null
+sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
 cd /home/$name/Desktop/
-sudo chown $name Bots
-curl -k -o /home/$name/Desktop/Bots/OSBot.jar https://osbot.org/mvc/get
-wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
-wget -O /home/$name/Desktop/Bots/TopBot.jar http://topbot.org/resources/topbot.jar
-wget -O /home/$name/Desktop/Bots/EpicBot.jar http://loft1.epicbot.com/epicbot.jar
-wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
+sudo chown $name Bots &> /dev/null
+wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
+wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
-sudo chown $name Bots
-sudo chmod 777 Bots
+sudo chown $name Bots &> /dev/null
+sudo chmod 777 Bots &> /dev/null
 echo " Done"
 echo -n "Setting up Java..."
-echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee /etc/apt/sources.list.d/webupd8team-java.list
-echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-apt-get update
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-apt-get -y install oracle-java8-installer
-sudo apt-get -y install oracle-java8-set-default
+echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
+echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 &> /dev/null
+apt-get update &> /dev/null
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections &> /dev/null
+apt-get -y install oracle-java8-installer &> /dev/null
+sudo apt-get -y install oracle-java8-set-default &> /dev/null
 chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/security/java.policy
 cd /usr/local
 echo " Done"
 echo -n "Installing Firefox x86..."
-wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux&lang=en-US"
-tar xvjf firefox.tar.bz2
-ln -s /usr/local/firefox/firefox /usr/bin/firefox
-update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
+wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux&lang=en-US" &> /dev/null
+tar xvjf firefox.tar.bz2 &> /dev/null
+ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y xscreensaver
+apt-get remove -y xscreensaver &> /dev/null
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
@@ -134,5 +131,5 @@ chmod 644 /home/$name/.local/share/applications/mimeapps.list
 sed -i "s/NoDisplay=true/NoDisplay=false/g" /usr/share/applications/JB-java-jdk8.desktop
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo systemctl start myvncserver.service
+sudo systemctl start myvncserver.service &> /dev/null
 echo " Done"
