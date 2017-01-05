@@ -3,7 +3,7 @@ clear
 echo "Welcome to Fluffee's Server Setup Script"
 UNAME=$(uname -m)
 if [ -f /etc/redhat-release ]; then
-    DISTRO=$(cat /etc/redhat-release | sed s/\release.*//)
+    DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g)
     VERSION=$(cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//)
 else
     DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
@@ -45,7 +45,7 @@ if [ "$UNAME" = "x86_64" ]; then
 			FILE=CentOS-7.2-64-Bit-Setup.sh
 		fi
 	else
-		OS = "Unsupported OS"
+		OS="Unsupported OS"
     fi
 else
    if [ "$DISTRO" = "Ubuntu" ]; then
