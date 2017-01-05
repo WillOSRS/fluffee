@@ -43,7 +43,9 @@ sed -i "s/ \-x \/usr\/bin\/firefox \-a \-f \/usr\/share\/doc\/HTML\/index\.html 
 sed -i "s/\/usr\/bin\/firefox \/usr\/share\/doc\/HTML\/index\.html \&/exec \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
 mkdir /home/$name/.config/xfce4 &> /dev/null
-echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc &> /dev/null
+if [ -f /home/$name/.config/xfce4/helpers.rc ]; then
+    echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc &> /dev/null
+fi
 systemctl start vncserver@:1.service &> /dev/null
 systemctl enable vncserver@:1.service &> /dev/null
 echo " Done"
