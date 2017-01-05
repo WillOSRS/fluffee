@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo "Welcome to Fluffee's Server Setup Script"
+echo "Welcome to Fluffee's TRiBot Server Setup Script"
 echo -n "Loading..."
 UNAME=$(uname -m)
 if [ -f /etc/redhat-release ]; then
