@@ -46,7 +46,7 @@ echo "}" >> /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
 mkdir /home/$name/.config/xfce4 &> /dev/null
 echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
-systemctl start vncserver@:1.service &> /dev/null
+systemctl enable vncserver@:1.service &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
