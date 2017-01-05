@@ -35,8 +35,8 @@ chown $name /home/$name/.vnc/passwd &> /dev/null
 chgrp $name /home/$name/.vnc &> /dev/null
 chgrp $name /home/$name/.vnc/passwd &> /dev/null
 chmod 600 /home/$name/.vnc/passwd &> /dev/null
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
+su  - $name -c "vncserver" &> /dev/null
+su  - $name -c "vncserver -kill :1" &> /dev/null
 sudo cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
 sudo sed -i -e 's![<]USER[>]!'"$name"'!g' /etc/systemd/system/vncserver@:1.service
 sed -i "s/}/if \[ \-x \/bin\/xfce4-session \] \; then/g" /etc/X11/xinit/Xclients
@@ -44,6 +44,7 @@ echo "        exec /bin/xfce4-session" >> /etc/X11/xinit/Xclients
 echo "    fi" >> /etc/X11/xinit/Xclients
 echo "}" >> /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
+mkdir /home/$name/.config &> /dev/null
 mkdir /home/$name/.config/xfce4 &> /dev/null
 echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
 systemctl enable vncserver@:1.service &> /dev/null
