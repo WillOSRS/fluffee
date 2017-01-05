@@ -29,7 +29,7 @@ echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
 echo $vncpassword >/home/$name/.vnc/file
-vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd &> /dev/null
+vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
 chown $name /home/$name/.vnc &> /dev/null
 chown $name /home/$name/.vnc/passwd &> /dev/null
 chgrp $name /home/$name/.vnc &> /dev/null
