@@ -35,7 +35,7 @@ chown $name /home/$name/.vnc/passwd &> /dev/null
 chgrp $name /home/$name/.vnc &> /dev/null
 chgrp $name /home/$name/.vnc/passwd &> /dev/null
 chmod 600 /home/$name/.vnc/passwd &> /dev/null
-su  - $name -c "vncserver" &> /dev/null
+su  - $name -c "vncserver" 
 su  - $name -c "vncserver -kill :1" &> /dev/null
 sudo cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
 sudo sed -i -e 's![<]USER[>]!'"$name"'!g' /etc/systemd/system/vncserver@:1.service
