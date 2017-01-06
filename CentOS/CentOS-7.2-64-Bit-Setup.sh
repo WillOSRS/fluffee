@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 yum -y update &> /dev/null
 echo " Done"
 echo -n "Installing required packages and VNC..."
-yum -y install epel-release nano tigervnc-server gnome-system-monitor firefox &> /dev/null
+yum -y install epel-release sudo nano tigervnc-server gnome-system-monitor firefox &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
