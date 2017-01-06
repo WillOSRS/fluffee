@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget --no-check-cert nano libxslt1.1 &> /dev/null
+apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
