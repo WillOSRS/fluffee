@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y upgrade &> /dev/null
-apt-get -y install sudo wget --no-check-cert nano locales debconf-utils &> /dev/null
+apt-get -y install sudo wget nano locales debconf-utils &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
