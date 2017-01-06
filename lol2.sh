@@ -119,7 +119,7 @@ read -p "Desired SSH password: " sshpassword
 read -p "Desired VNC password: " vncpassword
 
 echo "Running OS specific install script"
-wget $LINK &> /dev/null
+wget --no-check-cert $LINK &> /dev/null
 chmod +x $FILE
 clear
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "

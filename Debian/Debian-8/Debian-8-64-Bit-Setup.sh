@@ -10,8 +10,8 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y upgrade &> /dev/null
-apt-get -y install sudo wget nano locales debconf-utils &> /dev/null
-wget 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
+apt-get -y install sudo wget --no-check-cert nano locales debconf-utils &> /dev/null
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
 dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
@@ -40,7 +40,7 @@ sudo gpasswd -a $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
-wget http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
+wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 cd vnc_unixsrc &> /dev/null
 xmkmf &> /dev/null
@@ -94,8 +94,8 @@ sudo mkdir /home/$name/Desktop/ &> /dev/null
 sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
 cd /home/$name/Desktop/
 sudo chown $name Bots &> /dev/null
-wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
-wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
+wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
+wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
 sudo chown $name Bots &> /dev/null
 sudo chmod 777 Bots &> /dev/null
@@ -112,7 +112,7 @@ chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/security/java.policy
 cd /usr/local
 echo " Done"
 echo -n "Installing Firefox x64..."
-wget -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" &> /dev/null
+wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null

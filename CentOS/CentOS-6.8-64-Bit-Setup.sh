@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 yum -y update &> /dev/null
 echo " Done"
 echo -n "Installing required packages and VNC..."
-yum -y install epel-release sudo wget nano tigervnc-server gnome-system-monitor firefox &> /dev/null
+yum -y install epel-release sudo wget --no-check-cert nano tigervnc-server gnome-system-monitor firefox &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
@@ -51,15 +51,15 @@ sudo mkdir /home/$name/Desktop/ &> /dev/null
 sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
 cd /home/$name/Desktop/
 sudo chown $name Bots
-wget -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
-wget -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
+wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
+wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
 echo " Done"
 echo -n "Setting up Java..."
 cd
-wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.rpm" -O jdk-8u60-linux-x64.rpm &> /dev/null
+wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.rpm" -O jdk-8u60-linux-x64.rpm &> /dev/null
 sudo yum -y localinstall --nogpgcheck jdk-8u60-linux-x64.rpm &> /dev/null
 sudo rm ~/jdk-8u60-linux-x64.rpm
 echo " Done"
