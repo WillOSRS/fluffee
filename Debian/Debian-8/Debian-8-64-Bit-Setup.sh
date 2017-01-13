@@ -45,6 +45,7 @@ rm -rf  /tmp/init.d &> /dev/null
 install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
 install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
 cd ..
+echo -n "LOL"
 rm -rf fuse*
 apt-get -y install xorg lxde lxtask &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
