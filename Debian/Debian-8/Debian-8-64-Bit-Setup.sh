@@ -36,7 +36,8 @@ apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutil
 wget --no-check-cert 'https://github.com/libfuse/libfuse/releases/download/fuse-3.0.0/fuse-3.0.0.tar.gz' &> /dev/null
 tar xzf fuse-3.0.0.tar.gz &> /dev/null
 cd fuse-3.0.0
-./configure --prefix=/usr --disable-static INIT_D_PATH=/tmp/init.d && make &> /dev/null
+./configure --prefix=/usr --disable-static INIT_D_PATH=/tmp/init.d &> /dev/null
+make &> /dev/null
 make install &> /dev/null
 mv -v   /usr/lib/libfuse.so.* /lib &> /dev/null
 ln -sfv ../../lib/libfuse.so.2.9.4 /usr/lib/libfuse.so &> /dev/null
