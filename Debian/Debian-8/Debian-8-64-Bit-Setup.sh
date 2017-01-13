@@ -44,10 +44,10 @@ ln -sfv ../../lib/libfuse.so.2.9.4 /usr/lib/libfuse.so &> /dev/null
 rm -rf  /tmp/init.d &> /dev/null
 install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
 install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 cd ..
 rm -rf fuse*
 apt-get -y install xorg lxde lxtask &> /dev/null
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
