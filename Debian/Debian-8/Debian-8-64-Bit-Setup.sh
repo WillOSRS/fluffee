@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y upgrade &> /dev/null
-apt-get -y install sudo wget nano locales debconf-utils &> /dev/null
+apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog&> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
@@ -32,14 +32,24 @@ chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxde lxtask &> /dev/null
+apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+wget --no-check-cert 'https://github.com/libfuse/libfuse/releases/download/fuse-3.0.0/fuse-3.0.0.tar.gz' &> /dev/null
+cd fuse-3.0.0
+./configure --prefix=/usr --disable-static INIT_D_PATH=/tmp/init.d && make &> /dev/null
+make install &> /dev/null
+mv -v   /usr/lib/libfuse.so.* /lib &> /dev/null
+ln -sfv ../../lib/libfuse.so.2.9.4 /usr/lib/libfuse.so &> /dev/null
+rm -rf  /tmp/init.d &> /dev/null
+install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
+install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
+cd ..
+rm -rf fuse*
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 cd vnc_unixsrc &> /dev/null
