@@ -47,6 +47,7 @@ install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/sha
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 cd ..
 rm -rf fuse*
+apt-get -y install xorg lxde lxtask &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
