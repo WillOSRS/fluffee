@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y upgrade &> /dev/null
-apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog&> /dev/null
+apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog libxslt1.1 &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
@@ -45,7 +45,6 @@ rm -rf  /tmp/init.d &> /dev/null
 install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
 install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
 cd ..
-echo -n "LOL"
 rm -rf fuse*
 apt-get -y install xorg lxde lxtask &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
