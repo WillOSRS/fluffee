@@ -132,4 +132,5 @@ sed -i "s/NoDisplay=true/NoDisplay=false/g" /usr/share/applications/JB-java-jdk8
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo systemctl start myvncserver.service &> /dev/null
+sudo chown -R $name /home/$name
 echo " Done"

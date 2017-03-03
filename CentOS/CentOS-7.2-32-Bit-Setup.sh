@@ -82,4 +82,5 @@ sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
 mkdir /home/$name/.local/share/applications &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
+sudo chown -R $name /home/$name
 echo " Done"

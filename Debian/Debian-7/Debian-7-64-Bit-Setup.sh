@@ -135,4 +135,5 @@ sudo chown root:root /etc/init.d/tightvncserver
 sudo chmod 755 /etc/init.d/tightvncserver
 sudo /etc/init.d/tightvncserver start &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo chown -R $name /home/$name
 echo " Done"

@@ -96,8 +96,8 @@ wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server
 sudo chown $name myvncserver &> /dev/null
 sudo chmod +x /usr/local/bin/myvncserver &> /dev/null
 cd /lib/systemd/system/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service' &> /dev/null
 sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service' &> /dev/null
 sudo systemctl daemon-reload &> /dev/null
 sudo systemctl enable myvncserver.service &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
@@ -145,4 +145,5 @@ sed -i "s/NoDisplay=true/NoDisplay=false/g" /usr/share/applications/JB-java-jdk8
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo systemctl start myvncserver.service &> /dev/null
+sudo chown -R $name /home/$name
 echo " Done"
