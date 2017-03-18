@@ -15,7 +15,7 @@ else
 fi
 DISTRO="$(echo -e "${DISTRO}" | tr -d '[:space:]')"
 VERSION=$(echo "$VERSION" | sed 's/\.//2')
-if [$DISTRO = ""]; then
+if ["$DISTRO" = ""]; then
 	echo "Fluffee's Server Setup could not auto-detect the OS, please contact Fluffee"
 	exit 1
 fi
