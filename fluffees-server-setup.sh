@@ -4,14 +4,21 @@ echo "Welcome to Fluffee's TRiBot Server Setup Script"
 echo -n "Loading..."
 UNAME=$(uname -m)
 if [ -f /etc/redhat-release ]; then
-    DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g)
-    VERSION=$(cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//)
+    DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g) &> /dev/null
+    VERSION=$(cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//) &> /dev/null
+elif [ -f /etc/debian_version ]; then
+    DISTRO=Debian  # XXX or Ubuntu?? &> /dev/null
+    VERSION=$(cat /etc/debian_version) &> /dev/null
 else
-    DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
-    VERSION=$(lsb_release -r -s)
+    DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//) &> /dev/null
+    VERSION=$(lsb_release -r -s) &> /dev/null
 fi
 DISTRO="$(echo -e "${DISTRO}" | tr -d '[:space:]')"
 VERSION=$(echo "$VERSION" | sed 's/\.//2')
+if [$DISTRO = ""]; then
+	echo "Fluffee's Server Setup could not auto-detect the OS, please contact Fluffee"
+	exit 1
+fi
 if [ "$UNAME" = "x86_64" ]; then
     if [ "$DISTRO" = "Ubuntu" ]; then
 		apt-get update &> /dev/null
