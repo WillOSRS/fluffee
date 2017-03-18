@@ -7,7 +7,7 @@ if [ -f /etc/redhat-release ]; then
     DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g) &> /dev/null
     VERSION=$(cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//) &> /dev/null
 elif [ -f /etc/debian_version ]; then
-    DISTRO=Debian  # XXX or Ubuntu?? &> /dev/null
+    DISTRO="Debian"  &> /dev/null
     VERSION=$(cat /etc/debian_version) &> /dev/null
 else
     DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//) &> /dev/null
