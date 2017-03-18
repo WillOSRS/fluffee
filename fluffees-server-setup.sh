@@ -105,12 +105,12 @@ echo " -------------------- Fluffee's TRiBot Server Setup Script ---------------
 echo "Fluffee's VPS Setup Script 2.0, has auto detected $OS"
 read -p "Desired VNC port must be greater than 1024: " vncport
 
-while(( vncport < 1024 )); do
+while(( vncport < 1025 )); do
     read -p "Please enter a port greater than 1024: " vncport
 done
 
 read -p "Desired SSH port must be greater than 1024, and different from VNC port: " sshport
-while(( sshport < 1024 || sshport == vncport )); do
+while(( sshport < 1025 || sshport == vncport )); do
     read -p "Please enter a port that is greater than 1024 and different from VNC port: " sshport
 done
 
