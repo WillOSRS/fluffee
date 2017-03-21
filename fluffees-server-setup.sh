@@ -26,7 +26,7 @@ if [ "$DISTRO" = "" ]; then
 	echo "Error: Fluffee's Server Setup could not auto-detect the OS, please contact Fluffee"
 	exit 1
 fi
-if ["$verbose" = "yes" ]; then
+if [ "$verbose" = "yes" ]; then
 	echo here
 	if [ "$UNAME" = "x86_64" ]; then
 		if [ "$DISTRO" = "Ubuntu" ]; then
