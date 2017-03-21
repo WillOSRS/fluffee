@@ -32,7 +32,7 @@ if ["$verbose" = "yes" ]; then
 		if [ "$DISTRO" = "Ubuntu" ]; then
 			apt-get update
 			apt-get install -y bc
-			OS="Ubuntu $VERSION x64"
+			OS="Ubuntu $VERSION x64 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
 				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup-verbose.sh"
@@ -47,7 +47,7 @@ if ["$verbose" = "yes" ]; then
 		elif [ "$DISTRO" = "Debian" ]; then
 			apt-get update
 			apt-get install -y bc
-			OS="Debian $VERSION x64"
+			OS="Debian $VERSION x64 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
 				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-64-Bit-Setup-verbose.sh"
@@ -59,7 +59,7 @@ if ["$verbose" = "yes" ]; then
 		elif [ "$DISTRO" = "CentOS" ]; then
 			yum -y update
 			yum -y install bc
-			OS="CentOS $VERSION x64"
+			OS="CentOS $VERSION x64 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
 				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-64-Bit-Setup-verbose.sh"
@@ -75,7 +75,7 @@ if ["$verbose" = "yes" ]; then
 		if [ "$DISTRO" = "Ubuntu" ]; then
 			apt-get update
 			apt-get install -y bc
-			OS="Ubuntu $VERSION x86"
+			OS="Ubuntu $VERSION x86 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
 				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup-verbose.sh"
@@ -90,7 +90,7 @@ if ["$verbose" = "yes" ]; then
 		elif [ "$DISTRO" = "Debian" ]; then
 			apt-get update
 			apt-get install -y bc
-			OS="Debian $VERSION x86"
+			OS="Debian $VERSION x86 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
 				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-32-Bit-Setup-verbose.sh"
@@ -102,7 +102,7 @@ if ["$verbose" = "yes" ]; then
 		elif [ "$DISTRO" = "CentOS" ]; then
 			yum -y update
 			yum -y install bc
-			OS="CentOS $VERSION x86"
+			OS="CentOS $VERSION x86 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
 				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-32-Bit-Setup-verbose.sh"
