@@ -2,6 +2,13 @@
 clear
 echo "Welcome to Fluffee's TRiBot Server Setup Script"
 echo -n "Loading..."
+while getopts "h:v" OPTIONS ; do
+    case ${OPTIONS} in
+        h|-help) usage; exit
+        ;;
+        v|-verbose) verbose="yes";
+    esac
+done
 UNAME=$(uname -m)
 if [ -f /etc/redhat-release ]; then
     DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g) &> /dev/null
@@ -16,97 +23,186 @@ fi
 DISTRO="$(echo -e "${DISTRO}" | tr -d '[:space:]')"
 VERSION=$(echo "$VERSION" | sed 's/\.//2')
 if ["$DISTRO" = ""]; then
-	echo "Fluffee's Server Setup could not auto-detect the OS, please contact Fluffee"
+	echo "Error: Fluffee's Server Setup could not auto-detect the OS, please contact Fluffee"
 	exit 1
 fi
-if [ "$UNAME" = "x86_64" ]; then
-    if [ "$DISTRO" = "Ubuntu" ]; then
-		apt-get update &> /dev/null
-		apt-get install -y bc &> /dev/null
-        OS="Ubuntu $VERSION x64"
-		echo " Done"
-		if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup.sh"
-			FILE=Ubuntu-12.04.5-64-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 14") -eq 1 -a $(bc <<< "$VERSION <= 15") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup.sh"
-			FILE=Ubuntu-14.04.5-64-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 16") -eq 1 -a $(bc <<< "$VERSION <= 17") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup.sh"
-			FILE=Ubuntu-16.04.5-64-Bit-Setup.sh
-		fi
-    elif [ "$DISTRO" = "Debian" ]; then
-		apt-get update &> /dev/null
-		apt-get install -y bc &> /dev/null
-        OS="Debian $VERSION x64"
-		echo " Done"
-		if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-64-Bit-Setup.sh"
-			FILE=Debian-7-64-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 8") -eq 1 -a $(bc <<< "$VERSION <= 9") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Debian-8-64-Bit-Setup.sh"
-			FILE=Debian-8-64-Bit-Setup.sh
-		fi
-    elif [ "$DISTRO" = "CentOS" ]; then
-		yum -y update &> /dev/null
-		yum -y install bc &> /dev/null
-        OS="CentOS $VERSION x64"
-		echo " Done"
-		if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-64-Bit-Setup.sh"
-			FILE=CentOS-6.8-64-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-7.2-64-Bit-Setup.sh"
-			FILE=CentOS-7.2-64-Bit-Setup.sh
+if ["$verbose" = "yes" ]; then
+	if [ "$UNAME" = "x86_64" ]; then
+		if [ "$DISTRO" = "Ubuntu" ]; then
+			apt-get update
+			apt-get install -y bc
+			OS="Ubuntu $VERSION x64"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup-verbose.sh"
+				FILE=Ubuntu-12.04.5-64-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 14") -eq 1 -a $(bc <<< "$VERSION <= 15") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup-verbose.sh"
+				FILE=Ubuntu-14.04.5-64-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 16") -eq 1 -a $(bc <<< "$VERSION <= 17") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup-verbose.sh"
+				FILE=Ubuntu-16.04.5-64-Bit-Setup-verbose.sh
+			fi
+		elif [ "$DISTRO" = "Debian" ]; then
+			apt-get update
+			apt-get install -y bc
+			OS="Debian $VERSION x64"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-64-Bit-Setup-verbose.sh"
+				FILE=Debian-7-64-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 8") -eq 1 -a $(bc <<< "$VERSION <= 9") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Debian-8-64-Bit-Setup-verbose.sh"
+				FILE=Debian-8-64-Bit-Setup-verbose.sh
+			fi
+		elif [ "$DISTRO" = "CentOS" ]; then
+			yum -y update
+			yum -y install bc
+			OS="CentOS $VERSION x64"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-64-Bit-Setup-verbose.sh"
+				FILE=CentOS-6.8-64-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-7.2-64-Bit-Setup-verbose.sh"
+				FILE=CentOS-7.2-64-Bit-Setup-verbose.sh
+			fi
+		else
+			OS="Unsupported OS"
 		fi
 	else
-		OS="Unsupported OS"
-    fi
+		if [ "$DISTRO" = "Ubuntu" ]; then
+			apt-get update
+			apt-get install -y bc
+			OS="Ubuntu $VERSION x86"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup-verbose.sh"
+				FILE=Ubuntu-12.04.5-32-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 14") -eq 1 -a $(bc <<< "$VERSION <= 15") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup-verbose.sh"
+				FILE=Ubuntu-14.04.5-32-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 16") -eq 1 -a $(bc <<< "$VERSION <= 17") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup-verbose.sh"
+				FILE=Ubuntu-16.04.5-32-Bit-Setup-verbose.sh
+			fi
+		elif [ "$DISTRO" = "Debian" ]; then
+			apt-get update
+			apt-get install -y bc
+			OS="Debian $VERSION x86"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-32-Bit-Setup-verbose.sh"
+				FILE=Debian-7-32-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 8") -eq 1 -a $(bc <<< "$VERSION <= 9") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Debian-8-32-Bit-Setup-verbose.sh"
+				FILE=Debian-8-32-Bit-Setup-verbose.sh
+			fi
+		elif [ "$DISTRO" = "CentOS" ]; then
+			yum -y update
+			yum -y install bc
+			OS="CentOS $VERSION x86"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-32-Bit-Setup-verbose.sh"
+				FILE=CentOS-6.8-32-Bit-Setup-verbose.sh
+			elif [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-7.2-32-Bit-Setup-verbose.sh"
+				FILE=CentOS-7.2-32-Bit-Setup-verbose.sh
+			fi
+		else
+			OS = "Unsupported OS"
+		fi
+	fi
 else
-   if [ "$DISTRO" = "Ubuntu" ]; then
-		apt-get update &> /dev/null
-		apt-get install -y bc &> /dev/null
-        OS="Ubuntu $VERSION x86"
-		echo " Done"
-		if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup.sh"
-			FILE=Ubuntu-12.04.5-32-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 14") -eq 1 -a $(bc <<< "$VERSION <= 15") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup.sh"
-			FILE=Ubuntu-14.04.5-32-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 16") -eq 1 -a $(bc <<< "$VERSION <= 17") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup.sh"
-			FILE=Ubuntu-16.04.5-32-Bit-Setup.sh
-		fi
-    elif [ "$DISTRO" = "Debian" ]; then
-		apt-get update &> /dev/null
-		apt-get install -y bc &> /dev/null
-        OS="Debian $VERSION x86"
-		echo " Done"
-		if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-32-Bit-Setup.sh"
-			FILE=Debian-7-32-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 8") -eq 1 -a $(bc <<< "$VERSION <= 9") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Debian-8-32-Bit-Setup.sh"
-			FILE=Debian-8-32-Bit-Setup.sh
-		fi
-    elif [ "$DISTRO" = "CentOS" ]; then
-		yum -y update &> /dev/null
-		yum -y install bc &> /dev/null
-        OS="CentOS $VERSION x86"
-		echo " Done"
-		if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-32-Bit-Setup.sh"
-			FILE=CentOS-6.8-32-Bit-Setup.sh
-		elif [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
-		    LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-7.2-32-Bit-Setup.sh"
-			FILE=CentOS-7.2-32-Bit-Setup.sh
+	if [ "$UNAME" = "x86_64" ]; then
+		if [ "$DISTRO" = "Ubuntu" ]; then
+			apt-get update &> /dev/null
+			apt-get install -y bc &> /dev/null
+			OS="Ubuntu $VERSION x64"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup.sh"
+				FILE=Ubuntu-12.04.5-64-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 14") -eq 1 -a $(bc <<< "$VERSION <= 15") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup.sh"
+				FILE=Ubuntu-14.04.5-64-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 16") -eq 1 -a $(bc <<< "$VERSION <= 17") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup.sh"
+				FILE=Ubuntu-16.04.5-64-Bit-Setup.sh
+			fi
+		elif [ "$DISTRO" = "Debian" ]; then
+			apt-get update &> /dev/null
+			apt-get install -y bc &> /dev/null
+			OS="Debian $VERSION x64"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-64-Bit-Setup.sh"
+				FILE=Debian-7-64-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 8") -eq 1 -a $(bc <<< "$VERSION <= 9") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Debian-8-64-Bit-Setup.sh"
+				FILE=Debian-8-64-Bit-Setup.sh
+			fi
+		elif [ "$DISTRO" = "CentOS" ]; then
+			yum -y update &> /dev/null
+			yum -y install bc &> /dev/null
+			OS="CentOS $VERSION x64"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-64-Bit-Setup.sh"
+				FILE=CentOS-6.8-64-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-7.2-64-Bit-Setup.sh"
+				FILE=CentOS-7.2-64-Bit-Setup.sh
+			fi
+		else
+			OS="Unsupported OS"
 		fi
 	else
-		OS = "Unsupported OS"
-    fi
+		if [ "$DISTRO" = "Ubuntu" ]; then
+			apt-get update &> /dev/null
+			apt-get install -y bc &> /dev/null
+			OS="Ubuntu $VERSION x86"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 12") -eq 1 -a $(bc <<< "$VERSION <= 13") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup.sh"
+				FILE=Ubuntu-12.04.5-32-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 14") -eq 1 -a $(bc <<< "$VERSION <= 15") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup.sh"
+				FILE=Ubuntu-14.04.5-32-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 16") -eq 1 -a $(bc <<< "$VERSION <= 17") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup.sh"
+				FILE=Ubuntu-16.04.5-32-Bit-Setup.sh
+			fi
+		elif [ "$DISTRO" = "Debian" ]; then
+			apt-get update &> /dev/null
+			apt-get install -y bc &> /dev/null
+			OS="Debian $VERSION x86"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Debian-7-32-Bit-Setup.sh"
+				FILE=Debian-7-32-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 8") -eq 1 -a $(bc <<< "$VERSION <= 9") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Debian-8-32-Bit-Setup.sh"
+				FILE=Debian-8-32-Bit-Setup.sh
+			fi
+		elif [ "$DISTRO" = "CentOS" ]; then
+			yum -y update &> /dev/null
+			yum -y install bc &> /dev/null
+			OS="CentOS $VERSION x86"
+			echo " Done"
+			if [ $(bc <<< "$VERSION > 6") -eq 1 -a $(bc <<< "$VERSION <= 7") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-6.8-32-Bit-Setup.sh"
+				FILE=CentOS-6.8-32-Bit-Setup.sh
+			elif [ $(bc <<< "$VERSION > 7") -eq 1 -a $(bc <<< "$VERSION <= 8") -eq 1 ]; then
+				LINK="https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/CentOS/CentOS-7.2-32-Bit-Setup.sh"
+				FILE=CentOS-7.2-32-Bit-Setup.sh
+			fi
+		else
+			OS = "Unsupported OS"
+		fi
+	fi
 fi
-
 clear
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
 echo "Fluffee's VPS Setup Script 2.0, has auto detected $OS"
@@ -131,7 +227,11 @@ read -p "Desired SSH password: " sshpassword
 read -p "Desired VNC password: " vncpassword
 
 echo "Running OS specific install script"
-wget --no-check-cert $LINK &> /dev/null
+if ["$verbose" = "yes" ]; then
+	wget --no-check-cert $LINK
+else
+	wget --no-check-cert $LINK &> /dev/null
+fi
 chmod +x $FILE
 clear
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
