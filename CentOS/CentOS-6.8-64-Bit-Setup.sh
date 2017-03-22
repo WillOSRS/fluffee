@@ -11,6 +11,13 @@ echo " Done"
 echo -n "Installing required packages and VNC..."
 yum -y install epel-release sudo wget nano tigervnc-server gnome-system-monitor firefox &> /dev/null
 echo " Done"
+echo -n "Creating the user..."
+chkconfig vncserver on &> /dev/null
+adduser $name &> /dev/null
+echo "$name:$sshpassword" | chpasswd
+usermod -aG wheel $name &> /dev/null
+sed -i "s/# %wheel/%wheel/g" /etc/sudoers
+echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
 sed -i "s/#PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
@@ -20,11 +27,6 @@ service sshd restart &> /dev/null
 echo " Done"
 echo -n "Installing XFCE..."
 yum -y groupinstall Desktop xfce &> /dev/null
-chkconfig vncserver on &> /dev/null
-adduser $name &> /dev/null
-echo "$name:$sshpassword" | chpasswd
-usermod -aG wheel $name &> /dev/null
-sed -i "s/# %wheel/%wheel/g" /etc/sudoers
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc &> /dev/null

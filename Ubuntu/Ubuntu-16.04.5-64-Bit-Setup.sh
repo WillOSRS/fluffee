@@ -11,6 +11,12 @@ echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
 echo " Done"
+echo -n "Creating the user..."
+name=${name,,} &> /dev/null
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
+echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
+sudo adduser $name sudo &> /dev/null
+echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
@@ -20,12 +26,6 @@ service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
 apt-get -y install xorg lxde lxtask &> /dev/null
-echo " Done"
-echo -n "Creating the user..."
-name=${name,,} &> /dev/null
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
-echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
-sudo adduser $name sudo &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null
