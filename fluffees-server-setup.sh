@@ -13,6 +13,9 @@ UNAME=$(uname -m)
 if [ -f /etc/redhat-release ]; then
     DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g) &> /dev/null
     VERSION=$(cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//) &> /dev/null
+elif [ -f /etc/os-release ]; then
+	DISTRO=$(sed -n '/\bNAME\b/p' /etc/os-release | sed s/NAME=//g | sed s/\"//g)
+	VERSION=$(sed -n '/\bVERSION_ID\b/p' /etc/os-release | sed s/VERSION_ID=//g | sed s/\"//g)
 elif [ -f /etc/debian_version ]; then
     DISTRO="Debian"  &> /dev/null
     VERSION=$(cat /etc/debian_version) &> /dev/null
@@ -228,7 +231,7 @@ read -p "Desired SSH password: " sshpassword
 read -p "Desired VNC password: " vncpassword
 
 echo "Running OS specific install script"
-if ["$verbose" = "yes" ]; then
+if [ "$verbose" = "yes" ]; then
 	wget --no-check-cert $LINK
 else
 	wget --no-check-cert $LINK &> /dev/null
