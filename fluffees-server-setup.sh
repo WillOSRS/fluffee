@@ -14,11 +14,8 @@ if [ -f /etc/redhat-release ]; then
     DISTRO=$(cat /etc/redhat-release | sed s/\release.*// | sed s/Linux//g) &> /dev/null
     VERSION=$(cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//) &> /dev/null
 elif [ -f /etc/os-release ]; then
-	DISTRO=$(sed -n '/\bNAME\b/p' /etc/os-release | sed s/NAME=//g | sed s/\"//g)
+	DISTRO=$(sed -n '/\bNAME\b/p' /etc/os-release | sed s/NAME=//g | sed s/\"//g | sed 's,/,,g' | sed s/GNULinux//g)
 	VERSION=$(sed -n '/\bVERSION_ID\b/p' /etc/os-release | sed s/VERSION_ID=//g | sed s/\"//g)
-elif [ -f /etc/debian_version ]; then
-    DISTRO="Debian"  &> /dev/null
-    VERSION=$(cat /etc/debian_version) &> /dev/null
 else
     DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//) &> /dev/null
     VERSION=$(lsb_release -r -s) &> /dev/null
