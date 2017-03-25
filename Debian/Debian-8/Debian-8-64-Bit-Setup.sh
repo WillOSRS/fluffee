@@ -96,8 +96,8 @@ wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server
 sudo chown $name myvncserver &> /dev/null
 sudo chmod +x /usr/local/bin/myvncserver &> /dev/null
 cd /lib/systemd/system/
-sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service' &> /dev/null
+sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
 sudo systemctl daemon-reload &> /dev/null
 sudo systemctl enable myvncserver.service &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
