@@ -9,9 +9,8 @@ echo -n "Installing updates..."
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano libxslt1.1 netselect-apt &> /dev/null
-sudo netselect-apt &> /dev/null
-mv -f sources.list /etc/apt/
+apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
+sed -i -e 's%http://archive.ubuntu.com/ubuntu%mirror://mirrors.ubuntu.com/mirrors.txt%' -e 's/^deb-src/#deb-src/' /etc/apt/sources.list
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Creating the user..."
