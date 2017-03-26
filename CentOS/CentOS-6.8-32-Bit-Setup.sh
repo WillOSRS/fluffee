@@ -61,8 +61,8 @@ sudo chmod 777 Bots
 echo " Done"
 echo -n "Setting up Java..."
 cd
-wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-i586.rpm" -O jdk-8u60-linux-i586.rpm &> /dev/null
-sudo yum -y localinstall --nogpgcheck jdk-8u60-linux-i586.rpm &> /dev/null
+wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b27/jdk-8u102-linux-i586.rpm" -O jdk-8u102-linux-i586.rpm &> /dev/null
+sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-i586.rpm &> /dev/null
 sudo rm ~/jdk-8u60-linux-i586.rpm
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
@@ -78,6 +78,7 @@ echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
 echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
 echo "NoDisplay=false" >> JB-java-jdk8.desktop
 sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
+mkdir /home/$name/.local/share/applications &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 sudo chown -R $name /home/$name

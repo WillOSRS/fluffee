@@ -117,17 +117,22 @@ sudo chown $name Bots &> /dev/null
 sudo chmod 777 Bots &> /dev/null
 echo " Done"
 echo -n "Setting up Java..."
-echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
-echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 &> /dev/null
-apt-get update &> /dev/null
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections &> /dev/null
-apt-get -y install oracle-java8-installer &> /dev/null
-sudo apt-get -y install oracle-java8-set-default &> /dev/null
-chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/security/java.policy
-cd /usr/local
+wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b12/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
+tar -zxf jdk-8u102-linux-x64.tar.gz &> /dev/null
+mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
+echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
+echo "export J2REDIR=/usr/lib/jvm/oracle_jdk8/jre" >> oraclejdk.sh
+echo "export PATH=$PATH:/usr/lib/jvm/oracle_jdk8/bin:/usr/lib/jvm/oracle_jdk8/db/bin:/usr/lib/jvm/oracle_jdk8/jre/bin" >> oraclejdk.sh
+echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
+echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
+sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
+chmod 777 /etc/profile.d/oraclejdk.sh
+bash etc/profile.d/oraclejdk.sh
 echo " Done"
 echo -n "Installing Firefox x64..."
+cd /usr/local
 wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null

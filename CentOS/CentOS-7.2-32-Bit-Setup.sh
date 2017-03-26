@@ -64,9 +64,9 @@ sudo chmod 777 Bots
 echo " Done"
 echo -n "Setting up Java..."
 cd
-wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.rpm" -O jdk-8u60-linux-x64.rpm &> /dev/null
-sudo yum -y localinstall --nogpgcheck jdk-8u60-linux-x64.rpm &> /dev/null
-sudo rm ~/jdk-8u60-linux-x64.rpm
+wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b27/jdk-8u102-linux-i586.rpm" -O jdk-8u102-linux-i586.rpm &> /dev/null
+sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-i586.rpm &> /dev/null
+sudo rm ~/jdk-8u60-linux-i586.rpm
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop

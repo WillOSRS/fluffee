@@ -78,6 +78,7 @@ echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
 echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
 echo "NoDisplay=false" >> JB-java-jdk8.desktop
 sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
+mkdir /home/$name/.local/share/applications &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 sudo chown -R $name /home/$name
