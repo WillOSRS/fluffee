@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y upgrade &> /dev/null
-apt-get -y install sudo wget nano locales debconf-utils xauth libxslt1.1 &> /dev/null
+apt-get -y install sudo wget nano locales debconf-utils xauth libxslt1.1 netselect-apt &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
@@ -23,6 +23,9 @@ echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source ~/.bashrc &> /dev/null
 dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
 update-locale LANG=en_US.UTF-8 &> /dev/null
+sudo netselect-apt &> /dev/null
+mv -f sources.list /etc/apt/
+apt-get update &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config

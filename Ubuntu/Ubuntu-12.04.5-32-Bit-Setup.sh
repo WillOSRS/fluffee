@@ -9,7 +9,10 @@ echo -n "Installing updates..."
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
+apt-get -y install sudo wget nano libxslt1.1 netselect-apt &> /dev/null
+sudo netselect-apt &> /dev/null
+mv -f sources.list /etc/apt/
+apt-get update &> /dev/null
 echo " Done"
 echo -n "Creating the user..."
 name=${name,,} &> /dev/null
