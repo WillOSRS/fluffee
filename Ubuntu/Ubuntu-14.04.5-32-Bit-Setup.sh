@@ -10,7 +10,15 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
-sed -i -e 's%http://archive.ubuntu.com/ubuntu%mirror://mirrors.ubuntu.com/mirrors.txt%' -e 's/^deb-src/#deb-src/' /etc/apt/sources.list
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
+debconf-set-selections < Keyboard_settings.conf &> /dev/null
+apt-get install -y keyboard-configuration &> /dev/null
+dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
+wget --no-check-certificate https://github.com/brodock/apt-select/releases/download/0.1.0/apt-select_0.1.0-0_all.deb &> /dev/null
+apt-get install -y python-bs4 &> /dev/null
+dpkg -i apt-select_0.1.0-0_all.deb &> /dev/null
+apt-select &> /dev/null
+mv -f sources.list /etc/apt/
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Creating the user..."
@@ -23,7 +31,7 @@ echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
-chmod 600 sshd_config &> /dev/null
+chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
