@@ -96,6 +96,8 @@ echo " Done"
 echo -n "Setting up Java..."
 wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b12/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
 tar -zxf jdk-8u102-linux-x64.tar.gz &> /dev/null
+mkdir /usr/lib/jvm
+mkdir /usr/lib/jvm/oracle_jdk8
 mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
 sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
