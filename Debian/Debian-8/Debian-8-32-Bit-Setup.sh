@@ -118,7 +118,7 @@ echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
 echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
 sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
 chmod 777 /etc/profile.d/oraclejdk.sh
-bash etc/profile.d/oraclejdk.sh
+source /etc/profile.d/oraclejdk.sh
 echo " Done"
 echo -n "Installing Firefox x86..."
 cd /usr/local
