@@ -51,6 +51,7 @@ sudo adduser $name sudo &> /dev/null
 sudo adduser $name netdev &> /dev/null
 sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
+sudo usermod -aG netdev $name &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
