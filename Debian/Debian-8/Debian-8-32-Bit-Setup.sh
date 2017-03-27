@@ -132,6 +132,18 @@ apt-get remove -y xscreensaver &> /dev/null
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
+echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
+echo "[Desktop Entry]" >> JB-java-jdk8.desktop
+echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
+echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Exec=/usr/bin/java -jar %f" >> JB-java-jdk8.desktop
+echo "Terminal=false" >> JB-java-jdk8.desktop
+echo "Type=Application" >> JB-java-jdk8.desktop
+echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
+echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
+echo "NoDisplay=false" >> JB-java-jdk8.desktop
+sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 echo "" >> /home/$name/.local/share/applications/mimeapps.list

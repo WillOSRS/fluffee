@@ -39,6 +39,7 @@ name=${name,,} &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
+sudo adduser $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev fuse &> /dev/null
@@ -125,6 +126,18 @@ update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/fi
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 apt-get remove -y xscreensaver &> /dev/null
+echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
+echo "[Desktop Entry]" >> JB-java-jdk8.desktop
+echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
+echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Exec=/usr/bin/java -jar %f" >> JB-java-jdk8.desktop
+echo "Terminal=false" >> JB-java-jdk8.desktop
+echo "Type=Application" >> JB-java-jdk8.desktop
+echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
+echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
+echo "NoDisplay=false" >> JB-java-jdk8.desktop
+sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
