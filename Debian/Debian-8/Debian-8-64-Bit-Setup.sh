@@ -54,6 +54,7 @@ install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
 install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
 cd ..
 rm -rf fuse*
+apt-get install -y fuse &> /dev/null
 apt-get -y install xorg lxde lxtask &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
