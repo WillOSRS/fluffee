@@ -26,6 +26,12 @@ sudo netselect-apt &> /dev/null
 mv -f sources.list /etc/apt/
 apt-get update &> /dev/null
 echo " Done"
+echo -n "Creating the user..."
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
+echo "$name:$sshpassword" | sudo chpasswd
+sudo gpasswd -a $name sudo &> /dev/null
+sudo gpasswd -a $name netdev &> /dev/null
+echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config
@@ -49,10 +55,6 @@ install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/sha
 cd ..
 rm -rf fuse*
 apt-get -y install xorg lxde lxtask &> /dev/null
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
-echo "$name:$sshpassword" | sudo chpasswd
-sudo gpasswd -a $name sudo &> /dev/null
-sudo gpasswd -a $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
