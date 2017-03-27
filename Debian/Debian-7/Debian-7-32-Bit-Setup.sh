@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt &> /dev/null
+apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt xauth &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
@@ -41,7 +41,7 @@ echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev fuse &> /dev/null
 sudo apt-get install -y libjpeg62-dev &> /dev/null
 sudo apt-get install -y libjpeg62-turbo-dev:i386 &> /dev/null
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
