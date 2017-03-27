@@ -61,7 +61,8 @@ chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxde lxtask &> /dev/null
+apt-get -y install xorg lxtask &> /dev/null
+apt-get -y install lxde
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
