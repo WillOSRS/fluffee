@@ -41,7 +41,9 @@ echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+sudo apt-get install -y libjpeg62-dev &> /dev/null
+sudo apt-get install -y libjpeg62-turbo-dev:i386 &> /dev/null
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 cd vnc_unixsrc &> /dev/null
