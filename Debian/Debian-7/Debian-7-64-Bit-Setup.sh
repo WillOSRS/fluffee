@@ -41,6 +41,7 @@ install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
 install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
 cd ..
 rm -rf fuse*
+apt-get remove -y plymouth &> /dev/null
 apt-get install -y fuse &> /dev/null
 echo " Done"
 echo -n "Creating the user..."
@@ -61,8 +62,7 @@ chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxtask &> /dev/null
-apt-get -y install lxde
+apt-get -y install xorg lxtask lxde &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
