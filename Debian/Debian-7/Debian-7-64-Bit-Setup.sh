@@ -33,7 +33,7 @@ echo -n "Creating the user..."
 name=${name,,} &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
-sudo groupadd netdev
+sudo groupadd netdev &> /dev/null
 sudo adduser $name sudo &> /dev/null
 sudo adduser $name netdev &> /dev/null
 echo " Done"
@@ -45,7 +45,7 @@ chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxtask lxde &> /dev/null
+apt-get -y install xorg lxtask lxde
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
