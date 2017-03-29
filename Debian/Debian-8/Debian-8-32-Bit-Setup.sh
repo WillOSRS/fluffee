@@ -26,13 +26,6 @@ sudo netselect-apt &> /dev/null
 mv -f sources.list /etc/apt/
 apt-get update &> /dev/null
 echo " Done"
-echo -n "Creating the user..."
-name=${name,,} &> /dev/null
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
-echo "$name:$sshpassword" | sudo chpasswd
-sudo gpasswd -a $name sudo &> /dev/null
-sudo gpasswd -a $name netdev &> /dev/null
-echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config
@@ -42,6 +35,10 @@ service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
 apt-get -y install xorg lxde lxtask &> /dev/null
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
+echo "$name:$sshpassword" | sudo chpasswd
+sudo gpasswd -a $name sudo &> /dev/null
+sudo gpasswd -a $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
@@ -106,6 +103,7 @@ sudo chown $name Bots &> /dev/null
 sudo chmod 777 Bots &> /dev/null
 echo " Done"
 echo -n "Setting up Java..."
+cd
 wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b12/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
 tar -zxf jdk-8u102-linux-i586.tar.gz &> /dev/null
 mkdir /usr/lib/jvm
@@ -134,18 +132,6 @@ apt-get remove -y xscreensaver &> /dev/null
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
-echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
-echo "[Desktop Entry]" >> JB-java-jdk8.desktop
-echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
-echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
-echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
-echo "Exec=/usr/bin/java -jar %f" >> JB-java-jdk8.desktop
-echo "Terminal=false" >> JB-java-jdk8.desktop
-echo "Type=Application" >> JB-java-jdk8.desktop
-echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
-echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
-echo "NoDisplay=false" >> JB-java-jdk8.desktop
-sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 echo "" >> /home/$name/.local/share/applications/mimeapps.list
