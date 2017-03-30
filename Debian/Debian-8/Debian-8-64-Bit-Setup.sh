@@ -7,7 +7,6 @@ sshpassword=$4
 vncpassword=$5
 echo -n "Installing updates..."
 apt-get update &> /dev/null
-export DEBIAN_FRONTEND=noninteractive
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog libxslt1.1 netselect-apt &> /dev/null
@@ -49,7 +48,7 @@ install -v -m755 -d /usr/share/doc/fuse-2.9.4 &> /dev/null
 install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4 &> /dev/null
 cd ..
 rm -rf fuse*
-apt-get -y install xorg lxde lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg lxde lxtask &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo &> /dev/null

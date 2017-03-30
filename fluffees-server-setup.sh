@@ -236,8 +236,7 @@ fi
 chmod +x $FILE
 clear
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
-export DEBIAN_FRONTEND=noninteractive
-source ./$FILE $name $sshport $vncport $sshpassword $vncpassword
+./$FILE $name $sshport $vncport $sshpassword $vncpassword
 rm -f 'tightvnc-1.3.10_unixsrc.tar.gz'
 rm -rf 'vnc_unixsrc'
 rm -f $FILE
