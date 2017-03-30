@@ -42,7 +42,9 @@ sudo adduser $name netdev &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg lxde lxtask &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+sudo apt-get install -y libjpeg62-dev &> /dev/null
+sudo apt-get install -y libjpeg62-turbo-dev:1386 &> /dev/null
 wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
 cd vnc_unixsrc &> /dev/null
