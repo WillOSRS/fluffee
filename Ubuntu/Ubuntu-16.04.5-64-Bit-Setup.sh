@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 export DEBIAN_FRONTEND=noninteractive
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
+apt-get -y install sudo wget nano libxslt1.1 cryptsetup &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
