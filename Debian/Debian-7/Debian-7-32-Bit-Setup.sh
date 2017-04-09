@@ -40,7 +40,7 @@ echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 sudo adduser $name netdev &> /dev/null
 apt-get install -y xorg lxtask &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev &> /dev/null
