@@ -34,14 +34,14 @@ chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-name=${name,,}
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
-echo "$name:$sshpassword" | sudo chpasswd
-sudo adduser $name sudo
-sudo adduser $name netdev
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
+name=${name,,} &> /dev/null
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
+echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
+sudo adduser $name sudo &> /dev/null
+sudo adduser $name netdev &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev &> /dev/null

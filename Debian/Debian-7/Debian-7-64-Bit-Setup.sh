@@ -35,11 +35,14 @@ service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
 name=${name,,} &> /dev/null
+name=${name,,} &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 sudo adduser $name netdev &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg lxde lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev &> /dev/null
@@ -123,6 +126,8 @@ wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=f
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
+update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000
+update-alternatives --set mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/i386/libnpjp2.so
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 apt-get remove -y xscreensaver &> /dev/null
