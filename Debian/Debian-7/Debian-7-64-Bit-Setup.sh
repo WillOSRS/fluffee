@@ -32,15 +32,14 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
 chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-name=${name,,} &> /dev/null
 name=${name,,} &> /dev/null
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
 echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 sudo adduser $name netdev &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
@@ -140,7 +139,17 @@ echo "" >> /home/$name/.local/share/applications/mimeapps.list
 echo "[Default Applications]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/zip=JB-java-jdk8.desktop" >> /home/$name/.local/share/applications/mimeapps.list
 chmod 644 /home/$name/.local/share/applications/mimeapps.list
-sed -i "s/NoDisplay=true/NoDisplay=false/g" /usr/share/applications/JB-java-jdk8.desktop
+echo "[Desktop Entry]" >> JB-java-jdk8.desktop
+echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
+echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Exec=/usr/bin/java -jar %f" >> JB-java-jdk8.desktop
+echo "Terminal=false" >> JB-java-jdk8.desktop
+echo "Type=Application" >> JB-java-jdk8.desktop
+echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
+echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
+echo "NoDisplay=false" >> JB-java-jdk8.desktop
+sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
