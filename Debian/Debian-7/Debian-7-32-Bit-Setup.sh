@@ -32,6 +32,7 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
 chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
 name=${name,,} &> /dev/null
@@ -39,7 +40,6 @@ sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disable
 echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 sudo adduser $name netdev &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
