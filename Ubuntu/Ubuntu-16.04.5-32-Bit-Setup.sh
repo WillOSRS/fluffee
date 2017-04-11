@@ -122,7 +122,8 @@ ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 mkdir /usr/lib/mozilla
 mkdir /usr/lib/mozilla/plugins
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
-update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000apt-get remove -y xscreensaver &> /dev/null
+update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so 1000 &> /dev/null
+update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so" &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
