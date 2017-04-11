@@ -10,6 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup lib32z1 &> /dev/null
+apt-get -y install libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386 &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
