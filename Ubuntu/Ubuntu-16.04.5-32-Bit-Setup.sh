@@ -34,9 +34,11 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
 chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg lxde lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null

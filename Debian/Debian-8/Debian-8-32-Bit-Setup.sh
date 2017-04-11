@@ -38,7 +38,9 @@ sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disable
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg lxde lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null

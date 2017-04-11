@@ -34,9 +34,11 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
 chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg lxde lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null
@@ -96,8 +98,8 @@ sudo chmod 777 Bots
 echo " Done"
 echo -n "Setting up Java..."
 cd
-wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b12/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
-tar -zxf jdk-8u102-linux-i586.tar.gz &> /dev/null
+wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b12/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
+tar -zxf jdk-8u102-linux-x64.tar.gz &> /dev/null
 mkdir /usr/lib/jvm
 mkdir /usr/lib/jvm/oracle_jdk8
 mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
