@@ -14,12 +14,6 @@ wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
 dpkg-reconfigure keyboard-configuration -f noninteractive
-wget --no-check-certificate https://github.com/brodock/apt-select/releases/download/0.1.0/apt-select_0.1.0-0_all.deb
-apt-get install -y python-bs4
-dpkg -i apt-select_0.1.0-0_all.deb
-apt-select
-mv -f sources.list /etc/apt/
-apt-get update
 echo " Done"
 echo -n "Creating the user..."
 name=${name,,}
