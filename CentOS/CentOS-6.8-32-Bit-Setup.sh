@@ -57,7 +57,7 @@ wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribo
 wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
 sudo chown $name Bots
-sudo chmod 777 Bots
+sudo chmod 777 Bots 
 echo " Done"
 echo -n "Setting up Java..."
 cd
