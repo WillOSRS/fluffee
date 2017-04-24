@@ -11,16 +11,16 @@ echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
-debconf-set-selections < Keyboard_settings.conf
-apt-get install -y keyboard-configuration
-dpkg-reconfigure keyboard-configuration -f noninteractive
+debconf-set-selections < Keyboard_settings.conf &> /dev/null
+apt-get install -y keyboard-configuration &> /dev/null
+dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG="en_US.UTF-8"'>/etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source ~/.bashrc
-dpkg-reconfigure --frontend=noninteractive locales
+dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
 update-locale LANG=en_US.UTF-8
 sudo netselect-apt
 mv -f sources.list /etc/apt/
@@ -32,16 +32,16 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 chmod 600 /etc/ssh/sshd_config
 service ssh restart
-apt-get -y install xorg
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
 echo " Done"
 echo -n "Installing LXDE..."
 name=${name,,}
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
-sudo adduser $name sudo
-sudo adduser $name netdev
-apt-get -y install lxtask
-apt-get -y install lxde
+sudo adduser $name sudo &> /dev/null
+sudo adduser $name netdev &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
 echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
 sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev
