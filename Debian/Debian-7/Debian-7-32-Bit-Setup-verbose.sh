@@ -9,6 +9,7 @@ echo -n "Installing updates..."
 apt-get update
 echo " Done"
 echo -n "Installing required packages..."
+mkdir /dev/fuse
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
@@ -39,6 +40,7 @@ name=${name,,}
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
 sudo adduser $name sudo &> /dev/null
+sudo groupadd netdev &> /dev/null
 sudo adduser $name netdev &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
