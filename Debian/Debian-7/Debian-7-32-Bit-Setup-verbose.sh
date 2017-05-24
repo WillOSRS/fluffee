@@ -45,33 +45,12 @@ sudo adduser $name netdev &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
-echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev zlib1g-dev build-essential xutils-dev
-sudo apt-get install -y libjpeg62-dev
-sudo apt-get install -y libjpeg62-turbo-dev
-sudo apt-get install -y libfuse
-wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz
-tar xzf tightvnc-1.3.10_unixsrc.tar.gz
-cd vnc_unixsrc
-xmkmf
-make World
-cd Xvnc
-./configure
-make
-cd ..
-./vncinstall /usr/local/bin /usr/local/man
-sed -i -r '/unix\/:7100";/a $fontPath = join ',',qw(' /usr/local/bin/vncserver
-sed -i "s/join ,,qw/join ',,qw/g" /usr/local/bin/vncserver
-sed -i "s/join ',,qw/join ',',qw/g" /usr/local/bin/vncserver
-sed -i /',qw(/a /usr/share/fonts/X11/misc' /usr/local/bin/vncserver
-sed -i '/\/X11\/misc/a /usr/share/fonts/X11/100dp2i/:unscaled' /usr/local/bin/vncserver
-sed -i '/\/usr\/share\/fonts\/X11\/100dp2i\/\:unscaled/a /usr/share/fonts/X11/75dp2i/:unscaled' /usr/local/bin/vncserver
-sed -i '/\/usr\/share\/fonts\/X11\/75dp2i\/\:unscaled/a /usr/share/fonts/X11/Type1' /usr/local/bin/vncserver
-sed -i '/\/usr\/share\/fonts\/X11\/Type1/a /usr/share/fonts/X11/100dpi' /usr/local/bin/vncserver
-sed -i '/\/usr\/share\/fonts\/X11\/100dpi/a /usr/share/fonts/X11/75dpi' /usr/local/bin/vncserver
-sed -i '/\/usr\/share\/fonts\/X11\/75dpi/a );' /usr/local/bin/vncserver
-sed -i "s/75dp2i/75dpi/g" /usr/local/bin/vncserver
-sed -i "s/100dp2i/100dpi/g" /usr/local/bin/vncserver
+echo -n "Installing TigerVNC (Non broken version)..."
+wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
+tar -zxf tigervnc-1.8.0.i386.tar.gz
+cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local
+rm -rf tigervnc-1.8.0.i386.tar.gz
+rm -rf tigervnc-1.8.0.i386
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
@@ -104,6 +83,28 @@ cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
 echo " Done"
+echo -n "Creating Screen Resolution Change Shortcuts..."
+cd /home/$name/Desktop
+mkdir "Screen Resolution Change Shortcuts"
+sudo chown $name S*
+cd "Screen Resolution Change Shortcuts"
+echo 'xrandr -s 640x480' >> "Change to 640x480.sh"
+echo 'xrandr -s 800x600' >> "Change to 800x600.sh"
+echo 'xrandr -s 1024x768' >> "Change to 1024x768.sh"
+echo 'xrandr -s 1280x720' >> "Change to 1280x720.sh"
+echo 'xrandr -s 1280x800' >> "Change to 1280x800.sh"
+echo 'xrandr -s 1280x960' >> "Change to 1280x960.sh"
+echo 'xrandr -s 1280x1024' >> "Change to 1280x1024.sh"
+echo 'xrandr -s 1360x768' >> "Change to 1360x768.sh"
+echo 'xrandr -s 1400x1050' >> "Change to 1400x1050.sh"
+echo 'xrandr -s 1680x1050' >> "Change to 1680x1050.sh"
+echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
+echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
+echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
+cd /home/$name/Desktop
+sudo chown $name S*
+sudo chmod -R 777 S*
+echo " Done"
 echo -n "Setting up Java..."
 cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
@@ -132,7 +133,7 @@ mkdir /usr/lib/mozilla
 mkdir /usr/lib/mozilla/plugins
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
 update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000
-update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so"
+update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 apt-get remove -y xscreensaver

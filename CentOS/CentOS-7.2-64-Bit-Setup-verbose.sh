@@ -60,12 +60,34 @@ cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
 echo " Done"
+echo -n "Creating Screen Resolution Change Shortcuts..."
+cd /home/$name/Desktop
+mkdir "Screen Resolution Change Shortcuts"
+sudo chown $name S*
+cd "Screen Resolution Change Shortcuts"
+echo 'xrandr -s 640x480' >> "Change to 640x480.sh"
+echo 'xrandr -s 800x600' >> "Change to 800x600.sh"
+echo 'xrandr -s 1024x768' >> "Change to 1024x768.sh"
+echo 'xrandr -s 1280x720' >> "Change to 1280x720.sh"
+echo 'xrandr -s 1280x800' >> "Change to 1280x800.sh"
+echo 'xrandr -s 1280x960' >> "Change to 1280x960.sh"
+echo 'xrandr -s 1280x1024' >> "Change to 1280x1024.sh"
+echo 'xrandr -s 1360x768' >> "Change to 1360x768.sh"
+echo 'xrandr -s 1400x1050' >> "Change to 1400x1050.sh"
+echo 'xrandr -s 1680x1050' >> "Change to 1680x1050.sh"
+echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
+echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
+echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
+cd /home/$name/Desktop
+sudo chown $name S*
+sudo chmod -R 777 S*
+echo " Done"
 echo -n "Setting up Java..."
 cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm
 wget --no-check-cert "https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/i386/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm
-sudo yum -y localinstall --nogpgcheck jdk-8u60-linux-x64.rpm
-sudo rm ~/jdk-8u60-linux-x64.rpm
+sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-x64.rpm
+sudo rm ~/jdk-8u102-linux-x64.rpm
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
