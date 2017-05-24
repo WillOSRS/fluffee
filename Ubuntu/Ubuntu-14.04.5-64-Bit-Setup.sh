@@ -40,30 +40,12 @@ echo -n "Installing LXDE..."
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
-echo -n "Installing TightVNC 1.3.10 (Non broken version)..."
-sudo apt-get install -y xorg-dev libjpeg62-dev zlib1g-dev build-essential xutils-dev &> /dev/null
-wget --no-check-cert http://www.tightvnc.com/download/1.3.10/tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
-tar xzf tightvnc-1.3.10_unixsrc.tar.gz &> /dev/null
-cd vnc_unixsrc &> /dev/null
-xmkmf &> /dev/null
-make World &> /dev/null
-cd Xvnc &> /dev/null
-./configure &> /dev/null
-make &> /dev/null
-cd .. &> /dev/null
-./vncinstall /usr/local/bin /usr/local/man &> /dev/null
-sed -i -r '/unix\/:7100";/a $fontPath = join ',',qw(' /usr/local/bin/vncserver &> /dev/null
-sed -i "s/join ,,qw/join ',,qw/g" /usr/local/bin/vncserver &> /dev/null
-sed -i "s/join ',,qw/join ',',qw/g" /usr/local/bin/vncserver &> /dev/null
-sed -i /',qw(/a /usr/share/fonts/X11/misc' /usr/local/bin/vncserver &> /dev/null
-sed -i '/\/X11\/misc/a /usr/share/fonts/X11/100dp2i/:unscaled' /usr/local/bin/vncserver &> /dev/null
-sed -i '/\/usr\/share\/fonts\/X11\/100dp2i\/\:unscaled/a /usr/share/fonts/X11/75dp2i/:unscaled' /usr/local/bin/vncserver &> /dev/null
-sed -i '/\/usr\/share\/fonts\/X11\/75dp2i\/\:unscaled/a /usr/share/fonts/X11/Type1' /usr/local/bin/vncserver &> /dev/null
-sed -i '/\/usr\/share\/fonts\/X11\/Type1/a /usr/share/fonts/X11/100dpi' /usr/local/bin/vncserver &> /dev/null
-sed -i '/\/usr\/share\/fonts\/X11\/100dpi/a /usr/share/fonts/X11/75dpi' /usr/local/bin/vncserver &> /dev/null
-sed -i '/\/usr\/share\/fonts\/X11\/75dpi/a );' /usr/local/bin/vncserver &> /dev/null
-sed -i "s/75dp2i/75dpi/g" /usr/local/bin/vncserver &> /dev/null
-sed -i "s/100dp2i/100dpi/g" /usr/local/bin/vncserver &> /dev/null
+echo -n "Installing TigerVNC (Non broken version)..."
+wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
+tar -zxf tigervnc-1.8.0.x86_64.tar.gz
+cp -far ~/tigervnc-1.8.0.x86_64/usr/* /usr/local
+rm -rf tigervnc-1.8.0.x86_64.tar.gz
+rm -rf tigervnc-1.8.0.x86_64
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
@@ -96,6 +78,28 @@ cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
 echo " Done"
+echo -n "Creating Screen Resolution Change Shortcuts..."
+cd /home/$name/Desktop
+mkdir "Screen Resolution Change Shortcuts"
+sudo chown $name S*
+cd "Screen Resolution Change Shortcuts"
+echo 'xrandr -s 640x480' >> "Change to 640x480.sh"
+echo 'xrandr -s 800x600' >> "Change to 800x600.sh"
+echo 'xrandr -s 1024x768' >> "Change to 1024x768.sh"
+echo 'xrandr -s 1280x720' >> "Change to 1280x720.sh"
+echo 'xrandr -s 1280x800' >> "Change to 1280x800.sh"
+echo 'xrandr -s 1280x960' >> "Change to 1280x960.sh"
+echo 'xrandr -s 1280x1024' >> "Change to 1280x1024.sh"
+echo 'xrandr -s 1360x768' >> "Change to 1360x768.sh"
+echo 'xrandr -s 1400x1050' >> "Change to 1400x1050.sh"
+echo 'xrandr -s 1680x1050' >> "Change to 1680x1050.sh"
+echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
+echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
+echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
+cd /home/$name/Desktop
+sudo chown $name S*
+sudo chmod -R 777 S*
+echo " Done"
 echo -n "Setting up Java..."
 cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
@@ -117,7 +121,7 @@ source /etc/profile.d/oraclejdk.sh
 echo " Done"
 echo -n "Installing Firefox x64..."
 cd /usr/local
-wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US" &> /dev/null
+wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 mkdir /usr/lib/mozilla
