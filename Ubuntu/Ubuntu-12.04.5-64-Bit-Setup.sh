@@ -41,11 +41,11 @@ DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
-tar -zxf tigervnc-1.8.0.x86_64.tar.gz
-cp -far ~/tigervnc-1.8.0.x86_64/usr/* /usr/local
-rm -rf tigervnc-1.8.0.x86_64.tar.gz
-rm -rf tigervnc-1.8.0.x86_64
+wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
+tar -zxf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
+cp -far ~/tigervnc-1.8.0.x86_64/usr/* /usr/local &> /dev/null
+rm -rf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
+rm -rf tigervnc-1.8.0.x86_64 &> /dev/null
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
