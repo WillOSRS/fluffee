@@ -87,6 +87,11 @@ sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-i586.rpm
 sudo rm ~/jdk-8u102-linux-i586.rpm
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
+mkdir /usr/lib/mozilla
+mkdir /usr/lib/mozilla/plugins
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
+update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/java/jdk1.8.0_102/jre/lib/i386/libnpjp2.so 1000
+update-alternatives --set "mozilla-javaplugin.so" "/usr/java/jdk1.8.0_102/jre/lib/i386/libnpjp2.so"
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
 echo "[Desktop Entry]" >> JB-java-jdk8.desktop
 echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
