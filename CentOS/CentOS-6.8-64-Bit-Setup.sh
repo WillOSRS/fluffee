@@ -84,7 +84,7 @@ echo " Done"
 echo -n "Setting up Java..."
 cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm &> /dev/null
-wget --no-check-cert "https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/x86_64/jre-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm &> /dev/null
+wget --no-check-cert "https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/x86_64/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm &> /dev/null
 sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-x64.rpm &> /dev/null
 sudo rm ~/jdk-8u102-linux-x64.rpm
 echo " Done"

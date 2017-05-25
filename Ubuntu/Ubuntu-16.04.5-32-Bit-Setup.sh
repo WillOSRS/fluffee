@@ -7,7 +7,6 @@ sshpassword=$4
 vncpassword=$5
 echo -n "Installing updates..."
 apt-get update &> /dev/null
-export DEBIAN_FRONTEND=noninteractive
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
@@ -19,7 +18,7 @@ wget --no-check-certificate https://github.com/brodock/apt-select/releases/downl
 apt-get install -y python-bs4 &> /dev/null
 dpkg -i apt-select_0.1.0-0_all.deb &> /dev/null
 apt-select &> /dev/null
-mv -f sources.list /etc/apt/
+mv -f sources.list /etc/apt/ &> /dev/null
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Creating the user..."
@@ -41,7 +40,7 @@ DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
 tar -zxf tigervnc-1.8.0.i386.tar.gz &> /dev/null
 cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local &> /dev/null
 rm -rf tigervnc-1.8.0.i386.tar.gz &> /dev/null
@@ -62,10 +61,13 @@ sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g"
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
-sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tigervncserver.txt'
+sudo mv tigervncserver.txt /etc/init.d/tigervncserver
+sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
+sudo chown root:root /etc/init.d/tigervncserver
+sudo chmod 755 /etc/init.d/tigervncserver
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
@@ -75,8 +77,8 @@ sudo chown $name Bots
 wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
 wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
-sudo chown $name Bots
-sudo chmod 777 Bots
+sudo chown -R $name Bots
+sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
@@ -97,7 +99,7 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
-sudo chown $name S*
+sudo chown -R $name S*
 sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
@@ -157,15 +159,10 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt' &> /dev/null
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt'
 sudo mv xstartup.txt /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt' &> /dev/null
-sudo mv tightvncserver.txt /etc/init.d/tightvncserver
-sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
 sed -i "s/KDE;/KDE;LXDE/g" /etc/xdg/autostart/lxpolkit.desktop
 sudo chown -R $name /home/$name
 echo " Done"
