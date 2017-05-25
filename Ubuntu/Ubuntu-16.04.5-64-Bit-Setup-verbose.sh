@@ -6,33 +6,33 @@ vncport=$3
 sshpassword=$4
 vncpassword=$5
 echo -n "Installing updates..."
-apt-get update &> /dev/null
+apt-get update
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano libxslt1.1 &> /dev/null
+apt-get -y install sudo wget nano libxslt1.1
 echo " Done"
 echo -n "Setting up SSH..."
-sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
-echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
-sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
-chmod 600 sshd_config &> /dev/null
-service ssh restart &> /dev/null
+sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
+echo "AllowUsers $name root" >> /etc/ssh/sshd_config
+sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
+chmod 600 sshd_config
+service ssh restart
 echo " Done"
 echo -n "Installing LXDE..."
-apt-get -y install xorg lxde lxtask &> /dev/null
+apt-get -y install xorg lxde lxtask
 echo " Done"
 echo -n "Creating the user..."
-name=${name,,} &> /dev/null
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password &> /dev/null
-echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
-sudo adduser $name sudo &> /dev/null
+name=${name,,}
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
+echo "$name:$sshpassword" | sudo chpasswd
+sudo adduser $name sudo
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
-tar -zxf tigervnc-1.8.0.i386.tar.gz
-cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local
-rm -rf tigervnc-1.8.0.i386.tar.gz
-rm -rf tigervnc-1.8.0.i386
+wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.x86_64.tar.gz
+tar -zxf tigervnc-1.8.0.x86_64.tar.gz
+cp -far ~/tigervnc-1.8.0.x86_64/usr/* /usr/local
+rm -rf tigervnc-1.8.0.x86_64.tar.gz
+rm -rf tigervnc-1.8.0.x86_64
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
@@ -43,24 +43,24 @@ chown $name /home/$name/.vnc/passwd
 chgrp $name /home/$name/.vnc
 chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
-su  - $name -c "vncserver" &> /dev/null
-su  - $name -c "vncserver -kill :1" &> /dev/null
+su  - $name -c "vncserver"
+su  - $name -c "vncserver -kill :1"
 sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
-su  - $name -c "vncserver" &> /dev/null
-su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
-sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+su  - $name -c "vncserver"
+su  - $name -c "vncserver -kill :1"
+sudo chown root:root /etc/init.d/tightvncserver
+sudo chmod 755 /etc/init.d/tightvncserver
+sudo /etc/init.d/tightvncserver start
+sudo update-rc.d tightvncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
-sudo mkdir /home/$name/Desktop/ &> /dev/null
+sudo mkdir /home/$name/Desktop/
 sudo mkdir /home/$name/Desktop/Bots/
 cd /home/$name/Desktop/
 sudo chown $name Bots
-wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
-wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
+wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
+wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
 sudo chown $name Bots
 sudo chmod 777 Bots
@@ -89,7 +89,7 @@ sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
+# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz
 wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz
 tar -zxf jdk-8u102-linux-x64.tar.gz
 mkdir /usr/lib/jvm
@@ -108,12 +108,12 @@ source /etc/profile.d/oraclejdk.sh
 echo " Done"
 echo -n "Installing Firefox x64..."
 wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US"
-tar xvjf firefox.tar.bz2 &> /dev/null
-ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
+tar xvjf firefox.tar.bz2
+ln -s /usr/local/firefox/firefox /usr/bin/firefox
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
 update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so 1000
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so"
-apt-get remove -y xscreensaver &> /dev/null
+apt-get remove -y xscreensaver
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 mkdir /home/$name/.local/
@@ -130,15 +130,15 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt' &> /dev/null
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt'
 sudo mv xstartup.txt /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt' &> /dev/null
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt'
 sudo mv tightvncserver.txt /etc/init.d/tightvncserver
 sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
 sudo chown root:root /etc/init.d/tightvncserver
 sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo /etc/init.d/tightvncserver start
+sudo update-rc.d tightvncserver defaults
 sed -i "s/KDE;/KDE;LXDE/g" /etc/xdg/autostart/lxpolkit.desktop
 sudo chown -R $name /home/$name
 echo " Done"
