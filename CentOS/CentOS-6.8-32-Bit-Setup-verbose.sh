@@ -9,7 +9,7 @@ echo -n "Installing  updates..."
 yum -y update
 echo " Done"
 echo -n "Installing required packages and VNC..."
-yum -y install epel-release sudo wget nano tigervnc-server gnome-system-monitor
+yum -y install epel-release sudo wget nano tigervnc-server gnome-system-monitor bzip2
 echo " Done"
 echo -n "Creating the user..."
 chkconfig vncserver on
