@@ -5,11 +5,18 @@ sshport=$2
 vncport=$3
 sshpassword=$4
 vncpassword=$5
-echo -n "Installing updates..."
+echo -n "Installing  updates..."
 yum -y update
 echo " Done"
 echo -n "Installing required packages and VNC..."
 yum -y install epel-release sudo wget nano tigervnc-server gnome-system-monitor firefox
+echo " Done"
+echo -n "Creating the user..."
+chkconfig vncserver on
+adduser $name
+echo "$name:$sshpassword" | chpasswd
+usermod -aG wheel $name
+sed -i "s/# %wheel/%wheel/g" /etc/sudoers
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
@@ -20,11 +27,6 @@ service sshd restart
 echo " Done"
 echo -n "Installing XFCE..."
 yum -y groupinstall Desktop xfce
-chkconfig vncserver on
-adduser $name
-echo "$name:$sshpassword" | chpasswd
-usermod -aG wheel $name
-sed -i "s/# %wheel/%wheel/g" /etc/sudoers
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
@@ -104,6 +106,7 @@ echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
 echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
 echo "NoDisplay=false" >> JB-java-jdk8.desktop
 sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
+mkdir /home/$name/.local/share/applications
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 sudo chown -R $name /home/$name

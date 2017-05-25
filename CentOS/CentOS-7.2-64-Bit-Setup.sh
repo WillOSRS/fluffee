@@ -64,7 +64,7 @@ sudo chmod 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
-mkdir "Screen Resolution Change Shortcuts"
+mkdir "Screen Resolution Change Shortcuts" &> /dev/null
 sudo chown $name S*
 cd "Screen Resolution Change Shortcuts"
 echo 'xrandr -s 640x480' >> "Change to 640x480.sh"

@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
-mkdir /dev/fuse
+mkdir /dev/fuse &> /dev/null
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
@@ -24,7 +24,7 @@ source ~/.bashrc &> /dev/null
 dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
 update-locale LANG=en_US.UTF-8 &> /dev/null
 sudo netselect-apt &> /dev/null
-mv -f sources.list /etc/apt/
+mv -f sources.list /etc/apt/ &> /dev/null
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
@@ -46,14 +46,14 @@ DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
 tar -zxf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 cp -far ~/tigervnc-1.8.0.x86_64/usr/* /usr/local &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64 &> /dev/null
 echo " Done"
 echo -n "Setting up VNC..."
-mkdir /home/$name/.vnc
+mkdir /home/$name/.vnc &> /dev/null
 echo $vncpassword >/home/$name/.vnc/file
 vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
 chown $name /home/$name/.vnc
@@ -67,10 +67,13 @@ sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g"
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo chown root:root /etc/init.d/tightvncserver &> /dev/null
-sudo chmod 755 /etc/init.d/tightvncserver &> /dev/null
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
+sudo mv tigervncserver.txt /etc/init.d/tigervncserver
+sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
+sudo chown root:root /etc/init.d/tigervncserver
+sudo chmod 755 /etc/init.d/tigervncserver
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
@@ -80,12 +83,12 @@ sudo chown $name Bots
 wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
 wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
-sudo chown $name Bots
-sudo chmod 777 Bots
+sudo chown -R $name Bots
+sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
-mkdir "Screen Resolution Change Shortcuts"
+mkdir "Screen Resolution Change Shortcuts" &> /dev/null
 sudo chown $name S*
 cd "Screen Resolution Change Shortcuts"
 echo 'xrandr -s 640x480' >> "Change to 640x480.sh"
@@ -102,7 +105,7 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
-sudo chown $name S*
+sudo chown -R $name S*
 sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
@@ -110,8 +113,8 @@ cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
 wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
 tar -zxf jdk-8u102-linux-x64.tar.gz &> /dev/null
-mkdir /usr/lib/jvm
-mkdir /usr/lib/jvm/oracle_jdk8
+mkdir /usr/lib/jvm &> /dev/null
+mkdir /usr/lib/jvm/oracle_jdk8 &> /dev/null
 mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
 sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
@@ -129,17 +132,17 @@ cd /usr/local
 wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
-mkdir /usr/lib/mozilla
-mkdir /usr/lib/mozilla/plugins
+mkdir /usr/lib/mozilla &> /dev/null
+mkdir /usr/lib/mozilla/plugins &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
 update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so 1000 &> /dev/null
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so" &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 apt-get remove -y xscreensaver &> /dev/null
-mkdir /home/$name/.local/
-mkdir /home/$name/.local/share/
-mkdir /home/$name/.local/share/applications/
+mkdir /home/$name/.local/ &> /dev/null
+mkdir /home/$name/.local/share/ &> /dev/null
+mkdir /home/$name/.local/share/applications/ &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 echo "" >> /home/$name/.local/share/applications/mimeapps.list
@@ -163,11 +166,6 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/xstartup.txt' &> /dev/null
 sudo mv xstartup.txt /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tightvncserver.txt' &> /dev/null
-sudo mv tightvncserver.txt /etc/init.d/tightvncserver
-sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
 sudo /etc/init.d/tightvncserver start &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null
 sudo chown -R $name /home/$name

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 name=$1
 sshport=$2
 vncport=$3
@@ -5,7 +7,6 @@ sshpassword=$4
 vncpassword=$5
 echo -n "Installing updates..."
 apt-get update
-export DEBIAN_FRONTEND=noninteractive
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1

@@ -23,7 +23,7 @@ source ~/.bashrc &> /dev/null
 dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
 update-locale LANG=en_US.UTF-8 &> /dev/null
 sudo netselect-apt &> /dev/null
-mv -f sources.list /etc/apt/
+mv -f sources.list /etc/apt/ &> /dev/null
 apt-get update &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
@@ -43,14 +43,14 @@ DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
 tar -zxf tigervnc-1.8.0.i386.tar.gz &> /dev/null
 cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local &> /dev/null
 rm -rf tigervnc-1.8.0.i386.tar.gz &> /dev/null
 rm -rf tigervnc-1.8.0.i386 &> /dev/null
 echo " Done"
 echo -n "Setting up VNC..."
-mkdir /home/$name/.vnc
+mkdir /home/$name/.vnc &> /dev/null
 echo $vncpassword >/home/$name/.vnc/file
 vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
 chown $name /home/$name/.vnc
@@ -82,12 +82,12 @@ sudo chown $name Bots &> /dev/null
 wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
 wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> /dev/null
 cd /home/$name/Desktop
-sudo chown $name Bots &> /dev/null
-sudo chmod 777 Bots &> /dev/null
+sudo chown -R $name Bots
+sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
-mkdir "Screen Resolution Change Shortcuts"
+mkdir "Screen Resolution Change Shortcuts" &> /dev/null
 sudo chown $name S*
 cd "Screen Resolution Change Shortcuts"
 echo 'xrandr -s 640x480' >> "Change to 640x480.sh"
@@ -104,7 +104,7 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
-sudo chown $name S*
+sudo chown -R $name S*
 sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
@@ -112,8 +112,8 @@ cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
 wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
 tar -zxf jdk-8u102-linux-i586.tar.gz &> /dev/null
-mkdir /usr/lib/jvm
-mkdir /usr/lib/jvm/oracle_jdk8
+mkdir /usr/lib/jvm &> /dev/null
+mkdir /usr/lib/jvm/oracle_jdk8 &> /dev/null
 mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
 sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
@@ -131,17 +131,17 @@ cd /usr/local
 wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
-mkdir /usr/lib/mozilla
-mkdir /usr/lib/mozilla/plugins
+mkdir /usr/lib/mozilla &> /dev/null
+mkdir /usr/lib/mozilla/plugins &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
 update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000 &> /dev/null
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so" &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 apt-get remove -y xscreensaver &> /dev/null
-mkdir /home/$name/.local/
-mkdir /home/$name/.local/share/
-mkdir /home/$name/.local/share/applications/
+mkdir /home/$name/.local/ &> /dev/null
+mkdir /home/$name/.local/share/ &> /dev/null
+mkdir /home/$name/.local/share/applications/ &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 echo "" >> /home/$name/.local/share/applications/mimeapps.list

@@ -38,12 +38,12 @@ sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disable
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo
 sudo gpasswd -a $name netdev
-apt-get -y install xorg
-apt-get -y install lxtask
-apt-get -y install lxde
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
 tar -zxf tigervnc-1.8.0.i386.tar.gz
 cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local
 rm -rf tigervnc-1.8.0.i386.tar.gz
@@ -73,7 +73,6 @@ wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server
 sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
 sudo systemctl daemon-reload
 sudo systemctl enable myvncserver.service
-sudo update-rc.d tightvncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/
@@ -83,8 +82,8 @@ sudo chown $name Bots
 wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
 wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
-sudo chown $name Bots
-sudo chmod 777 Bots
+sudo chown -R $name Bots
+sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
@@ -105,12 +104,12 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
-sudo chown $name S*
+sudo chown -R $name S*
 sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
+# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz
 wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz
 tar -zxf jdk-8u102-linux-i586.tar.gz
 mkdir /usr/lib/jvm

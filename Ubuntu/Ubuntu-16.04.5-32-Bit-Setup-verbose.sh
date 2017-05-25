@@ -10,16 +10,16 @@ apt-get update
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1
-echo " Done"
-echo -n "Setting up SSH..."
-sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
-echo "AllowUsers $name root" >> /etc/ssh/sshd_config
-sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
-chmod 600 sshd_config
-service ssh restart
-echo " Done"
-echo -n "Installing LXDE..."
-apt-get -y install xorg lxde lxtask
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
+debconf-set-selections < Keyboard_settings.conf
+apt-get install -y keyboard-configuration
+dpkg-reconfigure keyboard-configuration -f noninteractive
+wget --no-check-certificate https://github.com/brodock/apt-select/releases/download/0.1.0/apt-select_0.1.0-0_all.deb
+apt-get install -y python-bs4
+dpkg -i apt-select_0.1.0-0_all.deb
+apt-select
+mv -f sources.list /etc/apt/
+apt-get update
 echo " Done"
 echo -n "Creating the user..."
 name=${name,,}
@@ -27,8 +27,20 @@ sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disable
 echo "$name:$sshpassword" | sudo chpasswd
 sudo adduser $name sudo
 echo " Done"
+echo -n "Setting up SSH..."
+sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
+echo "AllowUsers $name root" >> /etc/ssh/sshd_config
+sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
+chmod 600 /etc/ssh/sshd_config
+service ssh restart
+DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
+echo " Done"
+echo -n "Installing LXDE..."
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
+DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
+echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
 tar -zxf tigervnc-1.8.0.i386.tar.gz
 cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local
 rm -rf tigervnc-1.8.0.i386.tar.gz
@@ -49,10 +61,24 @@ sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g"
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start
-sudo update-rc.d tightvncserver defaults
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tigervncserver.txt'
+sudo mv tigervncserver.txt /etc/init.d/tigervncserver
+sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
+sudo chown root:root /etc/init.d/tigervncserver
+sudo chmod 755 /etc/init.d/tigervncserver
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
+echo " Done"
+echo -n "Downloading TRiBot and OSBuddy..."
+sudo mkdir /home/$name/Desktop/
+sudo mkdir /home/$name/Desktop/Bots/
+cd /home/$name/Desktop/
+sudo chown $name Bots
+wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
+wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
+cd /home/$name/Desktop
+sudo chown -R $name Bots
+sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
@@ -73,19 +99,8 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
-sudo chown $name S*
+sudo chown -R $name S*
 sudo chmod -R 777 S*
-echo " Done"
-echo -n "Downloading TRiBot and OSBuddy..."
-sudo mkdir /home/$name/Desktop/
-sudo mkdir /home/$name/Desktop/Bots/
-cd /home/$name/Desktop/
-sudo chown $name Bots
-wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
-wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
-cd /home/$name/Desktop
-sudo chown $name Bots
-sudo chmod 777 Bots
 echo " Done"
 echo -n "Setting up Java..."
 cd
@@ -107,15 +122,29 @@ chmod 777 /etc/profile.d/oraclejdk.sh
 source /etc/profile.d/oraclejdk.sh
 echo " Done"
 echo -n "Installing Firefox x86..."
+cd /usr/local
 wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US"
 tar xvjf firefox.tar.bz2
 ln -s /usr/local/firefox/firefox /usr/bin/firefox
+mkdir /usr/lib/mozilla
+mkdir /usr/lib/mozilla/plugins
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
 update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
-apt-get remove -y xscreensaver
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
+echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
+echo "[Desktop Entry]" >> JB-java-jdk8.desktop
+echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
+echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+echo "Exec=/usr/bin/java -jar %f" >> JB-java-jdk8.desktop
+echo "Terminal=false" >> JB-java-jdk8.desktop
+echo "Type=Application" >> JB-java-jdk8.desktop
+echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
+echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
+echo "NoDisplay=false" >> JB-java-jdk8.desktop
+sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
@@ -132,13 +161,8 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt'
 sudo mv xstartup.txt /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tightvncserver.txt'
-sudo mv tightvncserver.txt /etc/init.d/tightvncserver
-sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start
-sudo update-rc.d tightvncserver defaults
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
 sed -i "s/KDE;/KDE;LXDE/g" /etc/xdg/autostart/lxpolkit.desktop
 sudo chown -R $name /home/$name
 echo " Done"

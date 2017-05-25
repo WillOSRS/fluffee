@@ -47,7 +47,7 @@ rm -rf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64 &> /dev/null
 echo " Done"
 echo -n "Setting up VNC..."
-mkdir /home/$name/.vnc
+mkdir /home/$name/.vnc &> /dev/null
 echo $vncpassword >/home/$name/.vnc/file
 vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
 chown $name /home/$name/.vnc
@@ -71,7 +71,7 @@ sudo update-rc.d tigervncserver defaults &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
-sudo mkdir /home/$name/Desktop/Bots/
+sudo mkdir /home/$name/Desktop/Bots/ &> /dev/null
 cd /home/$name/Desktop/
 sudo chown $name Bots
 wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> /dev/null
@@ -82,7 +82,7 @@ sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
-mkdir "Screen Resolution Change Shortcuts"
+mkdir "Screen Resolution Change Shortcuts" &> /dev/null
 sudo chown $name S*
 cd "Screen Resolution Change Shortcuts"
 echo 'xrandr -s 640x480' >> "Change to 640x480.sh"
@@ -107,8 +107,8 @@ cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
 wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-x64.tar.gz" -O jdk-8u102-linux-x64.tar.gz &> /dev/null
 tar -zxf jdk-8u102-linux-x64.tar.gz &> /dev/null
-mkdir /usr/lib/jvm
-mkdir /usr/lib/jvm/oracle_jdk8
+mkdir /usr/lib/jvm &> /dev/null
+mkdir /usr/lib/jvm/oracle_jdk8 &> /dev/null
 mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
 sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
@@ -126,8 +126,8 @@ cd /usr/local
 wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US" &> /dev/null
 tar xvjf firefox.tar.bz2 &> /dev/null
 ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
-mkdir /usr/lib/mozilla
-mkdir /usr/lib/mozilla/plugins
+mkdir /usr/lib/mozilla &> /dev/null
+mkdir /usr/lib/mozilla/plugins &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
 update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so 1000 &> /dev/null
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so" &> /dev/null
@@ -146,9 +146,9 @@ echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
 echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
 echo "NoDisplay=false" >> JB-java-jdk8.desktop
 sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
-mkdir /home/$name/.local/
-mkdir /home/$name/.local/share/
-mkdir /home/$name/.local/share/applications/
+mkdir /home/$name/.local/ &> /dev/null
+mkdir /home/$name/.local/share/ &> /dev/null
+mkdir /home/$name/.local/share/applications/ &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/zip=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 echo "" >> /home/$name/.local/share/applications/mimeapps.list

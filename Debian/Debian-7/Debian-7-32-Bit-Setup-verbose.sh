@@ -12,16 +12,16 @@ echo -n "Installing required packages..."
 mkdir /dev/fuse
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
-debconf-set-selections < Keyboard_settings.conf &> /dev/null
-apt-get install -y keyboard-configuration &> /dev/null
-dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
+debconf-set-selections < Keyboard_settings.conf
+apt-get install -y keyboard-configuration
+dpkg-reconfigure keyboard-configuration -f noninteractive
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG="en_US.UTF-8"'>/etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source ~/.bashrc
-dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
+dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
 sudo netselect-apt
 mv -f sources.list /etc/apt/
@@ -39,14 +39,14 @@ echo -n "Installing LXDE..."
 name=${name,,}
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
-sudo adduser $name sudo &> /dev/null
-sudo groupadd netdev &> /dev/null
-sudo adduser $name netdev &> /dev/null
+sudo adduser $name sudo
+sudo groupadd netdev
+sudo adduser $name netdev
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
 tar -zxf tigervnc-1.8.0.i386.tar.gz
 cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local
 rm -rf tigervnc-1.8.0.i386.tar.gz
@@ -67,10 +67,13 @@ sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g"
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start
-sudo update-rc.d tightvncserver defaults
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
+sudo mv tigervncserver.txt /etc/init.d/tigervncserver
+sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
+sudo chown root:root /etc/init.d/tigervncserver
+sudo chmod 755 /etc/init.d/tigervncserver
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/
@@ -80,8 +83,8 @@ sudo chown $name Bots
 wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
 wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
-sudo chown $name Bots
-sudo chmod 777 Bots
+sudo chown -R $name Bots
+sudo chmod -R 777 Bots
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
@@ -102,12 +105,12 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
-sudo chown $name S*
+sudo chown -R $name S*
 sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz &> /dev/null
+# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz
 wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz
 tar -zxf jdk-8u102-linux-i586.tar.gz
 mkdir /usr/lib/jvm
@@ -163,12 +166,7 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/xstartup.txt'
 sudo mv xstartup.txt /etc/init.d/xstartup
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tightvncserver.txt'
-sudo mv tightvncserver.txt /etc/init.d/tightvncserver
-sed -i "s/bots/$name/g" /etc/init.d/tightvncserver
-sudo chown root:root /etc/init.d/tightvncserver
-sudo chmod 755 /etc/init.d/tightvncserver
-sudo /etc/init.d/tightvncserver start
-sudo update-rc.d tightvncserver defaults
+sudo /etc/init.d/tigervncserver start
+sudo update-rc.d tigervncserver defaults
 sudo chown -R $name /home/$name
 echo " Done"

@@ -11,6 +11,13 @@ echo " Done"
 echo -n "Installing required packages and VNC..."
 yum -y install epel-release sudo nano tigervnc-server gnome-system-monitor firefox
 echo " Done"
+echo -n "Creating the user..."
+chkconfig vncserver on
+adduser $name
+echo "$name:$sshpassword" | chpasswd
+usermod -aG wheel $name
+sed -i "s/# %wheel/%wheel/g" /etc/sudoers
+echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
 sed -i "s/#PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
@@ -20,11 +27,6 @@ service sshd restart
 echo " Done"
 echo -n "Installing XFCE..."
 yum -y groupinstall xfce
-chkconfig vncserver on
-adduser $name
-echo "$name:$sshpassword" | chpasswd
-usermod -aG wheel $name
-sed -i "s/# %wheel/%wheel/g" /etc/sudoers
 echo " Done"
 echo -n "Setting up VNC..."
 mkdir /home/$name/.vnc
@@ -85,7 +87,7 @@ echo " Done"
 echo -n "Setting up Java..."
 cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm
-wget --no-check-cert "https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/x86_64/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm &> /dev/null
+wget --no-check-cert "https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/x86_64/jdk-8u102-linux-x64.rpm" -O jdk-8u102-linux-x64.rpm
 sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-x64.rpm
 sudo rm ~/jdk-8u102-linux-x64.rpm
 echo " Done"
