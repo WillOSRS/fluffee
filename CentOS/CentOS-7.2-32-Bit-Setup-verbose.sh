@@ -49,6 +49,8 @@ mkdir /home/bots/.config/xfce4
 if [ -f /home/$name/.config/xfce4/helpers.rc ]; then
     echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
 fi
+su  - $name -c "vncserver"
+su  - $name -c "vncserver -kill :1"
 systemctl daemon-reload
 systemctl enable vncserver@:1.service
 systemctl start vncserver@:1.service
@@ -93,12 +95,18 @@ wget --no-check-cert "https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/co
 sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-i586.rpm
 sudo rm ~/jdk-8u102-linux-i586.rpm
 echo " Done"
-echo -n "Housekeeping, like allowing .jar double clicks..."
+echo -n "Installing Firefox x86..."
+cd /usr/local
+wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US"
+tar xvjf firefox.tar.bz2
+ln -s /usr/local/firefox/firefox /usr/bin/firefox
 mkdir /usr/lib/mozilla
 mkdir /usr/lib/mozilla/plugins
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
-update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/java/jdk1.8.0_102/jre/lib/i386/libnpjp2.so 1000
-update-alternatives --set "mozilla-javaplugin.so" "/usr/java/jdk1.8.0_102/jre/lib/i386/libnpjp2.so"
+update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000
+update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
+echo " Done"
+echo -n "Housekeeping, like allowing .jar double clicks..."
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
 echo "[Desktop Entry]" >> JB-java-jdk8.desktop
 echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
