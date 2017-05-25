@@ -44,12 +44,14 @@ sudo sed -i -e 's![<]USER[>]!'"$name"'!g' /etc/systemd/system/vncserver@:1.servi
 sed -i "s/ \-x \/usr\/bin\/firefox \-a \-f \/usr\/share\/doc\/HTML\/index\.html / \-x \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/\/usr\/bin\/firefox \/usr\/share\/doc\/HTML\/index\.html \&/exec \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
+mkdir /home/$name/.config &> /dev/null
 mkdir /home/$name/.config/xfce4 &> /dev/null
 if [ -f /home/$name/.config/xfce4/helpers.rc ]; then
     echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc &> /dev/null
 fi
-systemctl start vncserver@:1.service &> /dev/null
+systemctl daemon-reload &> /dev/null
 systemctl enable vncserver@:1.service &> /dev/null
+systemctl start vncserver@:1.service &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
