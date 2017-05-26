@@ -91,10 +91,10 @@ sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-x64.rpm
 sudo rm ~/jdk-8u102-linux-x64.rpm
 echo " Done"
 echo -n "Installing Firefox x64..."
-mkdir /usr/lib/mozilla
-mkdir /usr/lib/mozilla/plugins
+mkdir /usr/lib64/mozilla
+mkdir /usr/lib64/mozilla/plugins
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
-update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so 1000
+update-alternatives --install /usr/lib64/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so 1000
 update-alternatives --set "mozilla-javaplugin.so" "/usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
