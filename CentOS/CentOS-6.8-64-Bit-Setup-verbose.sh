@@ -96,8 +96,8 @@ ln -s /usr/local/firefox/firefox /usr/bin/firefox
 mkdir /usr/lib/mozilla
 mkdir /usr/lib/mozilla/plugins
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
-update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so 1000
-update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so"
+update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so 1000
+update-alternatives --set "mozilla-javaplugin.so" "/usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop

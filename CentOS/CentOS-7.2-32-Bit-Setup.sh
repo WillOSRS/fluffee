@@ -124,5 +124,5 @@ mkdir /home/$name/.local/share &> /dev/null
 mkdir /home/$name/.local/share/applications &> /dev/null
 echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
 echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
-sudo chown -R $name /home/$name
+sudo chown -R $name /home/$name/*
 echo " Done"
