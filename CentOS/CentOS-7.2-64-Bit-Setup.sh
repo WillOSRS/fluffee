@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 yum -y update &> /dev/null
 echo " Done"
 echo -n "Installing required packages and VNC..."
-yum -y install epel-release sudo nano tigervnc-server gnome-system-monitor bzip2 &> /dev/null
+yum -y install epel-release sudo nano tigervnc-server gnome-system-monitor firefox &> /dev/null
 echo " Done"
 echo -n "Creating the user..."
 chkconfig vncserver on &> /dev/null
@@ -44,11 +44,6 @@ sudo sed -i -e 's![<]USER[>]!'"$name"'!g' /etc/systemd/system/vncserver@:1.servi
 sed -i "s/ \-x \/usr\/bin\/firefox \-a \-f \/usr\/share\/doc\/HTML\/index\.html / \-x \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/\/usr\/bin\/firefox \/usr\/share\/doc\/HTML\/index\.html \&/exec \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
-mkdir /home/$name/.config &> /dev/null
-mkdir /home/$name/.config/xfce4 &> /dev/null
-if [ -f /home/$name/.config/xfce4/helpers.rc ]; then
-    echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc &> /dev/null
-fi
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
 systemctl daemon-reload &> /dev/null
@@ -96,15 +91,11 @@ sudo yum -y localinstall --nogpgcheck jdk-8u102-linux-x64.rpm &> /dev/null
 sudo rm ~/jdk-8u102-linux-x64.rpm
 echo " Done"
 echo -n "Installing Firefox x64..."
-cd /usr/local
-wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US" &> /dev/null
-tar xvjf firefox.tar.bz2 &> /dev/null
-ln -s /usr/local/firefox/firefox /usr/bin/firefox &> /dev/null
 mkdir /usr/lib/mozilla &> /dev/null
 mkdir /usr/lib/mozilla/plugins &> /dev/null
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> /dev/null
-update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so 1000 &> /dev/null
-update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so" &> /dev/null
+update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so 1000 &> /dev/null
+update-alternatives --set "mozilla-javaplugin.so" "/usr/java/jdk1.8.0_102/jre/lib/amd64/libnpjp2.so" &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
 echo "X-GNOME-Autostart-enabled=false" >> /etc/xdg/autostart/gpk-update-icon.desktop
