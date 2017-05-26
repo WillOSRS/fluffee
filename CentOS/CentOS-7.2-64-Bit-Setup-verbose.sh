@@ -50,10 +50,8 @@ if [ -f /home/$name/.config/xfce4/helpers.rc ]; then
     echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc
 fi
 su  - bots -c "vncserver"
-su  - bots -c "vncserver -kill :1"
 systemctl daemon-reload
 systemctl enable vncserver@:1.service
-systemctl start vncserver@:1.service
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/
