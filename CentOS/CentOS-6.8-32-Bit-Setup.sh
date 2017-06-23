@@ -23,6 +23,8 @@ sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
 sed -i "s/#PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 echo "" >> /etc/ssh/sshd_config
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config
+sudo firewall-cmd --zone=public --add-port=$sshport/tcp --permanent &> /dev/null
+sudo firewall-cmd --reload &> /dev/null
 service sshd restart &> /dev/null
 echo " Done"
 echo -n "Installing XFCE..."
@@ -43,6 +45,8 @@ echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
 echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
 sed -i "s/tvm/startxfce4/g" /home/$name/.vnc/xstartup
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
+sudo firewall-cmd --zone=public --add-port=$vncport/tcp --permanent &> /dev/null
+sudo firewall-cmd --reload &> /dev/null
 yum -y remove gnome-screensaver &> /dev/null
 mkdir /home/$name/.config/xfce4
 echo "FileManager=nautilus" >> /home/$name/.config/xfce4/helpers.rc

@@ -23,6 +23,8 @@ sed -i "s/#Port 22/Port $sshport/g" /etc/ssh/sshd_config
 sed -i "s/#PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 echo "" >> /etc/ssh/sshd_config
 echo "AllowUsers $name root" >> /etc/ssh/sshd_config
+sudo firewall-cmd --zone=public --add-port=$sshport/tcp --permanent
+sudo firewall-cmd --reload
 service sshd restart
 echo " Done"
 echo -n "Installing XFCE..."
@@ -44,6 +46,8 @@ sudo sed -i -e 's![<]USER[>]!'"$name"'!g' /etc/systemd/system/vncserver@:1.servi
 sed -i "s/ \-x \/usr\/bin\/firefox \-a \-f \/usr\/share\/doc\/HTML\/index\.html / \-x \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/\/usr\/bin\/firefox \/usr\/share\/doc\/HTML\/index\.html \&/exec \/bin\/xfce4-session /g" /etc/X11/xinit/Xclients
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/bin/vncserver
+sudo firewall-cmd --zone=public --add-port=$vncport/tcp --permanent
+sudo firewall-cmd --reload
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 systemctl daemon-reload
