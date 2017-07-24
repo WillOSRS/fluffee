@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 apt-get update
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano locales debconf-utils xauth libxslt1.1 netselect-apt
+apt-get -y install sudo wget nano locales debconf-utils xauth libxslt1.1 netselect-apt x11-xkb-utils
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
