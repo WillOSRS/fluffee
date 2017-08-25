@@ -166,7 +166,7 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/xstartup.txt' &> /dev/null
 sudo mv xstartup.txt /etc/init.d/xstartup
-sudo /etc/init.d/tightvncserver start &> /dev/null
-sudo update-rc.d tightvncserver defaults &> /dev/null
+sudo /etc/init.d/tigervncserver start &> /dev/null
+sudo update-rc.d tigervncserver defaults &> /dev/null
 sudo chown -R $name /home/$name
 echo " Done"
