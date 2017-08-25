@@ -82,6 +82,11 @@ echo 'xrandr -s 1680x1200' >> "Change to 1680x1200.sh"
 echo 'xrandr -s 1920x1080' >> "Change to 1920x1080.sh"
 echo 'xrandr -s 1920x1200' >> "Change to 1920x1200.sh"
 cd /home/$name/Desktop
+echo '#!/bin/bash' >> "Restart Taskbar.sh"
+echo "" >> "Restart Taskbar.sh"
+echo "xfce4-panel --restart" >> "Restart Taskbar.sh"
+sudo chown $name Restart*
+sudo chmod 777 Restart*
 sudo chown $name S*
 sudo chmod -R 777 S*
 echo " Done"
