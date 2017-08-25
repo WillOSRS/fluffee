@@ -42,6 +42,7 @@ echo "$name:$sshpassword" | sudo chpasswd
 sudo adduser $name sudo
 sudo groupadd netdev
 sudo adduser $name netdev
+DEBIAN_FRONTEND=noninteractive apt-get -f install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"

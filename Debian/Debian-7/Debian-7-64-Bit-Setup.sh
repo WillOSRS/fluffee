@@ -42,6 +42,7 @@ echo "$name:$sshpassword" | sudo chpasswd &> /dev/null
 sudo adduser $name sudo &> /dev/null
 sudo groupadd netdev &> /dev/null
 sudo adduser $name netdev &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -f install &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
 echo " Done"
@@ -72,8 +73,6 @@ sudo mv tigervncserver.txt /etc/init.d/tigervncserver
 sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
 sudo chown root:root /etc/init.d/tigervncserver
 sudo chmod 755 /etc/init.d/tigervncserver
-sudo /etc/init.d/tigervncserver start
-sudo update-rc.d tigervncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null

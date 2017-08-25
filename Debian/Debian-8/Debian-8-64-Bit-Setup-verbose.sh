@@ -50,6 +50,7 @@ install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/sha
 cd ..
 rm -rf fuse*
 DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
+DEBIAN_FRONTEND=noninteractive apt-get -f install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password

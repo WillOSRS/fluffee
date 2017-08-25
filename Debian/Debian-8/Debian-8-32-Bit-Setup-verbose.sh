@@ -39,6 +39,7 @@ echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo
 sudo gpasswd -a $name netdev
 DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
+DEBIAN_FRONTEND=noninteractive apt-get -f install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
