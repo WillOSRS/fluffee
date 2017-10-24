@@ -35,7 +35,7 @@ service ssh restart &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
 DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg-dev &> /dev/null
-apt-get install -y libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
+apt-get install -yq libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev &> /dev/null
 wget --no-check-cert 'https://github.com/libfuse/libfuse/releases/download/fuse-3.0.0/fuse-3.0.0.tar.gz' &> /dev/null
 tar xzf fuse-3.0.0.tar.gz &> /dev/null
 cd fuse-3.0.0
