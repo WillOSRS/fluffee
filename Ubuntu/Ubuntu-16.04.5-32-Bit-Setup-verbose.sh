@@ -104,9 +104,9 @@ sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz
-wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u102-linux-i586.tar.gz" -O jdk-8u102-linux-i586.tar.gz
-tar -zxf jdk-8u102-linux-i586.tar.gz
+# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
+wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
+tar -zxf jdk-8u112-linux-i586.tar.gz
 mkdir /usr/lib/jvm
 mkdir /usr/lib/jvm/oracle_jdk8
 mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8
