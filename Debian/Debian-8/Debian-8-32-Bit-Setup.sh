@@ -115,7 +115,7 @@ wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-i586.tar.g
 tar -zxf jdk-8u112-linux-i586.tar.gz &> /dev/null
 mkdir /usr/lib/jvm &> /dev/null
 mkdir /usr/lib/jvm/oracle_jdk8 &> /dev/null
-mv /root/jdk1.8.0_102/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
+mv /root/jdk1.8.0_112/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
 sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
 echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
