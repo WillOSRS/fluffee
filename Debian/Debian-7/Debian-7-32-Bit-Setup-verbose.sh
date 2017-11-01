@@ -112,21 +112,26 @@ echo " Done"
 echo -n "Setting up Java..."
 cd
 # wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
-wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
-tar -zxf jdk-8u112-linux-i586.tar.gz
-mkdir /usr/lib/jvm
-mkdir /usr/lib/jvm/oracle_jdk8
-mv /root/jdk1.8.0_112/* /usr/lib/jvm/oracle_jdk8
-sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000
-sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000
-echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-echo "export J2REDIR=/usr/lib/jvm/oracle_jdk8/jre" >> oraclejdk.sh
-echo "export PATH=$PATH:/usr/lib/jvm/oracle_jdk8/bin:/usr/lib/jvm/oracle_jdk8/db/bin:/usr/lib/jvm/oracle_jdk8/jre/bin" >> oraclejdk.sh
-echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
-sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
-chmod 777 /etc/profile.d/oraclejdk.sh
-source /etc/profile.d/oraclejdk.sh
+# wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
+# tar -zxf jdk-8u112-linux-i586.tar.gz
+# mkdir /usr/lib/jvm
+# mkdir /usr/lib/jvm/oracle_jdk8
+# mv /root/jdk1.8.0_112/* /usr/lib/jvm/oracle_jdk8
+# sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000
+# sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000
+# echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
+# echo "export J2REDIR=/usr/lib/jvm/oracle_jdk8/jre" >> oraclejdk.sh
+# echo "export PATH=$PATH:/usr/lib/jvm/oracle_jdk8/bin:/usr/lib/jvm/oracle_jdk8/db/bin:/usr/lib/jvm/oracle_jdk8/jre/bin" >> oraclejdk.sh
+# echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
+# echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
+# sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
+# chmod 777 /etc/profile.d/oraclejdk.sh
+# source /etc/profile.d/oraclejdk.sh
+echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list
+echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
+apt-get update
+apt-get install -yq oracle-java8-installer
 echo " Done"
 echo -n "Installing Firefox x86..."
 cd /usr/local
