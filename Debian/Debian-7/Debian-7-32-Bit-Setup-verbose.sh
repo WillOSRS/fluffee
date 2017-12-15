@@ -11,10 +11,6 @@ echo " Done"
 echo -n "Installing required packages..."
 mkdir /dev/fuse
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup x11-xkb-utils
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
-debconf-set-selections < Keyboard_settings.conf
-apt-get install -y keyboard-configuration
-dpkg-reconfigure keyboard-configuration -f noninteractive
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG="en_US.UTF-8"'>/etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
@@ -23,6 +19,10 @@ echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source ~/.bashrc
 dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
+debconf-set-selections < Keyboard_settings.conf
+apt-get install -y keyboard-configuration
+dpkg-reconfigure keyboard-configuration -f noninteractive
 sudo netselect-apt
 mv -f sources.list /etc/apt/
 apt-get update
