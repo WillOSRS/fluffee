@@ -27,7 +27,6 @@ if [ "$DISTRO" = "" ]; then
 	exit 1
 fi
 if [ "$verbose" = "yes" ]; then
-	echo here
 	if [ "$UNAME" = "x86_64" ]; then
 		if [ "$DISTRO" = "Ubuntu" ]; then
 			apt-get update
