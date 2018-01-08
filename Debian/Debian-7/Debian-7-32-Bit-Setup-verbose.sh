@@ -44,13 +44,29 @@ sudo adduser $name sudo
 sudo groupadd netdev
 sudo adduser $name netdev
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
-apt-get install -y openbox fbpanel
+apt-get install -y openbox fbpanel pcmanfm
+mkdir /home/$name/.config
 mkdir /home/$name/.config/openbox
 echo "fbpanel &" >> /home/$name/.config/openbox/autostart
 echo "pcmanfm --desktop &" >> /home/$name/.config/openbox/autostart
 mkdir /home/$name/.config/fbpanel
-cp /usr/share/fbpanel/default /home/$name/.config/fbpanel
+cp /usr/share/fbpanel/default /home/$name/.config/fbpanel/
 sed -i "s/type = volume//g" /home/$name/.config/fbpanel/default
+echo "[*]" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+mkdir /home/$name/.config/pcmanfm
+mkdir /home/$name/.config/pcmanfm/default
+echo "wallpaper_mode=crop" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "wallpaper_common=1" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "wallpaper=/etc/alternatives/desktop-background" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "desktop_bg=#000000" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "desktop_fg=#ffffff" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "desktop_shadow=#000000" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "desktop_font=Sans 12" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "show_wm_menu=0" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "sort=mtime;ascending;" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "show_documents=0" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "show_trash=1" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo "show_mounts=0" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
 wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
@@ -71,7 +87,7 @@ chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
-sed -i "s/twm/openbox-session/g" /home/$name/.vnc/xstartup
+sed -i "s/starttvm/openbox-session/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
