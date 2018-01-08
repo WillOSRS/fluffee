@@ -10,7 +10,7 @@ apt-get update
 echo " Done"
 echo -n "Installing required packages..."
 mkdir /dev/fuse
-apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup x11-xkb-utils
+apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG="en_US.UTF-8"'>/etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
@@ -26,6 +26,7 @@ dpkg-reconfigure keyboard-configuration -f noninteractive
 sudo netselect-apt
 mv -f sources.list /etc/apt/
 apt-get update
+apt-get install -y cryptsetup
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
