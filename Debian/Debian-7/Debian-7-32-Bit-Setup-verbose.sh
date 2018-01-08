@@ -1,18 +1,11 @@
-#!/bin/bash
-
-name=$1
-sshport=$2
-vncport=$3
-sshpassword=$4
-vncpassword=$5
 echo -n "Installing updates..."
 apt-get update
 echo " Done"
 echo -n "Installing required packages..."
 mkdir /dev/fuse
-apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils bzip tar
+apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-echo 'LANG="en_US.UTF-8"'>/etc/default/locale
+echo 'LANG="en_US.UTF-8"' >> /etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
@@ -44,7 +37,9 @@ sudo adduser $name sudo
 sudo groupadd netdev
 sudo adduser $name netdev
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
-apt-get install -y openbox fbpanel pcmanfm
+apt-get install -y openbox fbpanel pcmanfm lxtask xterm desktop-base
+update-alternatives --install /usr/bin/x-file-manager x-file-manager /usr/bin/pcmanfm 100
+update-alternatives --install /usr/bin/x-terminal x-terminal /usr/bin/xterm 100
 mkdir /home/$name/.config
 mkdir /home/$name/.config/openbox
 echo "fbpanel &" >> /home/$name/.config/openbox/autostart
@@ -52,21 +47,26 @@ echo "pcmanfm --desktop &" >> /home/$name/.config/openbox/autostart
 mkdir /home/$name/.config/fbpanel
 cp /usr/share/fbpanel/default /home/$name/.config/fbpanel/
 sed -i "s/type = volume//g" /home/$name/.config/fbpanel/default
-echo "[*]" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+sed -i "s/width = 86/width = 100/g" /home/$name/.config/fbpanel/default
+sed -i "s/roundcorners = true/roundcorners = false/g" /home/$name/.config/fbpanel/default
+sed -i "s/icon = file-manager/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/file-manager.png/g" /home/$name/.config/fbpanel/default
+sed -i "s/icon = terminal/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/terminal.png/g" /home/$name/.config/fbpanel/default
+sed -i "s/icon = web-browser/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/web-browser.png/g" /home/$name/.config/fbpanel/default
 mkdir /home/$name/.config/pcmanfm
 mkdir /home/$name/.config/pcmanfm/default
-echo "wallpaper_mode=crop" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "wallpaper_common=1" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "wallpaper=/etc/alternatives/desktop-background" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "desktop_bg=#000000" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "desktop_fg=#ffffff" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "desktop_shadow=#000000" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "desktop_font=Sans 12" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "show_wm_menu=0" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "sort=mtime;ascending;" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "show_documents=0" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "show_trash=1" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-echo "show_mounts=0" >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo '[*]' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper_mode=crop' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper_common=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper=/usr/share/images/desktop-base/desktop-background' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_bg=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_fg=#ffffff' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_shadow=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_font=Sans 12' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_wm_menu=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'sort=mtime;ascending;' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_documents=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
 wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
@@ -86,13 +86,12 @@ chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
-sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
-sed -i "s/starttvm/openbox-session/g" /home/$name/.vnc/xstartup
+sed -i "s/tvm/openbox-session/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
 sudo mv tigervncserver.txt /etc/init.d/tigervncserver
-sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
+sed -i "s/$name/$name/g" /etc/init.d/tigervncserver
 sudo chown root:root /etc/init.d/tigervncserver
 sudo chmod 755 /etc/init.d/tigervncserver
 sudo /etc/init.d/tigervncserver start
@@ -100,14 +99,14 @@ sudo update-rc.d tigervncserver defaults
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/
-sudo mkdir /home/$name/Desktop/Bots/
+sudo mkdir /home/$name/Desktop/$name/
 cd /home/$name/Desktop/
-sudo chown $name Bots
-wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
-wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
+sudo chown $name $name
+wget --no-check-cert -O /home/$name/Desktop/$name/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar
+wget --no-check-cert -O /home/$name/Desktop/$name/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10
 cd /home/$name/Desktop
-sudo chown -R $name Bots
-sudo chmod -R 777 Bots
+sudo chown -R $name $name
+sudo chmod -R 777 $name
 echo " Done"
 echo -n "Creating Screen Resolution Change Shortcuts..."
 cd /home/$name/Desktop
@@ -154,13 +153,14 @@ update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y clipit gfvs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core
+apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core
 apt-get autoremove -y
 rm -f /etc/xdg/autostart/clipit-startup.desktop
 rm -f /etc/xdg/autostart/pulseaudio.desktop
 rm -f /etc/xdg/autostart/wicd-tray.desktop
 rm -f /etc/xdg/autostart/light-locker.desktop
 rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
@@ -181,9 +181,9 @@ echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
 echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
 echo "NoDisplay=false" >> JB-java-jdk8.desktop
 sudo mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
-sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
+sed -i "s/vncPort = 5900/vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
+sed -i "s/vncPort = 5900/vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/xstartup.txt'
 sudo mv xstartup.txt /etc/init.d/xstartup
