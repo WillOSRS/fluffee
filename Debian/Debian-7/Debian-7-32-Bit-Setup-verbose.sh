@@ -36,7 +36,7 @@ chmod 600 /etc/ssh/sshd_config
 service ssh restart
 DEBIAN_FRONTEND=noninteractive sudo apt-get -yqo Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install xorg
 echo " Done"
-echo -n "Installing LXDE..."
+echo -n "Installing Desktop..."
 name=${name,,}
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
@@ -44,8 +44,13 @@ sudo adduser $name sudo
 sudo groupadd netdev
 sudo adduser $name netdev
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
+apt-get install -y openbox fbpanel
+mkdir /home/$name/.config/openbox
+echo "fbpanel &" >> /home/$name/.config/openbox/autostart
+echo "pcmanfm --desktop &" >> /home/$name/.config/openbox/autostart
+mkdir /home/$name/.config/fbpanel
+cp /usr/share/fbpanel/default /home/$name/.config/fbpanel
+sed -i "s/type = volume//g" /home/$name/.config/fbpanel/default
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
 wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
@@ -66,7 +71,7 @@ chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
-sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
+sed -i "s/twm/openbox-session/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
@@ -112,22 +117,6 @@ sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
-# wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-i586.tar.gz" -O jdk-8u112-linux-i586.tar.gz
-# tar -zxf jdk-8u112-linux-i586.tar.gz
-# mkdir /usr/lib/jvm
-# mkdir /usr/lib/jvm/oracle_jdk8
-# mv /root/jdk1.8.0_112/* /usr/lib/jvm/oracle_jdk8
-# sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000
-# sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000
-# echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-# echo "export J2REDIR=/usr/lib/jvm/oracle_jdk8/jre" >> oraclejdk.sh
-# echo "export PATH=$PATH:/usr/lib/jvm/oracle_jdk8/bin:/usr/lib/jvm/oracle_jdk8/db/bin:/usr/lib/jvm/oracle_jdk8/jre/bin" >> oraclejdk.sh
-# echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-# echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
-# sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
-# chmod 777 /etc/profile.d/oraclejdk.sh
-# source /etc/profile.d/oraclejdk.sh
 echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list
 echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list
 echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
@@ -149,7 +138,13 @@ update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y xscreensaver
+apt-get remove -y clipit gfvs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core
+apt-get autoremove -y
+rm -f /etc/xdg/autostart/clipit-startup.desktop
+rm -f /etc/xdg/autostart/pulseaudio.desktop
+rm -f /etc/xdg/autostart/wicd-tray.desktop
+rm -f /etc/xdg/autostart/light-locker.desktop
+rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop
 mkdir /home/$name/.local/
 mkdir /home/$name/.local/share/
 mkdir /home/$name/.local/share/applications/
