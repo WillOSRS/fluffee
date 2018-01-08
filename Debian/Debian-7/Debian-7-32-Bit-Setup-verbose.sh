@@ -93,9 +93,6 @@ chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
-sed -i "s/tvm/openbox-session/g" /home/$name/.vnc/xstartup
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
 sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
 sudo mv tigervncserver.txt /etc/init.d/tigervncserver
 sed -i "s/$name/$name/g" /etc/init.d/tigervncserver
@@ -160,7 +157,7 @@ update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core
+apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core dbus
 apt-get autoremove -y
 rm -f /etc/xdg/autostart/clipit-startup.desktop
 rm -f /etc/xdg/autostart/pulseaudio.desktop
