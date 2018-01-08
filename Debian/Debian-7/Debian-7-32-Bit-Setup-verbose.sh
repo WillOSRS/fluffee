@@ -1,3 +1,10 @@
+#!/bin/bash
+
+name=$1
+sshport=$2
+vncport=$3
+sshpassword=$4
+vncpassword=$5
 echo -n "Installing updates..."
 apt-get update
 echo " Done"
