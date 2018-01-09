@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 mkdir /dev/fuse &> /dev/null
-apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt cryptsetup x11-xkb-utils &> /dev/null
+apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar &> /dev/null
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
@@ -26,6 +26,7 @@ update-locale LANG=en_US.UTF-8 &> /dev/null
 sudo netselect-apt &> /dev/null
 mv -f sources.list /etc/apt/ &> /dev/null
 apt-get update &> /dev/null
+apt-get install -y cryptsetup &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
@@ -43,8 +44,36 @@ sudo adduser $name sudo &> /dev/null
 sudo groupadd netdev &> /dev/null
 sudo adduser $name netdev &> /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask &> /dev/null
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get -yq install openbox fbpanel pcmanfm lxtask xterm desktop-base &> /dev/null
+update-alternatives --install /usr/bin/x-file-manager x-file-manager /usr/bin/pcmanfm 100 &> /dev/null
+update-alternatives --install /usr/bin/x-terminal x-terminal /usr/bin/xterm 100 &> /dev/null
+mkdir /home/$name/.config &> /dev/null
+mkdir /home/$name/.config/openbox &> /dev/null
+echo "fbpanel &" >> /home/$name/.config/openbox/autostart
+echo "pcmanfm --desktop &" >> /home/$name/.config/openbox/autostart
+mkdir /home/$name/.config/fbpanel &> /dev/null
+cp /usr/share/fbpanel/default /home/$name/.config/fbpanel/ &> /dev/null
+sed -i "s/type = volume//g" /home/$name/.config/fbpanel/default &> /dev/null
+sed -i "s/width = 86/width = 100/g" /home/$name/.config/fbpanel/default &> /dev/null
+sed -i "s/roundcorners = true/roundcorners = false/g" /home/$name/.config/fbpanel/default &> /dev/null
+sed -i "s/icon = file-manager/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/file-manager.png/g" /home/$name/.config/fbpanel/default &> /dev/null
+sed -i "s/icon = terminal/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/terminal.png/g" /home/$name/.config/fbpanel/default &> /dev/null
+sed -i "s/icon = web-browser/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/web-browser.png/g" /home/$name/.config/fbpanel/default &> /dev/null
+mkdir /home/$name/.config/pcmanfm &> /dev/null
+mkdir /home/$name/.config/pcmanfm/default &> /dev/null
+echo '[*]' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper_mode=crop' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper_common=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper=/usr/share/images/desktop-base/desktop-background' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_bg=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_fg=#ffffff' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_shadow=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_font=Sans 12' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_wm_menu=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'sort=mtime;ascending;' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_documents=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
 wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
@@ -64,15 +93,13 @@ chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
-sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
-su  - $name -c "vncserver" &> /dev/null
-su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt'
+sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt' &> /dev/null
 sudo mv tigervncserver.txt /etc/init.d/tigervncserver
 sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
 sudo chown root:root /etc/init.d/tigervncserver
 sudo chmod 755 /etc/init.d/tigervncserver
+sudo /etc/init.d/tigervncserver start &> /dev/null
+sudo update-rc.d tigervncserver defaults &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
@@ -109,22 +136,6 @@ sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u112-linux-x64.tar.gz" -O jdk-8u112-linux-x64.tar.gz &> /dev/null
-# wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-x64.tar.gz" -O jdk-8u112-linux-x64.tar.gz &> /dev/null
-# tar -zxf jdk-8u112-linux-x64.tar.gz &> /dev/null
-# mkdir /usr/lib/jvm &> /dev/null
-# mkdir /usr/lib/jvm/oracle_jdk8 &> /dev/null
-# mv /root/jdk1.8.0_112/* /usr/lib/jvm/oracle_jdk8 &> /dev/null
-# sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000 &> /dev/null
-# sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000 &> /dev/null
-# echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-# echo "export J2REDIR=/usr/lib/jvm/oracle_jdk8/jre" >> oraclejdk.sh
-# echo "export PATH=$PATH:/usr/lib/jvm/oracle_jdk8/bin:/usr/lib/jvm/oracle_jdk8/db/bin:/usr/lib/jvm/oracle_jdk8/jre/bin" >> oraclejdk.sh
-# echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-# echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
-# sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
-# chmod 777 /etc/profile.d/oraclejdk.sh
-# source /etc/profile.d/oraclejdk.sh
 echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
 echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list &> /dev/null
 echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections &> /dev/null
@@ -146,7 +157,14 @@ update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/amd64/libnpjp2.so" &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y xscreensaver &> /dev/null
+apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core &> /dev/null
+apt-get autoremove -y &> /dev/null
+rm -f /etc/xdg/autostart/clipit-startup.desktop &> /dev/null
+rm -f /etc/xdg/autostart/pulseaudio.desktop &> /dev/null
+rm -f /etc/xdg/autostart/wicd-tray.desktop &> /dev/null
+rm -f /etc/xdg/autostart/light-locker.desktop &> /dev/null
+rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop &> /dev/null
+sudo systemctl -q mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 mkdir /home/$name/.local/ &> /dev/null
 mkdir /home/$name/.local/share/ &> /dev/null
 mkdir /home/$name/.local/share/applications/ &> /dev/null
