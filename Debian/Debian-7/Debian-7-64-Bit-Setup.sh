@@ -34,7 +34,7 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config &> /dev/null
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config &> /dev/null
 chmod 600 /etc/ssh/sshd_config &> /dev/null
 service ssh restart &> /dev/null
-DEBIAN_FRONTEND=noninteractive sudo apt-get -yqo Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install xorg
+DEBIAN_FRONTEND=noninteractive sudo apt-get -yqo Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install xorg &> /dev/null
 echo " Done"
 echo -n "Installing LXDE..."
 name=${name,,} &> /dev/null

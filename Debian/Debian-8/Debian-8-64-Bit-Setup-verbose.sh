@@ -9,7 +9,7 @@ echo -n "Installing updates..."
 apt-get update
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog libxslt1.1 netselect-apt x11-xkb-utils
+apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
@@ -33,26 +33,40 @@ sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 chmod 600 /etc/ssh/sshd_config
 service ssh restart
 echo " Done"
-echo -n "Installing LXDE..."
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg-dev
-apt-get install -yq libjpeg62-turbo-dev zlib1g-dev build-essential xutils-dev
-wget --no-check-cert 'https://github.com/libfuse/libfuse/releases/download/fuse-3.0.0/fuse-3.0.0.tar.gz'
-tar xzf fuse-3.0.0.tar.gz
-cd fuse-3.0.0
-./configure --prefix=/usr --disable-static INIT_D_PATH=/tmp/init.d
-make
-make install
-mv -v   /usr/lib/libfuse.so.* /lib
-ln -sfv ../../lib/libfuse.so.2.9.4 /usr/lib/libfuse.so
-rm -rf  /tmp/init.d
-install -v -m755 -d /usr/share/doc/fuse-2.9.4
-install -v -m644    doc/{how-fuse-works,kernel.txt}                     /usr/share/doc/fuse-2.9.4
-cd ..
-rm -rf fuse*
+echo -n "Installing Desktop..."
 DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
-DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
+apt-get install -y openbox fbpanel pcmanfm lxtask xterm desktop-base
+update-alternatives --install /usr/bin/x-file-manager x-file-manager /usr/bin/pcmanfm 100
+update-alternatives --install /usr/bin/x-terminal x-terminal /usr/bin/xterm 100
+mkdir /home/$name/.config
+mkdir /home/$name/.config/openbox
+echo "fbpanel &" >> /home/$name/.config/openbox/autostart
+echo "pcmanfm --desktop &" >> /home/$name/.config/openbox/autostart
+mkdir /home/$name/.config/fbpanel
+cp /usr/share/fbpanel/default /home/$name/.config/fbpanel/
+sed -i "s/type = volume//g" /home/$name/.config/fbpanel/default
+sed -i "s/width = 86/width = 100/g" /home/$name/.config/fbpanel/default
+sed -i "s/roundcorners = true/roundcorners = false/g" /home/$name/.config/fbpanel/default
+sed -i "s/icon = file-manager/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/file-manager.png/g" /home/$name/.config/fbpanel/default
+sed -i "s/icon = terminal/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/terminal.png/g" /home/$name/.config/fbpanel/default
+sed -i "s/icon = web-browser/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/web-browser.png/g" /home/$name/.config/fbpanel/default
+mkdir /home/$name/.config/pcmanfm
+mkdir /home/$name/.config/pcmanfm/default
+echo '[*]' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper_mode=crop' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper_common=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'wallpaper=/usr/share/images/desktop-base/desktop-background' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_bg=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_fg=#ffffff' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_shadow=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'desktop_font=Sans 12' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_wm_menu=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'sort=mtime;ascending;' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_documents=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo
@@ -74,10 +88,6 @@ chown $name /home/$name/.vnc/passwd
 chgrp $name /home/$name/.vnc
 chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
-su  - $name -c "vncserver"
-su  - $name -c "vncserver -kill :1"
-sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g" /home/$name/.vnc/xstartup
-sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 cd /usr/local/bin/
@@ -125,22 +135,6 @@ sudo chmod -R 777 S*
 echo " Done"
 echo -n "Setting up Java..."
 cd
-# wget --no-check-cert --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u112-linux-x64.tar.gz" -O jdk-8u112-linux-x64.tar.gz
-# wget --no-check-cert "http://mirrors.linuxeye.com/jdk/jdk-8u112-linux-x64.tar.gz" -O jdk-8u112-linux-x64.tar.gz
-# tar -zxf jdk-8u112-linux-x64.tar.gz
-# mkdir /usr/lib/jvm
-# mkdir /usr/lib/jvm/oracle_jdk8
-# mv /root/jdk1.8.0_112/* /usr/lib/jvm/oracle_jdk8
-# sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/oracle_jdk8/jre/bin/java 2000
-# sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/oracle_jdk8/bin/javac 2000
-# echo "export J2SDKDIR=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-# echo "export J2REDIR=/usr/lib/jvm/oracle_jdk8/jre" >> oraclejdk.sh
-# echo "export PATH=$PATH:/usr/lib/jvm/oracle_jdk8/bin:/usr/lib/jvm/oracle_jdk8/db/bin:/usr/lib/jvm/oracle_jdk8/jre/bin" >> oraclejdk.sh
-# echo "export JAVA_HOME=/usr/lib/jvm/oracle_jdk8" >> oraclejdk.sh
-# echo "export DERBY_HOME=/usr/lib/jvm/oracle_jdk8/db" >> oraclejdk.sh
-# sudo mv oraclejdk.sh /etc/profile.d/oraclejdk.sh
-# chmod 777 /etc/profile.d/oraclejdk.sh
-# source /etc/profile.d/oraclejdk.sh
 echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list
 echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee -a /etc/apt/sources.list.d/webupd8team-java.list
 echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
