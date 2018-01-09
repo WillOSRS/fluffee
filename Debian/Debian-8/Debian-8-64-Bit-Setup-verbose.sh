@@ -34,6 +34,10 @@ chmod 600 /etc/ssh/sshd_config
 service ssh restart
 echo " Done"
 echo -n "Installing Desktop..."
+sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
+echo "$name:$sshpassword" | sudo chpasswd
+sudo gpasswd -a $name sudo
+sudo gpasswd -a $name netdev
 DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
@@ -67,10 +71,6 @@ echo 'sort=mtime;ascending;' >> /home/$name/.config/pcmanfm/default/desktop-item
 echo 'show_documents=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
-echo "$name:$sshpassword" | sudo chpasswd
-sudo gpasswd -a $name sudo
-sudo gpasswd -a $name netdev
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
 wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.x86_64.tar.gz
