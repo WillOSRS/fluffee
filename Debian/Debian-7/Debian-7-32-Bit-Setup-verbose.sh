@@ -157,7 +157,7 @@ update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core dbus
+apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core
 apt-get autoremove -y
 rm -f /etc/xdg/autostart/clipit-startup.desktop
 rm -f /etc/xdg/autostart/pulseaudio.desktop

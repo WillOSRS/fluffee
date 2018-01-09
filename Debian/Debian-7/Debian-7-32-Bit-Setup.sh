@@ -98,8 +98,8 @@ sudo mv tigervncserver.txt /etc/init.d/tigervncserver
 sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
 sudo chown root:root /etc/init.d/tigervncserver
 sudo chmod 755 /etc/init.d/tigervncserver
-sudo /etc/init.d/tigervncserver start
-sudo update-rc.d tigervncserver defaults
+sudo /etc/init.d/tigervncserver start &> /dev/null
+sudo update-rc.d tigervncserver defaults &> /dev/null
 echo " Done"
 echo -n "Downloading TRiBot and OSBuddy..."
 sudo mkdir /home/$name/Desktop/ &> /dev/null
@@ -157,7 +157,7 @@ update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-
 update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so" &> /dev/null
 echo " Done"
 echo -n "Housekeeping, like allowing .jar double clicks..."
-apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core dbus &> /dev/null
+apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core &> /dev/null
 apt-get autoremove -y &> /dev/null
 rm -f /etc/xdg/autostart/clipit-startup.desktop &> /dev/null
 rm -f /etc/xdg/autostart/pulseaudio.desktop &> /dev/null
