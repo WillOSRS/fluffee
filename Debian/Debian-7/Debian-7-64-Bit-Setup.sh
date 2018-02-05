@@ -26,7 +26,7 @@ update-locale LANG=en_US.UTF-8 &> /dev/null
 sudo netselect-apt &> /dev/null
 mv -f sources.list /etc/apt/ &> /dev/null
 apt-get update &> /dev/null
-apt-get install -y cryptsetup &> /dev/null
+DEBIAN_FRONTEND=noninteractive apt-get install -yqf cryptsetup &> /dev/null
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config &> /dev/null
@@ -142,8 +142,8 @@ echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | su
 echo oracle-java8-installer shared/accepted-oracle-licence-v1-1 boolean true | sudo /usr/bin/debconf-set-selections &> /dev/null
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 &> /dev/null
 apt-get update &> /dev/null
-apt-get install -yq oracle-java8-installer &> /dev/null
-apt-get install -yq oracle-java8-set-default &> /dev/null
+apt-get install -yq --force-yes oracle-java8-installer &> /dev/null
+apt-get install -yq --force-yes oracle-java8-set-default &> /dev/null
 echo " Done"
 echo -n "Installing Firefox x64..."
 cd /usr/local

@@ -26,7 +26,7 @@ dpkg-reconfigure keyboard-configuration -f noninteractive
 sudo netselect-apt
 mv -f sources.list /etc/apt/
 apt-get update
-apt-get install -y cryptsetup
+DEBIAN_FRONTEND=noninteractive apt-get install -yqf cryptsetup
 echo " Done"
 echo -n "Setting up SSH..."
 sed -i "s/Port 22/Port $sshport/g" /etc/ssh/sshd_config
@@ -142,8 +142,8 @@ echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | su
 echo oracle-java8-installer shared/accepted-oracle-licence-v1-1 boolean true | sudo /usr/bin/debconf-set-selections
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
 apt-get update
-apt-get install -yq oracle-java8-installer
-apt-get install -yq oracle-java8-set-default
+apt-get install -yq --force-yes oracle-java8-installer
+apt-get install -yq --force-yes oracle-java8-set-default
 echo " Done"
 echo -n "Installing Firefox x86..."
 cd /usr/local
