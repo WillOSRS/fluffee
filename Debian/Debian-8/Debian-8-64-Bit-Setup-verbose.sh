@@ -10,18 +10,19 @@ apt-get update
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
-debconf-set-selections < Keyboard_settings.conf
-apt-get install -y keyboard-configuration
-dpkg-reconfigure keyboard-configuration -f noninteractive
+apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-echo 'LANG="en_US.UTF-8"'>/etc/default/locale
+echo 'LANG="en_US.UTF-8"' >> /etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source ~/.bashrc
 dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
+wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
+debconf-set-selections < Keyboard_settings.conf
+apt-get install -y keyboard-configuration
+dpkg-reconfigure keyboard-configuration -f noninteractive
 sudo netselect-apt
 mv -f sources.list /etc/apt/
 apt-get update
@@ -34,14 +35,15 @@ chmod 600 /etc/ssh/sshd_config
 service ssh restart
 echo " Done"
 echo -n "Installing Desktop..."
+name=${name,,}
 sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo
 sudo gpasswd -a $name netdev
-DEBIAN_FRONTEND=noninteractive apt-get -yq install xorg
+DEBIAN_FRONTEND=noninteractive sudo apt-get -yqo Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install xorg
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
-apt-get install -y openbox fbpanel pcmanfm lxtask xterm desktop-base
+apt-get install -y openbox fbpanel pcmanfm xterm desktop-base
 update-alternatives --install /usr/bin/x-file-manager x-file-manager /usr/bin/pcmanfm 100
 update-alternatives --install /usr/bin/x-terminal x-terminal /usr/bin/xterm 100
 mkdir /home/$name/.config
