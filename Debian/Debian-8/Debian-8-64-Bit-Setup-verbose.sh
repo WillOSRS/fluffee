@@ -9,7 +9,6 @@ echo -n "Installing updates..."
 apt-get update
 echo " Done"
 echo -n "Installing required packages..."
-apt-get -y install sudo wget nano locales debconf-utils xauth xfonts-base dialog libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG="en_US.UTF-8"' >> /etc/default/locale
