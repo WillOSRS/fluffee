@@ -32,6 +32,7 @@ echo "AllowUsers $name root" >> /etc/ssh/sshd_config
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 chmod 600 /etc/ssh/sshd_config
 service ssh restart
+DEBIAN_FRONTEND=noninteractive sudo apt-get -yqo Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install xorg
 echo " Done"
 echo -n "Installing Desktop..."
 name=${name,,}
@@ -39,7 +40,6 @@ sudo adduser $name --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disable
 echo "$name:$sshpassword" | sudo chpasswd
 sudo gpasswd -a $name sudo
 sudo gpasswd -a $name netdev
-DEBIAN_FRONTEND=noninteractive sudo apt-get -yqo Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install xorg
 DEBIAN_FRONTEND=noninteractive apt-get -yqf install
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 apt-get install -y openbox fbpanel pcmanfm xterm desktop-base
