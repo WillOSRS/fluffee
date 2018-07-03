@@ -10,6 +10,8 @@ yum -y update
 echo " Done"
 echo -n "Installing required packages and VNC..."
 yum -y install epel-release sudo nano tigervnc-server gnome-system-monitor firefox
+wget https://copr.fedorainfracloud.org/coprs/jsynacek/systemd-backports-for-centos-7/repo/epel-7/jsynacek-systemd-backports-for-centos-7-epel-7.repo -O /etc/yum.repos.d/jsynacek-systemd-centos-7.repo
+yum -y update systemd
 echo " Done"
 echo -n "Creating the user..."
 chkconfig vncserver on
