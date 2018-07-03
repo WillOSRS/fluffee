@@ -10,6 +10,7 @@ yum -y update
 echo " Done"
 echo -n "Installing required packages and VNC..."
 yum -y install epel-release sudo nano tigervnc-server gnome-system-monitor firefox
+yum -y update systemd
 echo " Done"
 echo -n "Creating the user..."
 chkconfig vncserver on
