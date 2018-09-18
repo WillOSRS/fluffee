@@ -20,7 +20,7 @@ echo 'LANG="en_US.UTF-8"'>/etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
-source ~/.bashrc &> /dev/null
+source /root/.bashrc &> /dev/null
 dpkg-reconfigure --frontend=noninteractive locales &> /dev/null
 update-locale LANG=en_US.UTF-8 &> /dev/null
 sudo netselect-apt &> /dev/null
@@ -76,9 +76,9 @@ echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O /root/tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 tar -zxf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
-cp -far ~/tigervnc-1.8.0.x86_64/usr/* /usr/local &> /dev/null
+cp -far /root/tigervnc-1.8.0.x86_64/usr/* /usr/local &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64 &> /dev/null
 echo " Done"

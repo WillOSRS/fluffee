@@ -16,7 +16,7 @@ echo 'LANG="en_US.UTF-8"' >> /etc/default/locale
 echo "export LC_ALL=en_US.UTF-8" >> /root/.bashrc
 echo "export LANG=en_US.UTF-8" >> /root/.bashrc
 echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
-source ~/.bashrc
+source /root/.bashrc
 dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
 wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf'
@@ -76,9 +76,9 @@ echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O /root/tigervnc-1.8.0.i386.tar.gz
 tar -zxf tigervnc-1.8.0.i386.tar.gz
-cp -far ~/tigervnc-1.8.0.i386/usr/* /usr/local
+cp -far /root/tigervnc-1.8.0.i386/usr/* /usr/local
 rm -rf tigervnc-1.8.0.i386.tar.gz
 rm -rf tigervnc-1.8.0.i386
 echo " Done"
