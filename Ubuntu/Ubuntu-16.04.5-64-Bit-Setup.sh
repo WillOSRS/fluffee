@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano libxslt1.1 cryptsetup &> /dev/null
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
 dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
@@ -61,7 +61,7 @@ sed -i "s/xterm -geometry 80x24+10+10 -ls -title \"\$VNCDESKTOP Desktop\" \&//g"
 sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/tigervncserver.txt' &> /dev/null
+sudo wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/tigervncserver.txt' &> /dev/null
 sudo mv tigervncserver.txt /etc/init.d/tigervncserver &> /dev/null
 sed -i "s/bots/$name/g" /etc/init.d/tigervncserver &> /dev/null
 sudo chown root:root /etc/init.d/tigervncserver &> /dev/null
@@ -160,7 +160,7 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Ubuntu/xstartup.txt' &> /dev/null
+sudo wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/xstartup.txt' &> /dev/null
 sudo mv xstartup.txt /etc/init.d/xstartup
 sudo /etc/init.d/tightvncserver start &> /dev/null
 sudo update-rc.d tightvncserver defaults &> /dev/null

@@ -11,7 +11,7 @@ echo " Done"
 echo -n "Installing required packages..."
 mkdir /dev/fuse &> /dev/null
 apt-get -y install sudo wget nano locales debconf-utils libxslt1.1 netselect-apt x11-xkb-utils bzip2 tar &> /dev/null
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
 dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
@@ -93,7 +93,7 @@ chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/tigervncserver.txt' &> /dev/null
+sudo wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/tigervncserver.txt' &> /dev/null
 sudo mv tigervncserver.txt /etc/init.d/tigervncserver
 sed -i "s/bots/$name/g" /etc/init.d/tigervncserver
 sudo chown root:root /etc/init.d/tigervncserver
@@ -189,7 +189,7 @@ sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/$vncPort = 5900/$vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-7/xstartup.txt' &> /dev/null
+sudo wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/xstartup.txt' &> /dev/null
 sudo mv xstartup.txt /etc/init.d/xstartup
 sudo /etc/init.d/tigervncserver stop &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null

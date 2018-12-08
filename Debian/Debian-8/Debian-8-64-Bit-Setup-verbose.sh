@@ -18,7 +18,7 @@ echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source /root/.bashrc
 dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf'
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
 dpkg-reconfigure keyboard-configuration -f noninteractive
@@ -92,11 +92,11 @@ chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
 cd /usr/local/bin/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver'
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/myvncserver'
 sudo chown $name myvncserver
 sudo chmod +x /usr/local/bin/myvncserver
 cd /lib/systemd/system/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service'
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/myvncserver.service'
 sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
 sudo systemctl daemon-reload
 sudo systemctl enable myvncserver.service

@@ -10,7 +10,7 @@ apt-get update &> /dev/null
 echo " Done"
 echo -n "Installing required packages..."
 apt-get -y install sudo wget nano locales debconf-utils xauth libxslt1.1 netselect-apt x11-xkb-utils &> /dev/null
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Keyboard_settings.conf' &> /dev/null
 debconf-set-selections < Keyboard_settings.conf &> /dev/null
 apt-get install -y keyboard-configuration &> /dev/null
 dpkg-reconfigure keyboard-configuration -f noninteractive &> /dev/null
@@ -66,11 +66,11 @@ sed -i "s/twm/startlxde/g" /home/$name/.vnc/xstartup
 su  - $name -c "vncserver" &> /dev/null
 su  - $name -c "vncserver -kill :1" &> /dev/null
 cd /usr/local/bin/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver' &> /dev/null
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/myvncserver' &> /dev/null
 sudo chown $name myvncserver &> /dev/null
 sudo chmod +x /usr/local/bin/myvncserver &> /dev/null
 cd /lib/systemd/system/
-wget --no-check-cert 'https://raw.githubusercontent.com/iFluffee/Fluffees-Server-Setup/master/Debian/Debian-8/myvncserver.service' &> /dev/null
+wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/myvncserver.service' &> /dev/null
 sed -i "s/User=vnc/User=$name/g" /lib/systemd/system/myvncserver.service
 sudo systemctl daemon-reload &> /dev/null
 sudo systemctl enable myvncserver.service &> /dev/null
