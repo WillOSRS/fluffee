@@ -44,9 +44,9 @@ DEBIAN_FRONTEND=noninteractive apt-get -yq install lxtask
 DEBIAN_FRONTEND=noninteractive apt-get -yq install lxde
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O /root/tigervnc-1.8.0.i386.tar.gz
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz
 tar -zxf tigervnc-1.8.0.i386.tar.gz
-cp -far /root/tigervnc-1.8.0.i386/usr/* /usr/local
+cp -far tigervnc-1.8.0.i386/usr/* /usr/local
 rm -rf tigervnc-1.8.0.i386.tar.gz
 rm -rf tigervnc-1.8.0.i386
 echo " Done"

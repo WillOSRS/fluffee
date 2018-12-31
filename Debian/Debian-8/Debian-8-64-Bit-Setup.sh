@@ -59,9 +59,9 @@ sudo gpasswd -a $name sudo &> /dev/null
 sudo gpasswd -a $name netdev &> /dev/null
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O /root/tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.x86_64.tar.gz" -O tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 tar -zxf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
-cp -far ~/root/tigervnc-1.8.0.x86_64/usr/* /usr/local &> /dev/null
+cp -far tigervnc-1.8.0.x86_64/usr/* /usr/local &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64.tar.gz &> /dev/null
 rm -rf tigervnc-1.8.0.x86_64 &> /dev/null
 echo " Done"

@@ -76,9 +76,9 @@ echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
 echo " Done"
 echo -n "Installing TigerVNC (Non broken version)..."
-wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O /root/tigervnc-1.8.0.i386.tar.gz &> /dev/null
+wget --no-check-certificate "https://bintray.com/tigervnc/stable/download_file?file_path=tigervnc-1.8.0.i386.tar.gz" -O tigervnc-1.8.0.i386.tar.gz &> /dev/null
 tar -zxf tigervnc-1.8.0.i386.tar.gz &> /dev/null
-cp -far /root/tigervnc-1.8.0.i386/usr/* /usr/local &> /dev/null
+cp -far tigervnc-1.8.0.i386/usr/* /usr/local &> /dev/null
 rm -rf tigervnc-1.8.0.i386.tar.gz &> /dev/null
 rm -rf tigervnc-1.8.0.i386 &> /dev/null
 echo " Done"
