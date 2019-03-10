@@ -61,7 +61,9 @@ function initial_setup() {
   output=$(determine_output $1)
 
   yum -y update &> $output
-  yum -y install perl sudo wget bzip2 openbox fbpanel xterm pcmanfm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth xorg-x11-fonts-base &> $output
+  yum -y install epel-release perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
+  yum -y groupinstall fonts
+  yum -y install openbox fbpanel pcmanfm &> ${output}
 }
 
 # Sets the SSH port, blocks root login and allows the new user
@@ -198,6 +200,7 @@ function setup_vnc() {
   echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
   echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
   echo -e '#!/bin/bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
+  chmod +x /home/$name/.vnc/xstartup
   sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
   firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
   firewall-cmd --reload &> $output
