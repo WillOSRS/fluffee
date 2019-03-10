@@ -21,9 +21,11 @@ function get_fedora_version() {
 # Gets the lxtask rpm download link from the fedora packages host
 # @param $1 - Boolean flag indicating verbostiy of the function
 # @param $2 - Number indicating the bit type to download, either 32 or 64
+# @param $3 - Package name to get link for
 # @return The download link of the lxtask rpm from the fedora site
-function get_lxtask_download_link() {
+function get_fedora_download_link() {
   output=$(determine_output $1)
+  package_name=$3
   if [ $2 == 32 ] ; then
     fedora_base="https://dl.fedoraproject.org/pub/fedora-secondary/releases/"
     bit_type="i386"
@@ -36,7 +38,7 @@ function get_lxtask_download_link() {
   packages_page+=$(get_fedora_version ${fedora_base})
   packages_page+="/Everything/${bit_type}/os/Packages/l/"
   wget -O package-temp.txt ${packages_page} &> ${output}
-  sed -i '/lxtask/!d' package-temp.txt
+  sed -i '/"${package_name}"/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\">.*/\1/" package-temp.txt
   echo ${packages_page}$(cat package-temp.txt)
 }
@@ -49,7 +51,7 @@ function install_lxtask() {
   output=$(determine_output $1)
   bit_type=$2
 
-  download_link=$(get_lxtask_download_link ${bit_type})
+  download_link=$(get_fedora_download_link ${output} ${bit_type} lxtask)
   wget -O lxtask.rpm ${download_link} &> ${output}
   yum -y localinstall lxtask.rpm
 }
@@ -61,8 +63,9 @@ function initial_setup() {
   output=$(determine_output $1)
 
   yum -y update &> $output
-  yum -y install epel-release perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
+  yum -y install perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
   yum -y groupinstall fonts
+  yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
   yum -y install openbox fbpanel pcmanfm &> ${output}
 }
 
