@@ -61,8 +61,7 @@ function initial_setup() {
   output=$(determine_output $1)
 
   yum -y update &> $output
-  yum -y install epel-release perl sudo wget gnome-system-monitor bzip2 openbox fbpanel xterm pcmanfm&> $output
-  yum -y groupinstall "X Window System" &> ${output}
+  yum -y install perl sudo wget bzip2 openbox fbpanel xterm pcmanfm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth xorg-x11-fonts-base &> $output
 }
 
 # Sets the SSH port, blocks root login and allows the new user
@@ -71,7 +70,7 @@ function initial_setup() {
 # @param $3 - Port number to permit SSH on
 # @return - None
 function setup_ssh() {
-  output=$(determine_output $1)
+  output=$(determine_output $1) 
   name=$2
   port=$3
 
@@ -84,10 +83,10 @@ function setup_ssh() {
 }
 
 function create_user() {
-  output=$(determine_output $1)
+  output=$(determine_output $1) 
   name=$2
   password=$3
-
+  
   adduser $name &> $output
   echo "$name:$password" | chpasswd
   usermod -aG wheel $name &> $output
@@ -100,8 +99,8 @@ function create_user() {
 # @param $2 - Bit type of the operating system as int, 32 or 64
 # @return - None
 function install_java() {
-  output=$(determine_output $1)
-
+  output=$(determine_output $1) 
+  
   jdk_download=$(get_jdk_download_link $2 rpm)
   rm jdk_downloads.txt
   wget -O jdk_install.rpm ${jdk_download}
@@ -122,7 +121,7 @@ function install_vnc() {
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # $return - None
 function setup_firefox() {
-  output=$(determine_output $1)
+  output=$(determine_output $1) 
 
   wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US"  &> $output
   tar xvjf firefox.tar.bz2 -C /usr/local/  &> $output
@@ -138,7 +137,7 @@ function setup_firefox() {
 # @param $2 - Name of account where bots should be installed
 # $return - None
 function setup_bots() {
-  output=$(determine_output $1)
+  output=$(determine_output $1) 
   name=$2
 
   mkdir /home/$name/Desktop/ &> $output
