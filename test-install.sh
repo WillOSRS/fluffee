@@ -29,7 +29,6 @@ install_lxtask true 64
 create_user true fluffee botting
 install_java true 64
 install_vnc true 64
-setup_firefox true
 setup_bots true fluffee
 create_resolution_change fluffee
 setup_vnc true 15310 fluffee botting

@@ -35,10 +35,10 @@ function get_fedora_download_link() {
   fi
 
   packages_page=${fedora_base}
-  packages_page+=$(get_fedora_version ${fedora_base})
+  packages_page+=$(get_fedora_version ${output} ${fedora_base})
   packages_page+="/Everything/${bit_type}/os/Packages/l/"
   wget -O package-temp.txt ${packages_page} &> ${output}
-  sed -i '/"${package_name}"/!d' package-temp.txt
+  sed -i '/'"${package_name}"'/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\">.*/\1/" package-temp.txt
   echo ${packages_page}$(cat package-temp.txt)
 }
@@ -66,7 +66,10 @@ function initial_setup() {
   yum -y install perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
   yum -y groupinstall fonts
   yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-  yum -y install openbox fbpanel pcmanfm &> ${output}
+  yum -y install http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm
+  yum -y update
+  yum -y history sync
+  yum -y install firefox openbox fbpanel pcmanfm &> ${output}
 }
 
 # Sets the SSH port, blocks root login and allows the new user
@@ -120,21 +123,6 @@ function install_vnc() {
   vnc_package=$(get_vnc_version $2)
   wget -O tiger_vnc.tar.gz ${TIGERVNC_LINK}${vnc_package}
   tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
-}
-
-# Downloads the latest firefox-esr, makes it the default browser and sets up the java plugin
-# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
-# $return - None
-function setup_firefox() {
-  output=$(determine_output $1) 
-
-  wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux&lang=en-US"  &> $output
-  tar xvjf firefox.tar.bz2 -C /usr/local/  &> $output
-  ln -s /usr/local/firefox/firefox /usr/local/bin/firefox
-  mkdir -p /usr/lib/mozilla/plugins
-  update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100  &> $output
-  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so 1000  &> $output
-  update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/oracle_jdk8/jre/lib/i386/libnpjp2.so"  &> $output
 }
 
 # Creates bot folder, downloads TRiBot and OSBuddy
