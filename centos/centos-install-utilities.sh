@@ -56,20 +56,37 @@ function install_lxtask() {
   yum -y localinstall lxtask.rpm
 }
 
+function install_all() {
+  output=$1
+  path=$2
+ 
+  echo $output
+
+  for filename in ${path}; do
+    yum -y install ${filename} &> $output
+  done
+  rm -f ${path}
+}
+
 # Runs an initial package update, then installs all base required packages
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @return - None
 function initial_setup() {
   output=$(determine_output $1)
 
-  yum -y update &> $output
-  yum -y install perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
-  yum -y groupinstall fonts
-  yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-  yum -y install http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm
-  yum -y update
-  yum -y history sync
-  yum -y install firefox openbox fbpanel pcmanfm &> ${output}
+  yum -y update --downloaddir=/root/updates --downloadonly &> $output
+  install_all ${output} '/root/updates/*.rpm'
+  yum -y install --downloaddir=/root/updates --downloadonly perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
+  install_all ${output} '/root/updates/*.rpm'
+  yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
+  install_all ${output} '/root/updates/*.rpm'
+  yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm &> $output
+  yum -y install http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm &> $output
+  yum -y update --downloaddir=/root/updates --downloadonly &> $output
+  install_all ${output} '/root/updates/*.rpm'
+  yum -y history sync &> $output
+  yum -y install --downloaddir=/root/updates --downloadonly firefox openbox fbpanel pcmanfm &> ${output}
+  install_all ${output} '/root/updates/*.rpm'
 }
 
 # Sets the SSH port, blocks root login and allows the new user
