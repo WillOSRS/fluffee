@@ -4,12 +4,27 @@ TIGERVNC_LINK="https://dl.bintray.com/tigervnc/stable/"
 BASE_JAVA="https://www.oracle.com"
 JAVA_DOWNLOAD_PAGE="/technetwork/java/javase/downloads/index.html"
 
+# @param $1 - String where command output will be sent
+# @param $2 - Number indicating the bit type to download, either 32 or 64
+# @return String containing the download link for the nux repo
+function get_nox_download_link() {
+  output=$1
+
+  if [[ $2 == 32 ]] ; then
+    bit_type="i386"
+  else
+    bit_type="x86_64"
+  fi
+
+  echo "http://li.nux.ro/download/nux/dextop/el6/${bit_type}/nux-dextop-release-0-2.el6.nux.noarch.rpm"
+}
+
 # Parses the fedora download site to determine the latest version
-# @param $1 - Boolean flag indicating verbostiy of the function
+# @param $1 - String where command output will be sent
 # @param $2 - The base fedora download site to parse from
 # @return Number indicating the latest fedora release
 function get_fedora_version() {
-  output=$(determine_output $1)
+  output=$1
   fedora_base=$2
 
   wget -O package-temp.txt ${fedora_base} &> ${output}
@@ -19,12 +34,12 @@ function get_fedora_version() {
 }
 
 # Gets the lxtask rpm download link from the fedora packages host
-# @param $1 - Boolean flag indicating verbostiy of the function
+# @param $1 - String where command output will be sent
 # @param $2 - Number indicating the bit type to download, either 32 or 64
 # @param $3 - Package name to get link for
 # @return The download link of the lxtask rpm from the fedora site
 function get_fedora_download_link() {
-  output=$(determine_output $1)
+  output=$1
   package_name=$3
   if [ $2 == 32 ] ; then
     fedora_base="https://dl.fedoraproject.org/pub/fedora-secondary/releases/"
@@ -56,6 +71,10 @@ function install_lxtask() {
   yum -y localinstall lxtask.rpm
 }
 
+# Installs all files in a directory, and then removes the directory
+# @param $1 - String where command output will be sent
+# @param $2 - Path where the files to install lie
+# @return None
 function install_all() {
   output=$1
   path=$2
@@ -70,9 +89,11 @@ function install_all() {
 
 # Runs an initial package update, then installs all base required packages
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Number indicating the bit type of the system, either 32 or 64
 # @return - None
 function initial_setup() {
   output=$(determine_output $1)
+  bit_type=$2
 
   yum -y update --downloaddir=/root/updates --downloadonly &> $output
   install_all ${output} '/root/updates/*.rpm'
@@ -81,7 +102,7 @@ function initial_setup() {
   yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
   install_all ${output} '/root/updates/*.rpm'
   yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm &> $output
-  yum -y install http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm &> $output
+  yum -y install $(get_nox_download_link $output $bit_type) &> $output
   yum -y update --downloaddir=/root/updates --downloadonly &> $output
   install_all ${output} '/root/updates/*.rpm'
   yum -y history sync &> $output
@@ -184,6 +205,24 @@ function create_resolution_change() {
   chmod -R 754 "/home/$name/Desktop/Screen Resolution Change Shortcuts/"
 }
 
+# Sets up the configuration files for Openbox, Fbpanel and PCManFM
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Name of the user account to setup
+function setup_desktop() {
+  output=$(determine_output $1)
+  name=$2
+
+  mkdir -p /home/$name/.config/openbox &> $output
+  mkdir -p /home/$name/.config/fbpanel &> $output
+  mkdir -p /home/$name/.config/pcmanfm/default &> $output
+
+  wget -O /home/$name/.config/openbox/autostart https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/openbox-autostart.txt &> $output
+  wget -O /home/$name/.config/fbpanel/default https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/fbpanel-default-config.txt &> $output
+  wget -O /home/$name/.config/pcmanfm/default/desktop-items-0.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-desktop-items.txt &> $output
+  wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-default-config.txt &> $output
+  chown -R $name /home/$name/.config/*
+}
+
 # Sets up tiger vnc for practical use
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @param $2 - Port number to run the vnc server on
@@ -212,6 +251,9 @@ function setup_vnc() {
   sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
   firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
   firewall-cmd --reload &> $output
+  wget -O /etc/init.d/vncserver https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
+  sed -i "s/user_name/$name/g" /etc/init.d/vncserver
+  chmod +x /etc/init.d/vncserver
   service vncserver start &> $output
 }
 

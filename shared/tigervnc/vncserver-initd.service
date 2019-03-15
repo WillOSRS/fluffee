@@ -14,8 +14,6 @@
 export USER='user_name'
 ### End customization required
 
-eval cd ~$USER
-
 case "$1" in
   start)
     su $USER -c '/usr/bin/vncserver :1'
@@ -29,6 +27,7 @@ case "$1" in
     pkill Xvnc
     su $USER -c '/usr/bin/vncserver :1'
     echo "VNC Server restarted"
+    ;;
   *)
     echo "Usage: /etc/init.d/vncserver {start|stop|restart}"
     exit 1

@@ -1,0 +1,2 @@
+fbpanel &
+pcmanfm --desktop &
