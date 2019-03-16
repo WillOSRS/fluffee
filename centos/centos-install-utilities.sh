@@ -78,8 +78,6 @@ function install_lxtask() {
 function install_all() {
   output=$1
   path=$2
- 
-  echo $output
 
   for filename in ${path}; do
     yum -y install ${filename} &> $output
@@ -281,3 +279,4 @@ function enable_jar_doubleclick() {
 }
 
 source shared-utilities.sh
+

@@ -31,6 +31,6 @@ install_java true 64
 install_vnc true 64
 setup_bots true fluffee
 create_resolution_change fluffee
+setup_desktop true fluffee
 setup_vnc true 15310 fluffee botting
-setup_desktop_environment fluffee
 enable_jar_doubleclick fluffee
