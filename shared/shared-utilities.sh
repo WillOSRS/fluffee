@@ -32,16 +32,16 @@ function get_vnc_version() {
 }
 
 # Creates the tiger vnc init.d service
-# @param $1 - boolean flag indicating verbosity of function
+# @param $1 - String where command output will be sent
 # @param $2 - Name of the user to run the VNC under
 # @return None
 function setup_vnc_initd_service() {
-  output=$(determine_output $1)
+  output=$1
   name=$2
 
-  wget -O /etc/init.d/vncserver link &> $output
+  wget -O /etc/init.d/vncserver https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
+  sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
-  sed -i "s/user_name/${name}/g" /etc/init.d/vncserver
 }
 
 # Creates the tiger vnc systemd service
@@ -53,10 +53,10 @@ function setup_vnc_systemd_service() {
 }
 
 # Parses the oracle page to find the link to the JDK 8 downloads
-# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $1 - String where command output will be sent
 # @return Extension to the base oracle link where the JDK 8 downloads are found
 function get_jdk_downloads_page() {
-  output=$(determine_output $1)
+  output=$1
   wget -O java_downloads.txt ${BASE_JAVA}${JAVA_DOWNLOAD_PAGE} &> $output
   sed -i "/.*jdk8-downloads.*/!d" java_downloads.txt
   sed -i "s/.*href=\"\(.*\)\"><img.*/\1/" java_downloads.txt
@@ -64,11 +64,12 @@ function get_jdk_downloads_page() {
 }
 
 # Parses the JDK downloads page to find the download link
-# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $1 - String where command output will be sent
 # @param $2 - Bit type of the operating system as int, 32 or 64
 # @param $3 - File extension (rpm or tar.gz)
 # @return The download link for the JDK
 function get_jdk_download_link() {
+  output=$1
   bit_type =$2
   file_extension=$3
 
@@ -83,40 +84,25 @@ function get_jdk_download_link() {
   echo $(cat java_downloads.txt)
 }
 
-# Sets up the openbox desktop environment
-# @param $1 - boolean flag indicating verbosity of function
-# @param $2 - Name of the user to run the VNC under
-# @return None
-function setup_desktop_environment() {
+# Sets up the configuration files for Openbox, Fbpanel and PCManFM
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Name of the user account to setup
+function setup_desktop() {
   output=$(determine_output $1)
   name=$2
 
-  #TODO: Just create the files and wget them
+  mkdir -p /home/$name/.config/openbox &> $output
+  mkdir -p /home/$name/.config/fbpanel &> $output
+  mkdir -p /home/$name/.config/pcmanfm/default &> $output
 
+  wget -O /home/$name/.config/openbox/autostart https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/openbox-autostart.txt &> $output
+  wget -O /home/$name/.config/fbpanel/default https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/fbpanel-default-config.txt &> $output
+  wget -O /home/$name/.config/pcmanfm/default/desktop-items-0.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-desktop-items.txt &> $output
+  wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-default-config.txt &> $output
+  wget -O /home/$name/.gtkrc-2.0 https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/gtk-settings.txt &> $output
+  sed -i "s/user_name/$name/g" /home/$name/.gtkrc-2.0
+  chown -R $name /home/$name/*
   update-alternatives --install /usr/bin/x-file-manager x-file-manager /usr/bin/pcmanfm 100 &> $output
   update-alternatives --install /usr/bin/x-terminal x-terminal /usr/bin/xterm 100 &> $output
-  mkdir -p /home/$name/.config/openbox &> $output
-  echo "fbpanel &" >> /home/$name/.config/openbox/autostart
-  echo "pcmanfm --desktop &" >> /home/$name/.config/openbox/autostart
-  mkdir -p /home/$name/.config/fbpanel &> $output
-  cp /usr/share/fbpanel/default /home/$name/.config/fbpanel/ &> $output
-  sed -i "s/type = volume//g" /home/$name/.config/fbpanel/default &> $output
-  sed -i "s/width = 86/width = 100/g" /home/$name/.config/fbpanel/default &> $output
-  sed -i "s/roundcorners = true/roundcorners = false/g" /home/$name/.config/fbpanel/default &> $output
-  sed -i "s/icon = file-manager/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/file-manager.png/g" /home/$name/.config/fbpanel/default &&> $output
-  sed -i "s/icon = terminal/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/terminal.png/g" /home/$name/.config/fbpanel/default &> $output
-  sed -i "s/icon = web-browser/image = \/usr\/share\/icons\/nuoveXT2\/32x32\/apps\/web-browser.png/g" /home/$name/.config/fbpanel/default &> $output
-  mkdir -p /home/$name/.config/pcmanfm/default
-  echo '[*]' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'wallpaper_mode=crop' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'wallpaper_common=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'desktop_bg=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'desktop_fg=#ffffff' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'desktop_shadow=#000000' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'desktop_font=Sans 12' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'show_wm_menu=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'sort=mtime;ascending;' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'show_documents=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'show_trash=1' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
-  echo 'show_mounts=0' >> /home/$name/.config/pcmanfm/default/desktop-items-0.conf
+  update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 100 &> $output
 }
