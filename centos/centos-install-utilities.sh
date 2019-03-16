@@ -30,7 +30,7 @@ function get_fedora_version() {
   wget -O package-temp.txt ${fedora_base} &> ${output}
   sed -i '/\[DIR\]/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\/\">.*/\1/" package-temp.txt
-  echo $(cat package-temp.txt | sort -n | tail -1)
+  echo $(cat package-temp.txt | sort -n | tail -1 && rm -f package-temp.txt)
 }
 
 # Gets the lxtask rpm download link from the fedora packages host
@@ -55,7 +55,7 @@ function get_fedora_download_link() {
   wget -O package-temp.txt ${packages_page} &> ${output}
   sed -i '/'"${package_name}"'/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\">.*/\1/" package-temp.txt
-  echo ${packages_page}$(cat package-temp.txt)
+  echo ${packages_page}$(cat package-temp.txt && rm -f package-temp.txt)
 }
 
 # Installs lxtask by downloading from the Fedora repo
@@ -69,6 +69,7 @@ function install_lxtask() {
   download_link=$(get_fedora_download_link ${output} ${bit_type} lxtask)
   wget -O lxtask.rpm ${download_link} &> ${output}
   yum -y localinstall lxtask.rpm
+  rm -f lxtask.rpm
 }
 
 # Installs all files in a directory, and then removes the directory
@@ -104,8 +105,9 @@ function initial_setup() {
   install_all ${output} '/root/updates/*.rpm'
   yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
   install_all ${output} '/root/updates/*.rpm'
-  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox fbpanel pcmanfm elementary-icon-theme.noarch &> ${output}
+  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox fbpanel pcmanfm gnome-icon-theme.noarch &> ${output}
   install_all ${output} '/root/updates/*.rpm'
+  rm -rf /root/updates/
 }
 
 # Sets the SSH port, blocks root login and allows the new user
@@ -146,9 +148,8 @@ function install_java() {
   output=$(determine_output $1) 
   
   jdk_download=$(get_jdk_download_link $output $2 rpm)
-  rm jdk_downloads.txt
-  wget -O jdk_install.rpm ${jdk_download}
-  yum -y localinstall jdk-install.rpm
+  wget -O jdk_install.rpm --header "Cookie: oraclelicense=accept-securebackup-cookie" --no-check-cert ${jdk_download}
+  yum -y localinstall jdk_install.rpm
 }
 
 # Downloads the latest TigerVNC bin and installs it
@@ -159,6 +160,7 @@ function install_vnc() {
   vnc_package=$(get_vnc_version $2)
   wget -O tiger_vnc.tar.gz ${TIGERVNC_LINK}${vnc_package}
   tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
+  rm -f tiger_vnc.tar.gz
 }
 
 # Creates bot folder, downloads TRiBot and OSBuddy
@@ -184,23 +186,22 @@ function setup_bots() {
 function create_resolution_change() {
   name=$1
 
-  mkdir -p "/home/$name/Desktop/Screen Resolution Change Shortcuts"
-  chown $name "/home/$name/Desktop/Screen Resolution Change Shortcuts"
-  echo 'xrandr -s 640x480' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 640x480.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 800x600' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 800x600.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1024x768' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1024x768.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x720' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1280x720.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x800' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1280x800.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x960' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1280x960.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x1024' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1280x1024.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1360x768' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1360x768.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1400x1050' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1400x1050.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1680x1050' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1680x1050.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1680x1200' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1680x1200.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1920x1080' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1920x1080.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1920x1200' >> "/home/$name/Desktop/Screen Resolution Change Shortcuts/Change to 1920x1200.sh"
-  echo -e '#!/bin/bash\n\nxfce4-panel --restart' >> "/home/$name/Desktop/Restart Taskbar.sh"
-  chmod -R 754 "/home/$name/Desktop/Screen Resolution Change Shortcuts/"
+  mkdir -p "/home/$name/Desktop/Change-Screen-Resolution"
+  chown $name "/home/$name/Desktop/Change-Screen-Resolution"
+  echo 'xrandr -s 640x480' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-640x480.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 800x600' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-800x600.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1024x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1024x768.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x720' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x720.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x800' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x800.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x960' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x960.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x1024' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x1024.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1360x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1360x768.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1400x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1400x1050.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1680x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1050.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1680x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1200.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1920x1080' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1080.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1920x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1200.sh"
+  chmod -R 754 "/home/$name/Desktop/Change-Screen-Resolution/"
 }
 
 # Sets up tiger vnc for practical use

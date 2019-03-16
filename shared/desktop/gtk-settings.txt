@@ -1,6 +1,6 @@
 include "/home/user_name/.gtkrc-2.0.mine"
-gtk-theme-name="Redmond"
-gtk-icon-theme-name="elementary"
+gtk-theme-name="Raleigh"
+gtk-icon-theme-name="gnome"
 gtk-font-name="Sans 10"
 gtk-cursor-theme-name="dmz-aa"
 gtk-cursor-theme-size=0

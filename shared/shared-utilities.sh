@@ -28,7 +28,7 @@ function get_vnc_version() {
   sed -i "/.*.tar.gz.*/!d" tiger.txt
   sed -i "/.*x86.*/${x64}d" tiger.txt
   sed -i "s/.*rel=\"nofollow\">\(.*\)<\/a>.*/\1/" tiger.txt
-  echo $(cat tiger.txt | tail -1)
+  echo $(cat tiger.txt | tail -1 && rm -f tiger.txt)
 }
 
 # Creates the tiger vnc init.d service
@@ -42,6 +42,7 @@ function setup_vnc_initd_service() {
   wget -O /etc/init.d/vncserver https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
+  echo "service vncserver start" >> /etc/rc.local
 }
 
 # Creates the tiger vnc systemd service
@@ -60,7 +61,7 @@ function get_jdk_downloads_page() {
   wget -O java_downloads.txt ${BASE_JAVA}${JAVA_DOWNLOAD_PAGE} &> $output
   sed -i "/.*jdk8-downloads.*/!d" java_downloads.txt
   sed -i "s/.*href=\"\(.*\)\"><img.*/\1/" java_downloads.txt
-  echo $(cat java_downloads.txt | tail -1)
+  echo $(cat java_downloads.txt | tail -1 && rm -f java_downloads.txt)
 }
 
 # Parses the JDK downloads page to find the download link
@@ -70,18 +71,23 @@ function get_jdk_downloads_page() {
 # @return The download link for the JDK
 function get_jdk_download_link() {
   output=$1
-  bit_type =$2
+  if [[ $2 == 32 ]] ; then
+    bit_type="i586"
+  else
+    bit_type="x64"
+  fi
+
   file_extension=$3
 
   wget -O java_downloads.txt ${BASE_JAVA}$(get_jdk_downloads_page $1)
   sed -i '/oth-JPR/!d' java_downloads.txt
   sed -i '/demos-oth-JPR/d' java_downloads.txt
   sed -i '/linux-i\|linux-x/!d' java_downloads.txt
-  sed -i '/${bit_type}/!d' java_downloads.txt
-  sed -i '/${file_extension}/!d' java_downloads.txt
+  sed -i '/'"${bit_type}"'/!d' java_downloads.txt
+  sed -i '/'"${file_extension}"'/!d' java_downloads.txt
   echo "$(tail -1 java_downloads.txt)" > java_downloads.txt
   sed -i "s/.*filepath\":\"\(.*\)\",\"MD5\":.*/\1/" java_downloads.txt
-  echo $(cat java_downloads.txt)
+  echo $(cat java_downloads.txt && rm -f java_downloads.txt)
 }
 
 # Sets up the configuration files for Openbox, Fbpanel and PCManFM
@@ -101,8 +107,10 @@ function setup_desktop() {
   wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-default-config.txt &> $output
   wget -O /home/$name/.gtkrc-2.0 https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/gtk-settings.txt &> $output
   sed -i "s/user_name/$name/g" /home/$name/.gtkrc-2.0
-  chown -R $name /home/$name/*
+  chown -R ${name}:${name} /home/${name}/*
+  chown -R ${name}:${name} /home/${name}/.*
   update-alternatives --install /usr/bin/x-file-manager x-file-manager /usr/bin/pcmanfm 100 &> $output
   update-alternatives --install /usr/bin/x-terminal x-terminal /usr/bin/xterm 100 &> $output
   update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 100 &> $output
+  dbus-uuidgen > /var/lib/dbus/machine-id
 }
