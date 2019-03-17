@@ -41,6 +41,7 @@ function get_fedora_version() {
 function get_fedora_download_link() {
   output=$1
   package_name=$3
+  package_letter=$(echo $package_name | head -c 1)
   if [ $2 == 32 ] ; then
     fedora_base="https://dl.fedoraproject.org/pub/fedora-secondary/releases/"
     bit_type="i386"
@@ -51,7 +52,7 @@ function get_fedora_download_link() {
 
   packages_page=${fedora_base}
   packages_page+=$(get_fedora_version ${output} ${fedora_base})
-  packages_page+="/Everything/${bit_type}/os/Packages/l/"
+  packages_page+="/Everything/${bit_type}/os/Packages/${package_letter}/"
   wget -O package-temp.txt ${packages_page} &> ${output}
   sed -i '/'"${package_name}"'/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\">.*/\1/" package-temp.txt
@@ -72,6 +73,20 @@ function install_lxtask() {
   rm -f lxtask.rpm
 }
 
+# Installs lxtask by downloading from the Fedora repo
+# @param $1 - Boolean flag indicating verbostiy of the procedure
+# @param $2 - Number indicating the bit type to download, either 32 or 64
+# @return None
+function install_fbpanel() {
+  output=$(determine_output $1)
+  bit_type=$2
+
+  download_link=$(get_fedora_download_link ${output} ${bit_type} fbpanel)
+  wget -O fbpanel.rpm ${download_link} &> ${output}
+  yum -y install fbpanel.rpm
+  rm -f fbpanell.rpm
+}
+
 # Installs all files in a directory, and then removes the directory
 # @param $1 - String where command output will be sent
 # @param $2 - Path where the files to install lie
@@ -81,7 +96,7 @@ function install_all() {
   path=$2
 
   for filename in ${path}; do
-    yum -y install ${filename} &> $output
+    yum -y --nogpgcheck install ${filename} &> $output
   done
   rm -f ${path}
 }
@@ -89,14 +104,16 @@ function install_all() {
 # Runs an initial package update, then installs all base required packages
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @param $2 - Number indicating the bit type of the system, either 32 or 64
+# @param $3 - Number indicating the CentOS version, either 6 or 7
 # @return - None
 function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
+  centos_version=$3
 
   yum -y update --downloaddir=/root/updates --downloadonly &> $output
   install_all ${output} '/root/updates/*.rpm'
-  yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm &> $output
+  yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-${3}.noarch.rpm &> $output
   yum -y install $(get_nox_download_link $output $bit_type) &> $output
   yum -y update --downloaddir=/root/updates --downloadonly &> $output
   install_all ${output} '/root/updates/*.rpm'
@@ -105,7 +122,7 @@ function initial_setup() {
   install_all ${output} '/root/updates/*.rpm'
   yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
   install_all ${output} '/root/updates/*.rpm'
-  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox fbpanel pcmanfm gnome-icon-theme.noarch &> ${output}
+  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme.noarch &> ${output}
   install_all ${output} '/root/updates/*.rpm'
   rm -rf /root/updates/
 }

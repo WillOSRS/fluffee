@@ -23,9 +23,10 @@ centos_version=$8
 source centos-install-utilities.sh #Allows access to utilities functions
 source shared-utilities.sh
 
-initial_setup true 64
+initial_setup true 64 7
 setup_ssh true fluffee 22
 install_lxtask true 64
+install_fbpanel true 64
 create_user true fluffee botting
 install_java true 64
 install_vnc true 64
