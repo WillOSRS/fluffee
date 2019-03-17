@@ -241,13 +241,15 @@ function setup_vnc() {
 # @return - None
 function enable_jar_doubleclick() {
   name=$1
-  java_directory=$2
+  java_directory=$(readlink -f /etc/alternatives/java)
+  
+
 
   echo "[Desktop Entry]" >> JB-java-jdk8.desktop
   echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
   echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
   echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
-  echo "Exec=/usr/java/jdk1.8.0_202/jre/bin/java -jar %f" >> JB-java-jdk8.desktop
+  echo "Exec=${java_directory} -jar %f" >> JB-java-jdk8.desktop
   echo "Terminal=false" >> JB-java-jdk8.desktop
   echo "Type=Application" >> JB-java-jdk8.desktop
   echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
