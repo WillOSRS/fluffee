@@ -76,15 +76,21 @@ function install_lxtask() {
 # Installs lxtask by downloading from the Fedora repo
 # @param $1 - Boolean flag indicating verbostiy of the procedure
 # @param $2 - Number indicating the bit type to download, either 32 or 64
+# @param $3 - Number indicating the centos version, either 6 or 7
 # @return None
 function install_fbpanel() {
   output=$(determine_output $1)
   bit_type=$2
-
-  download_link=$(get_fedora_download_link ${output} ${bit_type} fbpanel)
-  wget -O fbpanel.rpm ${download_link} &> ${output}
-  yum -y install fbpanel.rpm
-  rm -f fbpanell.rpm
+  centos_version=$3
+  
+  if [[ ${centos_version} = 7 ]] ; then
+    download_link=$(get_fedora_download_link ${output} ${bit_type} fbpanel)
+    wget -O fbpanel.rpm ${download_link} &> ${output}
+    yum -y install fbpanel.rpm
+    rm -f fbpanell.rpm
+  else
+    yum -y install fbpanel
+  fi
 }
 
 # Installs all files in a directory, and then removes the directory
