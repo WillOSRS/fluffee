@@ -34,13 +34,13 @@ if [ "$verbose" = "yes" ]; then
 			OS="Ubuntu $VERSION x64 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 12") -eq 1 -a $(bc <<< "$VERSION < 13") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup-verbose.sh"
 				FILE=Ubuntu-12.04.5-64-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 14") -eq 1 -a $(bc <<< "$VERSION < 15") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup-verbose.sh"
 				FILE=Ubuntu-14.04.5-64-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 16") -eq 1 -a $(bc <<< "$VERSION < 17") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup-verbose.sh"
 				FILE=Ubuntu-16.04.5-64-Bit-Setup-verbose.sh
 			fi
 		elif [ "$DISTRO" = "Debian" ]; then
@@ -49,10 +49,10 @@ if [ "$verbose" = "yes" ]; then
 			OS="Debian $VERSION x64 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-64-Bit-Setup-verbose.sh"
 				FILE=Debian-7-64-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 8") -eq 1 -a $(bc <<< "$VERSION < 9") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-64-Bit-Setup-verbose.sh"
 				FILE=Debian-8-64-Bit-Setup-verbose.sh
 			fi
 		elif [ "$DISTRO" = "CentOS" ]; then
@@ -61,10 +61,10 @@ if [ "$verbose" = "yes" ]; then
 			OS="CentOS $VERSION x64 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 6") -eq 1 -a $(bc <<< "$VERSION < 7") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-64-Bit-Setup-verbose.sh"
 				FILE=CentOS-6.8-64-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-64-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-64-Bit-Setup-verbose.sh"
 				FILE=CentOS-7.2-64-Bit-Setup-verbose.sh
 			fi
 		else
@@ -77,13 +77,13 @@ if [ "$verbose" = "yes" ]; then
 			OS="Ubuntu $VERSION x86 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 12") -eq 1 -a $(bc <<< "$VERSION < 13") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup-verbose.sh"
 				FILE=Ubuntu-12.04.5-32-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 14") -eq 1 -a $(bc <<< "$VERSION < 15") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup-verbose.sh"
 				FILE=Ubuntu-14.04.5-32-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 16") -eq 1 -a $(bc <<< "$VERSION < 17") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup-verbose.sh"
 				FILE=Ubuntu-16.04.5-32-Bit-Setup-verbose.sh
 			fi
 		elif [ "$DISTRO" = "Debian" ]; then
@@ -92,10 +92,10 @@ if [ "$verbose" = "yes" ]; then
 			OS="Debian $VERSION x86 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-32-Bit-Setup-verbose.sh"
 				FILE=Debian-7-32-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 8") -eq 1 -a $(bc <<< "$VERSION < 9") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-32-Bit-Setup-verbose.sh"
 				FILE=Debian-8-32-Bit-Setup-verbose.sh
 			fi
 		elif [ "$DISTRO" = "CentOS" ]; then
@@ -104,10 +104,10 @@ if [ "$verbose" = "yes" ]; then
 			OS="CentOS $VERSION x86 - Verbose Mode"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 6") -eq 1 -a $(bc <<< "$VERSION < 7") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-32-Bit-Setup-verbose.sh"
 				FILE=CentOS-6.8-32-Bit-Setup-verbose.sh
 			elif [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-32-Bit-Setup-verbose.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-32-Bit-Setup-verbose.sh"
 				FILE=CentOS-7.2-32-Bit-Setup-verbose.sh
 			fi
 		else
@@ -122,13 +122,13 @@ else
 			OS="Ubuntu $VERSION x64"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 12") -eq 1 -a $(bc <<< "$VERSION < 13") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-64-Bit-Setup.sh"
 				FILE=Ubuntu-12.04.5-64-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 14") -eq 1 -a $(bc <<< "$VERSION < 15") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-64-Bit-Setup.sh"
 				FILE=Ubuntu-14.04.5-64-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 16") -eq 1 -a $(bc <<< "$VERSION < 17") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-64-Bit-Setup.sh"
 				FILE=Ubuntu-16.04.5-64-Bit-Setup.sh
 			fi
 		elif [ "$DISTRO" = "Debian" ]; then
@@ -137,10 +137,10 @@ else
 			OS="Debian $VERSION x64"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-64-Bit-Setup.sh"
 				FILE=Debian-7-64-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 8") -eq 1 -a $(bc <<< "$VERSION < 9") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-64-Bit-Setup.sh"
 				FILE=Debian-8-64-Bit-Setup.sh
 			fi
 		elif [ "$DISTRO" = "CentOS" ]; then
@@ -149,10 +149,10 @@ else
 			OS="CentOS $VERSION x64"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 6") -eq 1 -a $(bc <<< "$VERSION < 7") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-64-Bit-Setup.sh"
 				FILE=CentOS-6.8-64-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-64-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-64-Bit-Setup.sh"
 				FILE=CentOS-7.2-64-Bit-Setup.sh
 			fi
 		else
@@ -165,13 +165,13 @@ else
 			OS="Ubuntu $VERSION x86"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 12") -eq 1 -a $(bc <<< "$VERSION < 13") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-12.04.5-32-Bit-Setup.sh"
 				FILE=Ubuntu-12.04.5-32-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 14") -eq 1 -a $(bc <<< "$VERSION < 15") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-14.04.5-32-Bit-Setup.sh"
 				FILE=Ubuntu-14.04.5-32-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 16") -eq 1 -a $(bc <<< "$VERSION < 17") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Ubuntu/Ubuntu-16.04.5-32-Bit-Setup.sh"
 				FILE=Ubuntu-16.04.5-32-Bit-Setup.sh
 			fi
 		elif [ "$DISTRO" = "Debian" ]; then
@@ -180,10 +180,10 @@ else
 			OS="Debian $VERSION x86"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Debian-7-32-Bit-Setup.sh"
 				FILE=Debian-7-32-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 8") -eq 1 -a $(bc <<< "$VERSION < 9") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-8/Debian-8-32-Bit-Setup.sh"
 				FILE=Debian-8-32-Bit-Setup.sh
 			fi
 		elif [ "$DISTRO" = "CentOS" ]; then
@@ -192,10 +192,10 @@ else
 			OS="CentOS $VERSION x86"
 			echo " Done"
 			if [ $(bc <<< "$VERSION >= 6") -eq 1 -a $(bc <<< "$VERSION < 7") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-6.8-32-Bit-Setup.sh"
 				FILE=CentOS-6.8-32-Bit-Setup.sh
 			elif [ $(bc <<< "$VERSION >= 7") -eq 1 -a $(bc <<< "$VERSION < 8") -eq 1 ]; then
-				LINK="https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-32-Bit-Setup.sh"
+				LINK="https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/CentOS/CentOS-7.2-32-Bit-Setup.sh"
 				FILE=CentOS-7.2-32-Bit-Setup.sh
 			fi
 		else

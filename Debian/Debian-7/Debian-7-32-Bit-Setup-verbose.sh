@@ -19,7 +19,7 @@ echo "export LANGUAGE=en_US.UTF-8" >> /root/.bashrc
 source /root/.bashrc
 dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=en_US.UTF-8
-wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Keyboard_settings.conf'
+wget --no-check-cert 'https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/Keyboard_settings.conf'
 debconf-set-selections < Keyboard_settings.conf
 apt-get install -y keyboard-configuration
 dpkg-reconfigure keyboard-configuration -f noninteractive
@@ -93,7 +93,7 @@ chgrp $name /home/$name/.vnc/passwd
 chmod 600 /home/$name/.vnc/passwd
 su  - $name -c "vncserver"
 su  - $name -c "vncserver -kill :1"
-sudo wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/tigervncserver.txt'
+sudo wget --no-check-cert 'https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/tigervncserver.txt'
 sudo mv tigervncserver.txt /etc/init.d/tigervncserver
 sed -i "s/$name/$name/g" /etc/init.d/tigervncserver
 sudo chown root:root /etc/init.d/tigervncserver
@@ -189,7 +189,7 @@ sed -i "s/vncPort = 5900/vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/vncPort = 5900/vncPort = $vncport - 1/g" /usr/local/bin/vncserver
 sed -i "s/sockaddr_in(5900/sockaddr_in($vncport - 1/g" /usr/local/bin/vncserver
-sudo wget --no-check-cert 'https://bitbucket.org/Fluffee/fluffees-server-setup/raw/master/Debian/Debian-7/xstartup.txt'
+sudo wget --no-check-cert 'https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/Debian/Debian-7/xstartup.txt'
 sudo mv xstartup.txt /etc/init.d/xstartup
 sudo /etc/init.d/tigervncserver stop
 su  - $name -c "vncserver -kill :1"
