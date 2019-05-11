@@ -1,5 +1,9 @@
 #!/bin/bash
 
+TIGERVNC_LINK="https://dl.bintray.com/tigervnc/stable/"
+BASE_JAVA="https://www.oracle.com"
+JAVA_DOWNLOAD_PAGE="/technetwork/java/javase/downloads/index.html"
+
 # Determines where the output of commands should be piped
 # @param $1 - boolean flag to indicate verbosity, meaning output is discarded
 # @return String containing the location where command output should be piped
@@ -39,7 +43,7 @@ function setup_vnc_initd_service() {
   output=$1
   name=$2
 
-  wget -O /etc/init.d/vncserver https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
+  wget -O /etc/init.d/vncserver https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
   echo "service vncserver start" >> /etc/rc.local
@@ -101,11 +105,11 @@ function setup_desktop() {
   mkdir -p /home/$name/.config/fbpanel &> $output
   mkdir -p /home/$name/.config/pcmanfm/default &> $output
 
-  wget -O /home/$name/.config/openbox/autostart https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/openbox-autostart.txt &> $output
-  wget -O /home/$name/.config/fbpanel/default https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/fbpanel-default-config.txt &> $output
-  wget -O /home/$name/.config/pcmanfm/default/desktop-items-0.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-desktop-items.txt &> $output
+  wget -O /home/$name/.config/openbox/autostart https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/openbox-autostart.txt &> $output
+  wget -O /home/$name/.config/fbpanel/default https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/fbpanel-default-config.txt &> $output
+  wget -O /home/$name/.config/pcmanfm/default/desktop-items-0.conf https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-desktop-items.txt &> $output
   wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-default-config.txt &> $output
-  wget -O /home/$name/.gtkrc-2.0 https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/gtk-settings.txt &> $output
+  wget -O /home/$name/.gtkrc-2.0 https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/gtk-settings.txt &> $output
   sed -i "s/user_name/$name/g" /home/$name/.gtkrc-2.0
   chown -R ${name}:${name} /home/${name}/*
   chown -R ${name}:${name} /home/${name}/.*

@@ -1,8 +1,6 @@
 #!/bin/bash
 
 TIGERVNC_LINK="https://dl.bintray.com/tigervnc/stable/"
-BASE_JAVA="https://www.oracle.com"
-JAVA_DOWNLOAD_PAGE="/technetwork/java/javase/downloads/index.html"
 
 # @param $1 - String where command output will be sent
 # @param $2 - Number indicating the bit type to download, either 32 or 64
