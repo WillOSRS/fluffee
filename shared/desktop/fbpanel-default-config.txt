@@ -141,9 +141,9 @@ Plugin {
     type = menu
     config {
         IconSize = 22
-        #icon = start-here
+        icon = start-here
         # Use a nice Debian logo for the menu list ;-)
-        image = /usr/share/pixmaps/debian-logo.png
+        image = /usr/share/pixmaps/openbox.png
         systemmenu {
         }
         separator {
@@ -154,7 +154,7 @@ Plugin {
             
 	    item {
 		name = Terminal
-		image = /usr/share/icons/nuoveXT2/32x32/apps/terminal.png
+		image = /usr/share/icons/Adwaita/32x32/apps/utilities-terminal.png
 		action = x-terminal
 	    }
             item {
@@ -197,19 +197,48 @@ Plugin {
     type = launchbar
     config {
         button {
-            image = /usr/share/icons/nuoveXT2/32x32/apps/file-manager.png
+            image = /usr/share/icons/Adwaita/16x16/places/folder.png
             tooltip = File Manager
             action = x-file-manager
+            padding = 5
         }
+   }
+}
+
+Plugin {
+    type = space
+    config {
+	size = 5
+    }
+}
+
+Plugin {
+    type = launchbar
+    config {
         button {
-            image = /usr/share/icons/nuoveXT2/32x32/apps/terminal.png
+            image = /usr/share/icons/Adwaita/16x16/apps/utilities-terminal.png
             tooltip = Terminal
             action = x-terminal
+            padding = 5
         }
+    }
+}
+
+Plugin {
+    type = space
+    config {
+       	size = 5
+    }
+}
+
+Plugin {
+    type = launchbar
+    config {
 	button {
-            image = /usr/share/icons/nuoveXT2/32x32/apps/web-browser.png
+            image = /usr/share/icons/Adwaita/16x16/apps/web-browser.png
             tooltip = Web Browser
             action = x-www-browser
+            padding = 5
     	}
     }
 }

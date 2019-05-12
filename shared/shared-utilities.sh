@@ -46,7 +46,7 @@ function setup_vnc_initd_service() {
   wget -O /etc/init.d/vncserver https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
-  echo "service vncserver start" >> /etc/rc.local
+  echo "service vncserver start" >> /etc/rc.d/rc.local
 }
 
 # Creates the tiger vnc systemd service
