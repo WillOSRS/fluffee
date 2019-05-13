@@ -58,6 +58,7 @@ function setup_vnc_systemd_service() {
   echo ""
 }
 
+# @Deprecated
 # Parses the oracle page to find the link to the JDK 8 downloads
 # @param $1 - String where command output will be sent
 # @return Extension to the base oracle link where the JDK 8 downloads are found
@@ -84,15 +85,8 @@ function get_jdk_download_link() {
 
   file_extension=$3
 
-  wget -O java_downloads.txt ${BASE_JAVA}$(get_jdk_downloads_page $1)
-  sed -i '/oth-JPR/!d' java_downloads.txt
-  sed -i '/demos-oth-JPR/d' java_downloads.txt
-  sed -i '/linux-i\|linux-x/!d' java_downloads.txt
-  sed -i '/'"${bit_type}"'/!d' java_downloads.txt
-  sed -i '/'"${file_extension}"'/!d' java_downloads.txt
-  echo "$(tail -1 java_downloads.txt)" > java_downloads.txt
-  sed -i "s/.*filepath\":\"\(.*\)\",\"MD5\":.*/\1/" java_downloads.txt
-  echo $(cat java_downloads.txt && rm -f java_downloads.txt)
+  link=$(curl -s https://api.github.com/repos/frekele/oracle-java/releases/latest | grep "browser_download_url.*jdk.*linux-${bit_type}.*${file_extension}\"" | cut -d : -f 2,3 | sed -e 's/^ "//' -e 's/"$//')
+  echo ${link}
 }
 
 # Sets up the configuration files for Openbox, Fbpanel and PCManFM

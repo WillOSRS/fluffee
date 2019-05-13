@@ -1,7 +1,7 @@
 # Runs an initial package update, then installs all base required packages
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @param $2 - Number indicating the bit type of the system, either 32 or 64
-# @param $3 - Number indicating the CentOS version, either 6 or 7
+# @param $3 - Number indicating the Debian version, either 7, 8 or 9
 # @return - None
 function initial_setup() {
   output=$(determine_output $1)
@@ -64,4 +64,21 @@ function cleanup() {
   rm -f /etc/xdg/autostart/light-locker.desktop &> /dev/null
   rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop &> /dev/null
   sudo systemctl -q mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+}
+
+# Downloads and sets up Java 8 from the Oracle site.
+# This includes instaling Java, and ensuring .jar double clicking works
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Bit type of the operating system as int, 32 or 64
+# @return - None
+function install_java() {
+  output=$(determine_output $1) 
+  
+  jdk_download=$(get_jdk_download_link $output $2 tar.gz)
+  wget -O jdk_install.tar.gz --header "Cookie: oraclelicense=accept-securebackup-cookie" --no-check-cert ${jdk_download}
+  mkdir -p /opt/jdk/oracle_jdk_8/
+  tar -xzf jdk_install.tar.gz -C /opt/jdk/oracle_jdk_8/ --strip-components=1
+  update-alternatives --install /usr/bin/java java /opt/jdk/oracle_jdk_8/bin/java 100
+  update-alternatives --install /usr/bin/javac javac /opt/jdk/oracle_jdk_8/bin/javac 100
+  rm -f jdk_install.tar.gz
 }
