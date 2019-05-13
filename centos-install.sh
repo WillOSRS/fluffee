@@ -23,15 +23,15 @@ centos_version=$8
 source centos-install-utilities.sh #Allows access to utilities functions
 source shared-utilities.sh
 
-initial_setup true 64 7
-setup_ssh true fluffee 22
-install_lxtask true 64
-install_fbpanel true 64 6
-create_user true fluffee botting
-install_java true 64
-install_vnc true 64
-setup_bots true fluffee
-create_resolution_change fluffee
-setup_desktop true fluffee
-setup_vnc true 15310 fluffee botting
-enable_jar_doubleclick fluffee
+initial_setup ${verbose} ${bit_type} ${centos_version}
+setup_ssh ${verbose} ${user_name} ${ssh_port}
+install_lxtask ${verbose} ${bit_type}
+install_fbpanel ${verbose} ${bit_type} ${centos_version}
+create_user ${verbose} ${user_name} ${ssh_password}
+install_java ${verbose} ${bit_type}
+install_vnc ${verbose} ${bit_type}
+setup_bots ${verbose} ${user_name}
+create_resolution_change ${user_name}
+setup_desktop ${verbose} ${user_name}
+setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} centos
+enable_jar_doubleclick ${user_name}

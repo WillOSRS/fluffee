@@ -119,3 +119,114 @@ function setup_desktop() {
   update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 100 &> $output
   dbus-uuidgen > /var/lib/dbus/machine-id
 }
+
+# Creates bot folder, downloads TRiBot and OSBuddy
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Name of account where bots should be installed
+# $return - None
+function setup_bots() {
+  output=$(determine_output $1) 
+  name=$2
+
+  mkdir /home/$name/Desktop/ &> $output
+  mkdir /home/$name/Desktop/Bots/ &> $output
+  wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> $output
+  wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> $output
+  chown $name /home/$name/Desktop/Bots
+  chmod +x /home/$name/Desktop/Bots #TODO: Just give run permissions to all .jars
+}
+
+
+# Creates shortcuts on the desktop to allow quickly changing VNC resolution
+# @param $1 - Name of the user with the desktop to create the shortcuts on
+# @return - None
+function create_resolution_change() {
+  name=$1
+
+  mkdir -p "/home/$name/Desktop/Change-Screen-Resolution"
+  chown $name "/home/$name/Desktop/Change-Screen-Resolution"
+  echo 'xrandr -s 640x480' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-640x480.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 800x600' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-800x600.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1024x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1024x768.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x720' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x720.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x800' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x800.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x960' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x960.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1280x1024' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x1024.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1360x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1360x768.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1400x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1400x1050.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1680x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1050.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1680x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1200.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1920x1080' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1080.sh"
+  echo -e '#!/bin/bash\n\nxrandr -s 1920x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1200.sh"
+  chmod -R 754 "/home/$name/Desktop/Change-Screen-Resolution/"
+}
+
+# Allows jar files to be double clicked to run
+# @param $1 - Name of the user with the desktop to create the shortcuts on
+# @return - None
+function enable_jar_doubleclick() {
+  name=$1
+  java_directory=$(readlink -f /etc/alternatives/java)
+  
+  echo "[Desktop Entry]" >> JB-java-jdk8.desktop
+  echo "Encoding=UTF-8" >> JB-java-jdk8.desktop
+  echo "Name=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+  echo "Comment=Oracle Java 8 Runtime" >> JB-java-jdk8.desktop
+  echo "Exec=${java_directory} -jar %f" >> JB-java-jdk8.desktop
+  echo "Terminal=false" >> JB-java-jdk8.desktop
+  echo "Type=Application" >> JB-java-jdk8.desktop
+  echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
+  echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
+  echo "NoDisplay=false" >> JB-java-jdk8.desktop
+  mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
+  mkdir -p /home/$name/.local/share/applications &> $output
+  echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
+  echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
+}
+
+# Downloads the latest TigerVNC bin and installs it
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Bit type of the operating system currently running
+function install_vnc() {
+  output=$(determine_output $1)
+  vnc_package=$(get_vnc_version $2)
+  wget -O tiger_vnc.tar.gz ${TIGERVNC_LINK}${vnc_package}
+  tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
+  rm -f tiger_vnc.tar.gz
+}
+
+# Sets up tiger vnc for practical use
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Port number to run the vnc server on
+# @param $3 - Name of user to run VNC under
+# @param $4 - Password string to use for logging in to VNC
+# @param $5 - Name of the operating system currently running on (centos, debian or ubuntu)
+# @return - None
+function setup_vnc() {
+  output=$(determine_output $1)
+  port=$2
+  name=$3
+  password=$4
+  operating_system=$5
+
+  mkdir /home/$name/.vnc
+  echo $password >/home/$name/.vnc/file #TODO: See if we can pipe those together.
+  vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
+  rm /home/$name/.vnc/file
+  chown $name /home/$name/.vnc &> $output
+  chown $name /home/$name/.vnc/passwd &> $output
+  chmod 600 /home/$name/.vnc/passwd &> $output
+  su  - $name -c "vncserver" &> $output
+  su  - $name -c "vncserver -kill :1" &> $output
+  echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
+  echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
+  echo -e '#!/bin/bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
+  chmod +x /home/$name/.vnc/xstartup
+  sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
+  if [ ${operating_system} = "centos" ]; then
+    firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
+    firewall-cmd --reload &> $output
+  fi
+  setup_vnc_initd_service $output $name
+  service vncserver start &> $output
+}
