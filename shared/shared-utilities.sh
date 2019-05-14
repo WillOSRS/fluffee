@@ -103,7 +103,7 @@ function setup_desktop() {
   wget -O /home/$name/.config/openbox/autostart https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/openbox-autostart.txt &> $output
   wget -O /home/$name/.config/fbpanel/default https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/fbpanel-default-config.txt &> $output
   wget -O /home/$name/.config/pcmanfm/default/desktop-items-0.conf https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-desktop-items.txt &> $output
-  wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/Fluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-default-config.txt &> $output
+  wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/pcmanfm-default-config.txt &> $output
   wget -O /home/$name/.gtkrc-2.0 https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/gtk-settings.txt &> $output
   sed -i "s/user_name/$name/g" /home/$name/.gtkrc-2.0
   chown -R ${name}:${name} /home/${name}/*
@@ -173,7 +173,7 @@ function enable_jar_doubleclick() {
   echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
   echo "NoDisplay=false" >> JB-java-jdk8.desktop
   mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
-  mkdir -p /home/$name/.local/share/applications &> $output
+  mkdir -p /home/$name/.local/share/applications
   echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
   echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 }

@@ -14,7 +14,7 @@ function initial_setup() {
   fi
   
   apt-get update &> $output
-  apt-get install -y sudo wget nano libxslt1.1  bzip2 tar &> $output
+  apt-get install -y sudo wget nano libxslt1.1  bzip2 tar xauth &> $output
   apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
 }
 
@@ -57,13 +57,13 @@ function create_user() {
 function cleanup() {
   output=$(determine_output $1) 
 
-  apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core &> /dev/null
-  apt-get autoremove -y &> /dev/null
-  rm -f /etc/xdg/autostart/clipit-startup.desktop &> /dev/null
-  rm -f /etc/xdg/autostart/pulseaudio.desktop &> /dev/null
-  rm -f /etc/xdg/autostart/wicd-tray.desktop &> /dev/null
-  rm -f /etc/xdg/autostart/light-locker.desktop &> /dev/null
-  rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop &> /dev/null
+  apt-get remove -y clipit gvfs* lxmusic mpv pulseaudio pavucontrol evince wicd light-locker at-spi2-core &> $output
+  apt-get autoremove -y &> $output
+  rm -f /etc/xdg/autostart/clipit-startup.desktop &> $output
+  rm -f /etc/xdg/autostart/pulseaudio.desktop &> $output
+  rm -f /etc/xdg/autostart/wicd-tray.desktop &> $output
+  rm -f /etc/xdg/autostart/light-locker.desktop &> $output
+  rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop &> $output
   sudo systemctl -q mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 }
 
@@ -75,13 +75,13 @@ function cleanup() {
 function install_java() {
   output=$(determine_output $1) 
   
-  jdk_download=$(get_jdk_download_link $output $2 tar.gz)
-  wget -O jdk_install.tar.gz --no-check-cert ${jdk_download}
-  mkdir -p /opt/jdk/oracle_jdk_8/
-  tar -xzf jdk_install.tar.gz -C /opt/jdk/oracle_jdk_8/ --strip-components=1
-  update-alternatives --install /usr/bin/java java /opt/jdk/oracle_jdk_8/bin/java 100
-  update-alternatives --install /usr/bin/javac javac /opt/jdk/oracle_jdk_8/bin/javac 100
-  rm -f jdk_install.tar.gz
+  jdk_download=$(get_jdk_download_link $output $2 tar.gz) &> $output
+  wget -O jdk_install.tar.gz --no-check-cert ${jdk_download} &> $output
+  mkdir -p /opt/jdk/oracle_jdk_8/ &> $output
+  tar -xzf jdk_install.tar.gz -C /opt/jdk/oracle_jdk_8/ --strip-components=1 &> $output
+  update-alternatives --install /usr/bin/java java /opt/jdk/oracle_jdk_8/bin/java 100 &> $output
+  update-alternatives --install /usr/bin/javac javac /opt/jdk/oracle_jdk_8/bin/javac 100 &> $output
+  rm -f jdk_install.tar.gz &> $output
 }
 
 # Downloads and installs the latest Firefox-ESR from the Mozilla Site
@@ -96,12 +96,12 @@ function install_firefox() {
     bit_type=
   fi
   
-  wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux${bit_type}&lang=en-US"
-  tar xvjf firefox.tar.bz2
+  wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux${bit_type}&lang=en-US" &> $output
+  mkdir -p /usr/local/firefox
+  tar xvjf firefox.tar.bz2 -C /usr/local/firefox/ &> $output
   ln -s /usr/local/firefox/firefox /usr/bin/firefox
-  mkdir /usr/lib/mozilla
-  mkdir /usr/lib/mozilla/plugins
-  update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
-  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk/oracle_8_jdk/jre/lib/i386/libnpjp2.so 1000
-  update-alternatives --set "mozilla-javaplugin.so" "/opt/jdk/oracle_8_jdk/jre/lib/i386/libnpjp2.so"
+  mkdir -p /usr/lib/mozilla/plugins
+  update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> $output
+  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk/oracle_jdk_8/jre/lib/i386/libnpjp2.so 1000 &> $output
+  update-alternatives --set "mozilla-javaplugin.so" "/opt/jdk/oracle_jdk_8/jre/lib/i386/libnpjp2.so" &> $output
 }
