@@ -14,13 +14,10 @@ debconf	debconf/frontend	select	Dialog
 tzdata	tzdata/Zones/Etc	select	UTC
 quota	quota/rquota_setquota	note	
 tzdata	tzdata/Zones/SystemV	select	
-libssl1.0.0:i386	libssl1.0.0/restart-failed	error	
-libc6:i386	glibc/disable-screensaver	error	
 openssh-server	ssh/use_old_init_script	boolean	true
 quota	quota/cc	string	
 tzdata	tzdata/Zones/Africa	select	
 keyboard-configuration	keyboard-configuration/modelcode	string	microsoftinet
-ucf	ucf/conflicts_found	error	
 keyboard-configuration	keyboard-configuration/unsupported_layout	boolean	true
 keyboard-configuration	keyboard-configuration/unsupported_config_options	boolean	true
 tzdata	tzdata/Zones/America	select	
@@ -30,21 +27,17 @@ quota	quota/supportemail	string
 keyboard-configuration	keyboard-configuration/unsupported_config_layout	boolean	true
 keyboard-configuration	keyboard-configuration/toggle	select	No toggling
 locales	locales/locales_to_be_generated	multiselect	
-libpam0g:i386	libpam0g/xdm-needs-restart	error	
 keyboard-configuration	keyboard-configuration/model	select	Microsoft Internet Keyboard
-libc6:i386	glibc/restart-failed	error	
 keyboard-configuration	keyboard-configuration/compose	select	No compose key
 ucf	ucf/show_diff	note	
 keyboard-configuration	keyboard-configuration/layout	select	
 tzdata	tzdata/Zones/Arctic	select	
 dash	dash/sh	boolean	true
 quota	quota/supportphone	string	
-udev	udev/reboot_needed	error	
 quota	quota/cc_before	string	
 keyboard-configuration	keyboard-configuration/xkb-keymap	select	us
 keyboard-configuration	keyboard-configuration/layoutcode	string	us
 keyboard-configuration	keyboard-configuration/variant	select	English (US)
-libpam0g:i386	libpam0g/restart-failed	error	
 libssl1.0.0:i386	libssl1.0.0/restart-services	string	
 openssh-server	ssh/disable_cr_auth	boolean	false
 tzdata	tzdata/Zones/Pacific	select	
@@ -53,7 +46,6 @@ keyboard-configuration	keyboard-configuration/switch	select	No temporary switch
 quota	quota/mailfrom	string	
 openssh-server	ssh/encrypted_host_key_but_no_keygen	note	
 udev	udev/new_kernel_needed	boolean	false
-udev	udev/sysfs_deprecated_incompatibility	error	
 quota	quota/signature	string	
 quota	quota/subject	string	
 tzdata	tzdata/Zones/Antarctica	select	
@@ -67,12 +59,9 @@ quota	quota/charset	string
 keyboard-configuration	keyboard-configuration/altgr	select	The default for the keyboard layout
 quota	quota/group_signature	string	
 ucf	ucf/changeprompt_threeway	select	keep_current
-libpam-modules	libpam-modules/disable-screensaver	error	
 keyboard-configuration	keyboard-configuration/optionscode	string	
 quota	quota/group_message	string	
-libpam-runtime	libpam-runtime/conflicts	error	
 quota	quota/message	string	
 locales	locales/default_environment_locale	select	None
 tzdata	tzdata/Zones/Europe	select	
-libpam-runtime	libpam-runtime/no_profiles_chosen	error	
 tzdata	tzdata/Zones/Indian	select	
