@@ -6,15 +6,16 @@
 function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
-  centos_version=$3
-
-  apt-get update --downloaddir=/root/updates --downloadonly &> $output
-  install_all ${output} '/root/updates/*.deb'
-  yum -y install --downloaddir=/root/updates --downloadonly sudo wget nano libxslt1.1  bzip2 tar &> $output
-  install_all ${output} '/root/updates/*.deb'
-  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm &> ${output}
-  install_all ${output} '/root/updates/*.rpm'
-  rm -rf /root/updates/
+  debian_version=$3
+  
+  if ((${debian_version} < 9)) ; then
+    sed -i 's/ftp/archive/g' /etc/apt/sources.list
+    sed -i '/security/d' /etc/apt/sources.list
+  fi
+  
+  apt-get update &> $output
+  apt-get install -y sudo wget nano libxslt1.1  bzip2 tar &> $output
+  apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
 }
 
 # Sets the SSH port, blocks root login and allows the new user
@@ -75,10 +76,32 @@ function install_java() {
   output=$(determine_output $1) 
   
   jdk_download=$(get_jdk_download_link $output $2 tar.gz)
-  wget -O jdk_install.tar.gz --header "Cookie: oraclelicense=accept-securebackup-cookie" --no-check-cert ${jdk_download}
+  wget -O jdk_install.tar.gz --no-check-cert ${jdk_download}
   mkdir -p /opt/jdk/oracle_jdk_8/
   tar -xzf jdk_install.tar.gz -C /opt/jdk/oracle_jdk_8/ --strip-components=1
   update-alternatives --install /usr/bin/java java /opt/jdk/oracle_jdk_8/bin/java 100
   update-alternatives --install /usr/bin/javac javac /opt/jdk/oracle_jdk_8/bin/javac 100
   rm -f jdk_install.tar.gz
+}
+
+# Downloads and installs the latest Firefox-ESR from the Mozilla Site
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Bit type of the operating system as int, 32 or 64
+# @return - None
+function install_firefox() {
+  output=$(determine_output $1) 
+  if [[ $2 == 64 ]] ; then
+    bit_type=64
+  else
+    bit_type=
+  fi
+  
+  wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux${bit_type}&lang=en-US"
+  tar xvjf firefox.tar.bz2
+  ln -s /usr/local/firefox/firefox /usr/bin/firefox
+  mkdir /usr/lib/mozilla
+  mkdir /usr/lib/mozilla/plugins
+  update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100
+  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk/oracle_8_jdk/jre/lib/i386/libnpjp2.so 1000
+  update-alternatives --set "mozilla-javaplugin.so" "/opt/jdk/oracle_8_jdk/jre/lib/i386/libnpjp2.so"
 }

@@ -25,8 +25,9 @@ source shared-utilities.sh
 
 initial_setup ${verbose} ${bit_type} ${os_version}
 setup_ssh ${verbose} ${user_name} ${ssh_port}
-create_user ${verbose} ${user_name} ${ssh_password}
+create_user ${verbose} ${user_name} ${account_password}
 install_java ${verbose} ${bit_type}
+install_firefox ${verbose} ${bit_type}
 install_vnc ${verbose} ${bit_type}
 setup_bots ${verbose} ${user_name}
 create_resolution_change ${user_name}
