@@ -8,7 +8,7 @@ function initial_setup() {
   bit_type=$2
   debian_version=$3
   
-  if ((${debian_version} < 9)) ; then
+  if [[ "${debian_version}" -lt 9 ]] ; then
     sed -i 's/ftp/archive/g' /etc/apt/sources.list
     sed -i '/security/d' /etc/apt/sources.list
   fi
