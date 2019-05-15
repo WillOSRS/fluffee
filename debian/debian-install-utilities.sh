@@ -7,12 +7,12 @@ function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
   debian_version=$3
-  
+
   if [[ "${debian_version}" -lt 9 ]] ; then
     sed -i 's/ftp/archive/g' /etc/apt/sources.list
     sed -i '/security/d' /etc/apt/sources.list
   fi
-  
+
   apt-get update &> $output
   apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils libxfont1 &> $output
   apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
@@ -23,7 +23,7 @@ function initial_setup() {
   echo 'LANG="en_US.UTF-8"'>/etc/default/locale
   dpkg-reconfigure --frontend=noninteractive locales &> ${output}
   update-locale LANG=en_US.UTF-8 &> ${output}
-  
+
   wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/keyboard-settings.txt
   debconf-set-selections < keyboard-settings.txt &> ${output}
   apt-get install -y keyboard-configuration &> ${output}
