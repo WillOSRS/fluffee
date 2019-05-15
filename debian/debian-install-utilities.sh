@@ -14,20 +14,20 @@ function initial_setup() {
   fi
   
   apt-get update &> $output
-  apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils &> $output
+  apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils libxfont1 &> $output
   apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
 
+  export LANG=en_US.UTF-8
+  export LANGUAGE=en_US.UTF-8
+  sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+  echo 'LANG="en_US.UTF-8"'>/etc/default/locale
+  dpkg-reconfigure --frontend=noninteractive locales &> ${output}
+  update-locale LANG=en_US.UTF-8 &> ${output}
+  
   wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/desktop/keyboard-settings.txt
   debconf-set-selections < keyboard-settings.txt &> ${output}
   apt-get install -y keyboard-configuration &> ${output}
   dpkg-reconfigure keyboard-configuration -f noninteractive &> ${output}
-
-  export LANGUAGE=en_US.UTF-8
-  export LANG=en_US.UTF-8
-  export LC_ALL=en_US.UTF-8
-  locale-gen en_US.UTF-8 &> ${output}
-  dpkg-reconfigure --frontend=noninteractive locales &> ${output}
-  update-locale LANG=en_US.UTF-8 &> ${output}
 }
 
 # Sets the SSH port, blocks root login and allows the new user
