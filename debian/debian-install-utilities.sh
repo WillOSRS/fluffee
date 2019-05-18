@@ -10,7 +10,12 @@ function initial_setup() {
 
   if [[ "${debian_version}" -lt 9 ]] ; then
     sed -i 's/ftp/archive/g' /etc/apt/sources.list
-    sed -i '/security/d' /etc/apt/sources.list
+    sed -i '/wheezy-updates\|jessie-updates\|security/d' /etc/apt/sources.list
+    if [[ "${debian_version}" -eq 8 ]] ; then
+      mkdir /dev/fuse
+      chmod 777 /dev/fuse
+      apt-get install fuse
+    fi
   fi
 
   apt-get update &> $output
