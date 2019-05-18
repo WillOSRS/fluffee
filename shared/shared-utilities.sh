@@ -217,12 +217,12 @@ function setup_vnc() {
   chmod 600 /home/$name/.vnc/passwd &> $output
   su  - $name -c "vncserver" &> $output
   su  - $name -c "vncserver -kill :1" &> $output
-  echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
-  echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
   echo -e '#!/bin/bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
   chmod +x /home/$name/.vnc/xstartup
   sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
   if [ ${operating_system} = "centos" ]; then
+    echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
+    echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
     firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
     firewall-cmd --reload &> $output
   fi

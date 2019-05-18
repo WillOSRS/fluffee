@@ -104,16 +104,18 @@ function install_firefox() {
   output=$(determine_output $1) 
   if [[ $2 == 64 ]] ; then
     bit_type=64
+    java_extension=amd64
   else
     bit_type=
+    java_extension=i386
   fi
   
   wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux${bit_type}&lang=en-US" &> $output
   mkdir -p /usr/local/firefox
-  tar xvjf firefox.tar.bz2 -C /usr/local/firefox/ &> $output
+  tar xvjf firefox.tar.bz2 -C /usr/local/ &> $output
   ln -s /usr/local/firefox/firefox /usr/bin/firefox
   mkdir -p /usr/lib/mozilla/plugins
   update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> $output
-  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk/oracle_jdk_8/jre/lib/i386/libnpjp2.so 1000 &> $output
-  update-alternatives --set "mozilla-javaplugin.so" "/opt/jdk/oracle_jdk_8/jre/lib/i386/libnpjp2.so" &> $output
+  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk/oracle_jdk_8/jre/lib/${java_extension}/libnpjp2.so 1000 &> $output
+  update-alternatives --set "mozilla-javaplugin.so" "/opt/jdk/oracle_jdk_8/jre/lib/${java_extension}/libnpjp2.so" &> $output
 }
