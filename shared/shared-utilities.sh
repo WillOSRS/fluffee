@@ -48,7 +48,7 @@ function setup_vnc_initd_service() {
   wget -O /etc/init.d/vncserver https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/tigervnc/vncserver-initd.service
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
-  if [ ${operating_system} = "centos" ]; then
+  if [ ${operating_system} == "centos" ]; then
     echo "service vncserver start" >> /etc/rc.d/rc.local
     chmod +x /etc/rc.d/rc.local
   fi
@@ -220,7 +220,7 @@ function setup_vnc() {
   echo -e '#!/bin/bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
   chmod +x /home/$name/.vnc/xstartup
   sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
-  if [ ${operating_system} = "centos" ]; then
+  if [ ${operating_system} == "centos" ]; then
     echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
     echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
     firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
