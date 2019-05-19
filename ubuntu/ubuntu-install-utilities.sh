@@ -9,8 +9,9 @@ function initial_setup() {
   ubuntu_version=$3
 
   apt-get update &> $output
-  apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 &> $output
-  apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
+  apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth
+  #libxslt1.1 x11-xkb-utils xkb-data libxfont1 &> $output
+  apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme-full fbpanel lxtask xterm curl &> ${output}
 
   wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/643f7b86f993d89f5fa985cf55662aabdfda9606/shared/keyboard-settings.txt
   debconf-set-selections < keyboard-settings.txt &> ${output}

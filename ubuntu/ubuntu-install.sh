@@ -20,7 +20,7 @@ ssh_port=$6
 bit_type=$7
 os_version=$8
 
-source debian-install-utilities.sh #Allows access to utilities functions
+source ubuntu-install-utilities.sh #Allows access to utilities functions
 source shared-utilities.sh
 
 initial_setup ${verbose} ${bit_type} ${os_version}
@@ -32,5 +32,5 @@ install_vnc ${verbose} ${bit_type}
 setup_bots ${verbose} ${user_name}
 create_resolution_change ${user_name}
 setup_desktop ${verbose} ${user_name}
-setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} debian
+setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} ubuntu
 enable_jar_doubleclick ${user_name}
