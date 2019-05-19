@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to automate the install of a desktop environment and TRiBot on Debian
+# Script to automate the install of a desktop environment and TRiBot on Ubuntu
 # @param $1 - Boolean flag to indicate verbosity of script
 # @param $2 - User name of account to create, as String
 # @param $3 - Password of the account to create
