@@ -1,22 +1,12 @@
 # Runs an initial package update, then installs all base required packages
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @param $2 - Number indicating the bit type of the system, either 32 or 64
-# @param $3 - Number indicating the Debian version, either 7, 8 or 9
+# @param $3 - Number indicating the Ubuntu version, either 12, 14 or 16
 # @return - None
 function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
-  debian_version=$3
-
-  if [[ "${debian_version}" -lt 9 ]] ; then
-    sed -i 's/ftp/archive/g' /etc/apt/sources.list
-    sed -i '/wheezy-updates\|jessie-updates\|security/d' /etc/apt/sources.list
-    if [[ "${debian_version}" -eq 8 ]] ; then
-      mkdir /dev/fuse
-      chmod 777 /dev/fuse
-      apt-get -y install fuse
-    fi
-  fi
+  ubuntu_version=$3
 
   apt-get update &> $output
   apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 &> $output
@@ -68,7 +58,7 @@ function create_user() {
   adduser $name netdev &> $output
 }
 
-# Runs some cleanup work on Debian to remove any services we don't need, to reduce bloat
+# Runs some cleanup work on Ubuntu to remove any services we don't need, to reduce bloat
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @return - None
 function cleanup() {
