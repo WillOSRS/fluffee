@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
-echo "Welcome to Fluffee's TRiBot Server Setup Script"
-echo -n "Loading..."
+echo "Welcome to Fluffee's TRiBot Server Setup Script\n"
+echo "Loading...\n"
 while getopts ":v" OPTIONS ; do
   case ${OPTIONS} in
     v|-verbose)
@@ -45,7 +45,7 @@ function determine_os_version() {
 # Gets the download link for the install script
 # @param $1 - String containing the name of the operating system currently running
 # @return String containing the download link of the install script
-function get_download_link() {
+function get_install_script_link() {
   distro=$1
   if [ "$distro"  = "Ubuntu" ]; then
     echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/ubuntu/ubuntu-install.sh"
@@ -53,6 +53,22 @@ function get_download_link() {
     echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/debian/debian-install.sh"
   elif [ "$distro" = "CentOS" ]; then
     echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/centos/centos-install.sh"
+  else
+    echo "Unsupported OS"
+  fi
+}
+
+# Gets the download link for the utilities script
+# @param $1 - String containing the name of the operating system currently running
+# @return String containing the download link of the utilities script
+function get_utilities_link() {
+  distro=$1
+  if [ "$distro"  = "Ubuntu" ]; then
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/ubuntu/ubuntu-install-utilities.sh"
+  elif [ "$distro" = "Debian" ]; then
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/debian/debian-install-utilities.sh"
+  elif [ "$distro" = "CentOS" ]; then
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/centos/centos-install-utilities.sh"
   else
     echo "Unsupported OS"
   fi
@@ -107,7 +123,8 @@ function get_username() {
 os=$(determine_os_name)
 os_version=$(determine_os_version)
 bit_type=$(get_bit_type)
-link=$(get_download_link $os)
+install_link=$(get_install_script_link $os)
+utilities_link=$(get_utilities_link $os)
 
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
 echo "${os} ${os_version}, ${bit_type} bit has been autodetected"
@@ -117,7 +134,9 @@ read -p "Please enter your desired VNC password: " vnc_password
 ssh_port=$(get_ssh_port $vnc_port)
 read -p "Please enter your desired SSH password: " ssh_password
 
-wget -O install.sh --no-check-cert ${link}
+wget -O install.sh --no-check-cert ${install_link}
+wget --no-check-cert ${utilties_link}
+wget --no-check-cert "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
 
