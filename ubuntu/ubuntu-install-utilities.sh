@@ -12,7 +12,7 @@ function initial_setup() {
   apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 libxfont1 &> $output
   apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme-full fbpanel lxtask xterm curl &> ${output}
 
-  wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/643f7b86f993d89f5fa985cf55662aabdfda9606/shared/keyboard-settings.txt
+  wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-function/shared/keyboard-settings.txt
   debconf-set-selections < keyboard-settings.txt &> ${output}
   apt-get install -y keyboard-configuration &> ${output}
   dpkg-reconfigure keyboard-configuration -f noninteractive &> ${output}
