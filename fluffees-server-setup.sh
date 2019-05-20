@@ -1,7 +1,4 @@
 #!/bin/bash
-clear
-echo "Welcome to Fluffee's TRiBot Server Setup Script\n"
-echo "Loading...\n"
 while getopts ":v" OPTIONS ; do
   case ${OPTIONS} in
     v|-verbose)
@@ -120,6 +117,10 @@ function get_username() {
   echo ${name}
 }
 
+clear
+echo -e "Welcome to Fluffee's TRiBot Server Setup Script\n"
+echo -e "Loading...\n"
+
 os=$(determine_os_name)
 os_version=$(determine_os_version)
 bit_type=$(get_bit_type)
@@ -135,7 +136,7 @@ ssh_port=$(get_ssh_port $vnc_port)
 read -p "Please enter your desired SSH password: " ssh_password
 
 wget -O install.sh --no-check-cert ${install_link}
-wget --no-check-cert ${utilties_link}
+wget --no-check-cert ${utilities_link}
 wget --no-check-cert "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
