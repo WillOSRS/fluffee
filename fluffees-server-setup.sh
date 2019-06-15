@@ -118,14 +118,15 @@ function get_username() {
 }
 
 clear
-echo -e "Welcome to Fluffee's TRiBot Server Setup Script\n"
-echo -e "Loading...\n"
+echo -e "Welcome to Fluffee's TRiBot Server Setup Script"
+echo -e "Loading..."
 
 os=$(determine_os_name)
 os_version=$(determine_os_version)
 bit_type=$(get_bit_type)
 install_link=$(get_install_script_link $os)
 utilities_link=$(get_utilities_link $os)
+clear
 
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "
 echo "${os} ${os_version}, ${bit_type} bit has been autodetected"
