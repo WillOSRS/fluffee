@@ -49,10 +49,10 @@ function setup_vnc_initd_service() {
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
   if [[ ${operating_system} == "centos" ]]; then
-    echo "service vncserver start" >> /etc/rc.d/rc.local
-    chmod +x /etc/rc.d/rc.local
+    chkconfig vncserver on
+  else
+    update-rc.d vncserver defaults
   fi
-  update-rc.d vncserver defaults
 }
 
 # Creates the tiger vnc systemd service
@@ -124,7 +124,7 @@ function setup_desktop() {
 # @param $2 - Name of account where bots should be installed
 # $return - None
 function setup_bots() {
-  output=$(determine_output $1) 
+  output=$(determine_output $1)
   name=$2
 
   mkdir /home/$name/Desktop/ &> $output
