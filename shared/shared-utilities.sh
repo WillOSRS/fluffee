@@ -51,6 +51,7 @@ function setup_vnc_initd_service() {
   if [[ ${operating_system} == "centos" ]]; then
     chkconfig vncserver on
   else
+    echo ${operating_system}
     update-rc.d vncserver defaults
   fi
 }
@@ -225,6 +226,8 @@ function setup_vnc() {
     echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
     firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
     firewall-cmd --reload &> $output
+  else
+    echo ${operating_system}
   fi
   setup_vnc_initd_service $operating_system $name
   service vncserver start &> $output
