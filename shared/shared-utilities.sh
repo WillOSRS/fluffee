@@ -226,6 +226,6 @@ function setup_vnc() {
     firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
     firewall-cmd --reload &> $output
   fi
-  setup_vnc_initd_service $output $name
+  setup_vnc_initd_service $operating_system $name
   service vncserver start &> $output
 }
