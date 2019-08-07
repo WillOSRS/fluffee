@@ -1,4 +1,7 @@
 #!/bin/bash
+
+verbose=false
+
 while getopts ":v" OPTIONS ; do
   case ${OPTIONS} in
     v|-verbose)

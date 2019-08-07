@@ -209,6 +209,9 @@ function setup_vnc() {
   password=$4
   operating_system=$5
 
+  echo "TEMP"
+  echo $@
+
   mkdir /home/$name/.vnc
   echo $password >/home/$name/.vnc/file #TODO: See if we can pipe those together.
   vncpasswd -f </home/$name/.vnc/file >/home/$name/.vnc/passwd
