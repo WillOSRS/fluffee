@@ -229,6 +229,6 @@ function setup_vnc() {
   else
     echo ${operating_system}
   fi
-  setup_vnc_initd_service $output $operating_system $name
+  setup_vnc_initd_service $output $name $operating_system
   service vncserver start &> $output
 }
