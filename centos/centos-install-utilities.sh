@@ -142,7 +142,7 @@ function setup_ssh() {
   port=$3
 
   sed -i "s/#Port 22/Port $port/g" /etc/ssh/sshd_config
-  sed -i "s/#PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
+  sed -ie 's/\(.*\)PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
   echo -e "\nAllowUsers $name root" >> /etc/ssh/sshd_config
   firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
   firewall-cmd --reload &> $output

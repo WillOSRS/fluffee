@@ -36,7 +36,7 @@ function setup_ssh() {
   port=$3
 
   sed -i "s/#Port 22/Port $port/g" /etc/ssh/sshd_config
-  sed -i "s/#PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
+  sed -ie 's/\(.*\)PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
   echo -e "\nAllowUsers $name root" >> /etc/ssh/sshd_config
   service ssh restart &> $output
 }
@@ -88,6 +88,7 @@ function install_java() {
   tar -xzf jdk_install.tar.gz -C /usr/lib/jvm/java-8-oracle/ --strip-components=1 &> $output
   update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-oracle/bin/java 100 &> $output
   update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-oracle/bin/javac 100 &> $output
+  rm /usr/lib/jvm/java-8-oracle/jre/bin/java
   ln -s /usr/lib/jvm/java-8-oracle/bin/java /usr/lib/jvm/java-8-oracle/jre/bin/java
   rm -f jdk_install.tar.gz &> $output
 }
