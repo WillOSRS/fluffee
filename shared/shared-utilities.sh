@@ -130,7 +130,7 @@ function setup_bots() {
 
   mkdir /home/$name/Desktop/ &> $output
   mkdir /home/$name/Desktop/Bots/ &> $output
-  wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/bin/TRiBot_Loader.jar &> $output
+  wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/download.php &> $output
   wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> $output
   chown $name /home/$name/Desktop/Bots
   chmod +x /home/$name/Desktop/Bots #TODO: Just give run permissions to all .jars

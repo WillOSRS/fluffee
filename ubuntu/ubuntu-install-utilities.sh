@@ -9,7 +9,7 @@ function initial_setup() {
   ubuntu_version=$3
 
   apt-get update &> $output
-  apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 libxfont1 &> $output
+  apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 libxfont1 x11-xserver-utils &> $output
   apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme-full fbpanel lxtask xterm curl &> ${output}
 
   wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-function/shared/keyboard-settings.txt
@@ -84,10 +84,11 @@ function install_java() {
   
   jdk_download=$(get_jdk_download_link $output $2 tar.gz) &> $output
   wget -O jdk_install.tar.gz --no-check-cert ${jdk_download} &> $output
-  mkdir -p /opt/jdk/oracle_jdk_8/ &> $output
-  tar -xzf jdk_install.tar.gz -C /opt/jdk/oracle_jdk_8/ --strip-components=1 &> $output
-  update-alternatives --install /usr/bin/java java /opt/jdk/oracle_jdk_8/bin/java 100 &> $output
-  update-alternatives --install /usr/bin/javac javac /opt/jdk/oracle_jdk_8/bin/javac 100 &> $output
+  mkdir -p /usr/lib/jvm/java-8-oracle/ &> $output
+  tar -xzf jdk_install.tar.gz -C /usr/lib/jvm/java-8-oracle/ --strip-components=1 &> $output
+  update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-oracle/bin/java 100 &> $output
+  update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-oracle/bin/javac 100 &> $output
+  ln -s /usr/lib/jvm/java-8-oracle/bin/java /usr/lib/jvm/java-8-oracle/jre/bin/java
   rm -f jdk_install.tar.gz &> $output
 }
 
