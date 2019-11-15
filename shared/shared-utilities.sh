@@ -130,7 +130,8 @@ function setup_bots() {
 
   mkdir /home/$name/Desktop/ &> $output
   mkdir /home/$name/Desktop/Bots/ &> $output
-  wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar https://tribot.org/download.php &> $output
+  wget --no-check-cert -O get_tribot_loader_download.sh https://bitbucket.org/!api/2.0/snippets/Fluffee/Argznz/9ac7e995c80b80326106d278da6d397be99b20c4/files/get_tribot_loader_download.sh
+  wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar $(bash get_tribot_loader_download.sh) &> $output
   wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> $output
   chown $name /home/$name/Desktop/Bots
   chmod +x /home/$name/Desktop/Bots #TODO: Just give run permissions to all .jars
