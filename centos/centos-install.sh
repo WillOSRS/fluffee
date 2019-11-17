@@ -26,6 +26,7 @@ source shared-utilities.sh
 initial_setup ${verbose} ${bit_type} ${centos_version}
 setup_ssh ${verbose} ${user_name} ${ssh_port}
 install_lxtask ${verbose} ${bit_type}
+install_leafpad ${verbose} ${bit_type}
 install_fbpanel ${verbose} ${bit_type} ${centos_version}
 create_user ${verbose} ${user_name} ${account_password}
 install_java ${verbose} ${bit_type}

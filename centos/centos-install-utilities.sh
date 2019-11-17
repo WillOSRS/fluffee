@@ -28,7 +28,7 @@ function get_fedora_version() {
   wget -O package-temp.txt ${fedora_base} &> ${output}
   sed -i '/\[DIR\]/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\/\">.*/\1/" package-temp.txt
-  echo $(cat package-temp.txt | sort -n | tail -1 && rm -f package-temp.txt)
+  echo $(cat package-temp.txt | sed '/.*[0-9].*/!d' | sort -n | awk -F: '$1<=30' | tail -1 && rm -f package-temp.txt)
 }
 
 # Gets the lxtask rpm download link from the fedora packages host
@@ -53,6 +53,7 @@ function get_fedora_download_link() {
   packages_page+="/Everything/${bit_type}/os/Packages/${package_letter}/"
   wget -O package-temp.txt ${packages_page} &> ${output}
   sed -i '/'"${package_name}"'/!d' package-temp.txt
+  sed -i '/doc/d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\">.*/\1/" package-temp.txt
   echo ${packages_page}$(cat package-temp.txt && rm -f package-temp.txt)
 }
@@ -69,6 +70,20 @@ function install_lxtask() {
   wget -O lxtask.rpm ${download_link} &> ${output}
   yum -y localinstall lxtask.rpm
   rm -f lxtask.rpm
+}
+
+# Installs leafpad by downloading from the Fedora repo
+# @param $1 - Boolean flag indicating verbostiy of the procedure
+# @param $2 - Number indicating the bit type to download, either 32 or 64
+# @return None
+function install_leafpad() {
+  output=$(determine_output $1)
+  bit_type=$2
+
+  download_link=$(get_fedora_download_link ${output} ${bit_type} leafpad)
+  wget -O leafpad.rpm ${download_link} &> ${output}
+  yum -y localinstall leafpad.rpm
+  rm -f leafpad.rpm
 }
 
 # Installs fbpanel by downloading from the Fedora repo
@@ -126,7 +141,7 @@ function initial_setup() {
   install_all ${output} '/root/updates/*.rpm'
   yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
   install_all ${output} '/root/updates/*.rpm'
-  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme.noarch &> ${output}
+  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme.noarch unzip &> ${output}
   install_all ${output} '/root/updates/*.rpm'
   rm -rf /root/updates/
 }
