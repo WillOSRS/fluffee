@@ -141,7 +141,7 @@ function initial_setup() {
   install_all ${output} '/root/updates/*.rpm'
   yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
   install_all ${output} '/root/updates/*.rpm'
-  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme.noarch unzip &> ${output}
+  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme.noarch unzip xarchiver &> ${output}
   install_all ${output} '/root/updates/*.rpm'
   rm -rf /root/updates/
 }
@@ -152,7 +152,7 @@ function initial_setup() {
 # @param $3 - Port number to permit SSH on
 # @return - None
 function setup_ssh() {
-  output=$(determine_output $1) 
+  output=$(determine_output $1)
   name=$2
   port=$3
 
@@ -170,10 +170,10 @@ function setup_ssh() {
 # @param $3 - Password of the user to create
 # @return - None
 function create_user() {
-  output=$(determine_output $1) 
+  output=$(determine_output $1)
   name=$2
   password=$3
-  
+
   adduser $name &> $output
   echo "$name:$password" | chpasswd
   usermod -aG wheel $name &> $output
@@ -186,8 +186,7 @@ function create_user() {
 # @param $2 - Bit type of the operating system as int, 32 or 64
 # @return - None
 function install_java() {
-  output=$(determine_output $1) 
-  
+  output=$(determine_output $1)
   jdk_download=$(get_jdk_download_link $output $2 rpm)
   wget -O jdk_install.rpm --header "Cookie: oraclelicense=accept-securebackup-cookie" --no-check-cert ${jdk_download}
   yum -y localinstall jdk_install.rpm
