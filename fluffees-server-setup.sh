@@ -48,11 +48,11 @@ function determine_os_version() {
 function get_install_script_link() {
   distro=$1
   if [ "$distro"  = "Ubuntu" ]; then
-    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/ubuntu/ubuntu-install.sh"
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/ubuntu/ubuntu-install.sh"
   elif [ "$distro" = "Debian" ]; then
-    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/debian/debian-install.sh"
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/debian/debian-install.sh"
   elif [ "$distro" = "CentOS" ]; then
-    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/centos/centos-install.sh"
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/centos/centos-install.sh"
   else
     echo "Unsupported OS"
   fi
@@ -64,11 +64,11 @@ function get_install_script_link() {
 function get_utilities_link() {
   distro=$1
   if [ "$distro"  = "Ubuntu" ]; then
-    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/ubuntu/ubuntu-install-utilities.sh"
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/ubuntu/ubuntu-install-utilities.sh"
   elif [ "$distro" = "Debian" ]; then
-    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/debian/debian-install-utilities.sh"
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/debian/debian-install-utilities.sh"
   elif [ "$distro" = "CentOS" ]; then
-    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/centos/centos-install-utilities.sh"
+    echo "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/centos/centos-install-utilities.sh"
   else
     echo "Unsupported OS"
   fi
@@ -141,7 +141,7 @@ read -p "Please enter your desired SSH password: " ssh_password
 
 wget -O install.sh --no-check-cert ${install_link}
 wget --no-check-cert ${utilities_link}
-wget --no-check-cert "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-functions/shared/shared-utilities.sh"
+wget --no-check-cert "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
 
