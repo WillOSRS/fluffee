@@ -1,31 +1,35 @@
 #!/bin/sh
+
 ### BEGIN INIT INFO
-# Provides:          tigervncserver
+# Provides:          vncserver
 # Required-Start:    $local_fs
 # Required-Stop:     $local_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start/stop tigervncserver
+# Short-Description: Start/stop vncserver
 ### END INIT INFO
 
 ### Customize this entry
 # Set the USER variable to the name of the user to start tigervncserver under
-export USER='bots'
+export USER='user_name'
 ### End customization required
-
-eval cd ~$USER
 
 case "$1" in
   start)
-    su $USER -c '/usr/local/bin/vncserver :1'
-    echo "Starting TigerVNC server for $USER "
+    su $USER -c '/usr/bin/vncserver :1'
+    echo "Starting VNC server for $USER "
     ;;
   stop)
     pkill Xvnc
-    echo "Tigervncserver stopped"
+    echo "VNC Server stopped"
+    ;;
+  restart)
+    pkill Xvnc
+    su $USER -c '/usr/bin/vncserver :1'
+    echo "VNC Server restarted"
     ;;
   *)
-    echo "Usage: /etc/init.d/tigervncserver {start|stop}"
+    echo "Usage: /etc/init.d/vncserver {start|stop|restart}"
     exit 1
     ;;
 esac
