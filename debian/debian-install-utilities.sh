@@ -16,15 +16,22 @@ function initial_setup() {
       chmod 777 /dev/fuse
       apt-get -y install fuse
     fi
+    apt-get update &> ${output}
+    apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 x11-xserver-utils &> ${output}
+    apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
+
+    wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
+    debconf-set-selections < keyboard-settings.txt &> ${output}
+    apt-get install -y keyboard-configuration &> ${output}
+  else
+    apt update &> ${output}
+    apt install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 x11-xserver-utils &> ${output}
+    apt install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
+
+    wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
+    debconf-set-selections < keyboard-settings.txt &> ${output}
+    apt install -y keyboard-configuration &> ${output}
   fi
-
-  apt-get update &> $output
-  apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 x11-xserver-utils &> $output
-  apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
-
-  wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
-  debconf-set-selections < keyboard-settings.txt &> ${output}
-  apt-get install -y keyboard-configuration &> ${output}
   dpkg-reconfigure keyboard-configuration -f noninteractive &> ${output}
 
   export LANG=en_US.UTF-8
