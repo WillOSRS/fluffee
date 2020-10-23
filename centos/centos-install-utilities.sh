@@ -28,7 +28,7 @@ function get_fedora_version() {
   wget -O package-temp.txt ${fedora_base} &> ${output}
   sed -i '/\[DIR\]/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\/\">.*/\1/" package-temp.txt
-  echo $(cat package-temp.txt | sed '/.*[0-9].*/!d' | sort -n | awk -F: '$1<=30' | tail -1 && rm -f package-temp.txt)
+  echo $(cat package-temp.txt | sed '/.*[0-9].*/!d' | sort -n | awk -F: '$1<=1000000' | tail -1 && rm -f package-temp.txt)
 }
 
 # Gets the lxtask rpm download link from the fedora packages host
