@@ -139,9 +139,9 @@ read -p "Please enter your desired VNC password: " vnc_password
 ssh_port=$(get_ssh_port $vnc_port)
 read -p "Please enter your desired SSH password: " ssh_password
 
-wget -O install.sh --no-check-cert ${install_link}
-wget --no-check-cert ${utilities_link}
-wget --no-check-cert "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh"
+curl -k -o "install.sh" ${install_link}
+curl -k -o "install-utilities.sh" ${utilities_link}
+curl -k -o "shared-utilities.sh" "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
 

@@ -20,7 +20,7 @@ ssh_port=$6
 bit_type=$7
 centos_version=$8
 
-source centos-install-utilities.sh #Allows access to utilities functions
+source install-utilities.sh #Allows access to utilities functions
 source shared-utilities.sh
 
 initial_setup ${verbose} ${bit_type} ${centos_version}

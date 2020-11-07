@@ -20,7 +20,7 @@ ssh_port=$6
 bit_type=$7
 os_version=$8
 
-source debian-install-utilities.sh #Allows access to utilities functions
+source install-utilities.sh #Allows access to utilities functions
 source shared-utilities.sh
 
 initial_setup ${verbose} ${bit_type} ${os_version}

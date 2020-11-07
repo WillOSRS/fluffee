@@ -144,12 +144,12 @@ function install_tribot_15() {
 
   mkdir -p /opt/tribot &> $output
   wget --no-check-cert -O tribot.tar.gz http://installers.tribot.org/TRiBot-unix-latest.tar.gz &> $output
-  tar -xzf tribot.tar.gz -C /opt/tribot --strip-components=1 &> $determine_output
+  tar -xzf tribot.tar.gz -C /opt/tribot/ --strip-components=1 &> $determine_output
   chown -R ${name} /opt/tribot/*
   rm -rf tribot.tar.gz
-  echo "#!/usr/bin/env bash" >> "/home/${name}/run_tribot.sh"
-  echo "" >> "/home/${name}/run_tribot.sh"
-  echo "bash /opt/tribot/tribot-gradle-launcher/gradlew -p /opt/tribot/tribot-gradle-launcher runDetached $@" >> "/home/${name}/run_tribot.sh"
+  echo "#!/usr/bin/env bash" >> "/home/${name}/Desktop/run_tribot.sh"
+  echo "" >> "/home/${name}/Desktop/run_tribot.sh"
+  echo "bash /opt/tribot/tribot-gradle-launcher/gradlew -p /opt/tribot/tribot-gradle-launcher runDetached $@" >> "/home/Desktop/${name}/run_tribot.sh"
 
   chmod +x "/home/${name}/run_tribot.sh"
   chown ${name} "/home/${name}/run_tribot.sh"
