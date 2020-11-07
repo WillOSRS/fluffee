@@ -120,23 +120,60 @@ function setup_desktop() {
   dbus-uuidgen > /var/lib/dbus/machine-id
 }
 
-# Creates bot folder, downloads TRiBot and OSBuddy
+# Creates bot folder, downloads TRiBot and OpenOSRS
 # @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
 # @param $2 - Name of account where bots should be installed
-# $return - None
+# @return - None
 function setup_bots() {
   output=$(determine_output $1)
   name=$2
 
   mkdir /home/$name/Desktop/ &> $output
-  mkdir /home/$name/Desktop/Bots/ &> $output
-  wget --no-check-cert -O get_tribot_loader_download.sh https://bitbucket.org/!api/2.0/snippets/Fluffee/Argznz/9ac7e995c80b80326106d278da6d397be99b20c4/files/get_tribot_loader_download.sh
-  wget --no-check-cert -O /home/$name/Desktop/Bots/TRiBot_Loader.jar $(bash get_tribot_loader_download.sh) &> $output
-  wget --no-check-cert -O /home/$name/Desktop/Bots/OSBuddy.jar http://cdn.rsbuddy.com/live/f/loader/OSBuddy.jar?x=10 &> $output
-  chown $name /home/$name/Desktop/Bots
-  chmod +x /home/$name/Desktop/Bots #TODO: Just give run permissions to all .jars
+  
+  install_tribot_15 $output $name
+  download_openosrs $output $name
 }
 
+# Installs TRiBot 15
+# @param $1 - boolean flag indicating whether or not we want to run in verbose
+# @param $2 - Name of the account being used
+# @return - None
+function install_tribot_15() {
+  output=$(determine_output $1)
+  name=$2
+
+  mkdir -p /opt/tribot &> $output
+  wget --no-check-cert -O tribot.tar.gz http://installers.tribot.org/TRiBot-unix-latest.tar.gz &> $output
+  tar -xzf tribot.tar.gz -C /opt/tribot --strip-components=1 &> $determine_output
+  chown -R ${name} /opt/tribot/*
+  rm -rf tribot.tar.gz
+  echo "#!/usr/bin/env bash" >> "/home/${name}/run_tribot.sh"
+  echo "" >> "/home/${name}/run_tribot.sh"
+  echo "bash /opt/tribot/tribot-gradle-launcher/gradlew -p /opt/tribot/tribot-gradle-launcher runDetached $@" >> "/home/${name}/run_tribot.sh"
+
+  chmod +x "/home/${name}/run_tribot.sh"
+  chown ${name} "/home/${name}/run_tribot.sh"
+}
+
+# Downloads the OpenOSRS launcher from their Github by parsing the latest release page to find the newest version
+# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
+# @param $2 - Name of account where bots should be installed
+# @return - None
+function download_openosrs() {
+  output=$(determine_output $1)
+  name=$2
+  temp_file="temp_openosrs.txt"
+
+  curl -o ${temp_file} -L "https://github.com/open-osrs/launcher/releases/latest" &> ${determine_output}
+  sed -i '/\.jar/!d' ${temp_file}
+  sed -i '/href/!d' ${temp_file}
+  download_link_ending=$(cat test.txt | sed -e 's/.*href=\"\(.*\)\"\ rel=.*/\1/')
+
+  wget -O "OpenOSRS.jar" "https://github.com${download_link_ending}" &> ${determine_output}
+  mv "OpenOSRS.jar" "/home/${name}/OpenOSRS.jar"
+  chmod +x "/home/${name}/OpenOSRS,jar"
+  chown ${name} "/home/${name}/OpenOSRS.jar"
+}
 
 # Creates shortcuts on the desktop to allow quickly changing VNC resolution
 # @param $1 - Name of the user with the desktop to create the shortcuts on

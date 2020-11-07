@@ -97,7 +97,11 @@ function install_fbpanel() {
   centos_version=$3
   
   if [[ ${centos_version} = 7 ]] ; then
-    download_link=$(get_fedora_download_link ${output} ${bit_type} fbpanel)
+    if [[ ${bit_type} = 64 ]] ; then
+      download_link="https://download-ib01.fedoraproject.org/pub/epel/6/x86_64/Packages/f/fbpanel-6.1-4.el6.x86_64.rpm"
+    else
+      download_link="https://download-ib01.fedoraproject.org/pub/epel/6/i386/Packages/f/fbpanel-6.1-4.el6.i686.rpm"
+    fi
     wget -O fbpanel.rpm ${download_link} &> ${output}
     yum -y install fbpanel.rpm
     rm -f fbpanell.rpm
