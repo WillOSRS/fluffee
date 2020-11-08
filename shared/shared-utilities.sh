@@ -149,7 +149,7 @@ function install_tribot_15() {
   rm -rf tribot.tar.gz
   echo "#!/usr/bin/env bash" >> "/home/${name}/Desktop/run_tribot.sh"
   echo "" >> "/home/${name}/Desktop/run_tribot.sh"
-  echo "bash /opt/tribot/tribot-gradle-launcher/gradlew -p /opt/tribot/tribot-gradle-launcher runDetached $@" >> "/home/Desktop/${name}/run_tribot.sh"
+  echo "bash /opt/tribot/tribot-gradle-launcher/gradlew -p /opt/tribot/tribot-gradle-launcher runDetached $@" >> "/home/${name}/Desktop/run_tribot.sh"
 
   chmod +x "/home/${name}/run_tribot.sh"
   chown ${name} "/home/${name}/run_tribot.sh"
