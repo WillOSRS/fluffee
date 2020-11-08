@@ -111,7 +111,7 @@ function install_fbpanel() {
   bit_type=$2
   centos_version=$3
   
-  if [[ ${centos_version} = 7 ]] ; then
+  if [[ ${centos_version} == 7 ]] ; then
     if [[ ${bit_type} = 64 ]] ; then
       download_link="https://download-ib01.fedoraproject.org/pub/epel/6/x86_64/Packages/f/fbpanel-6.1-4.el6.x86_64.rpm"
     else
@@ -150,7 +150,7 @@ function initial_setup() {
   centos_version=$3
 
   yum -y update &> $output
-  if [[ $centos_version} = 8 ]] ; then
+  if [[ $centos_version} == 8 ]] ; then
     yum -y install $(get_raven_repo_download_link $output) &> ${output}
   fi
 

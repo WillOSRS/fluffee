@@ -142,9 +142,9 @@ function install_tribot_15() {
   output=$(determine_output $1)
   name=$2
 
-  mkdir -p /opt/tribot &> $output
+  mkdir -p /opt/tribot &> ${output}
   wget --no-check-cert -O tribot.tar.gz http://installers.tribot.org/TRiBot-unix-latest.tar.gz &> $output
-  tar -xzf tribot.tar.gz -C /opt/tribot/ --strip-components=1 &> $determine_output
+  tar -xzf tribot.tar.gz -C /opt/tribot/ --strip-components=1 &> ${output}
   chown -R ${name} /opt/tribot/*
   rm -rf tribot.tar.gz
   echo "#!/usr/bin/env bash" >> "/home/${name}/Desktop/run_tribot.sh"
@@ -164,12 +164,12 @@ function download_openosrs() {
   name=$2
   temp_file="temp_openosrs.txt"
 
-  curl -o ${temp_file} -L "https://github.com/open-osrs/launcher/releases/latest" &> ${determine_output}
+  curl -o ${temp_file} -L "https://github.com/open-osrs/launcher/releases/latest" &> ${output}
   sed -i '/\.jar/!d' ${temp_file}
   sed -i '/href/!d' ${temp_file}
   download_link_ending=$(cat test.txt | sed -e 's/.*href=\"\(.*\)\"\ rel=.*/\1/')
 
-  wget -O "OpenOSRS.jar" "https://github.com${download_link_ending}" &> ${determine_output}
+  wget -O "OpenOSRS.jar" "https://github.com${download_link_ending}" &> ${output}
   mv "OpenOSRS.jar" "/home/${name}/OpenOSRS.jar"
   chmod +x "/home/${name}/OpenOSRS,jar"
   chown ${name} "/home/${name}/OpenOSRS.jar"
