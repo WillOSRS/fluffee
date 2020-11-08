@@ -150,7 +150,7 @@ function initial_setup() {
   centos_version=$3
 
   yum -y update &> $output
-  if [[ $centos_version} == 8 ]] ; then
+  if [[ ${centos_version} == 8 ]] ; then
     yum -y install $(get_raven_repo_download_link $output) &> ${output}
   fi
 
