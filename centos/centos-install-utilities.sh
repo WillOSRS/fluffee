@@ -17,6 +17,21 @@ function get_nox_download_link() {
   echo "http://li.nux.ro/download/nux/dextop/el6/${bit_type}/nux-dextop-release-0-2.el6.nux.noarch.rpm"
 }
 
+# Parses the dyn.su packages page to find the raven-release repo rpm and returns the link
+# @param $1 - String determining where the output will be sent
+# @return String containing the download link for the raven repo
+function get_raven_repo_download_link() {
+  output=$1
+  raven_link="https://pkgs.dyn.su/el8/base/x86_64/"
+
+  curl -k -s -o raven.txt ${raven_link}
+  sed -i '/raven-release/!d' raven.txt
+  raven_link=${raven_link}$(cat raven.txt | sed -e "s/.*href=\"\(.*\)\"\ title.*/\1/")
+
+  rm -f raven.txt
+  echo ${raven_link}
+}
+
 # Parses the fedora download site to determine the latest version
 # @param $1 - String where command output will be sent
 # @param $2 - The base fedora download site to parse from
@@ -134,20 +149,19 @@ function initial_setup() {
   bit_type=$2
   centos_version=$3
 
-  yum -y update --downloaddir=/root/updates --downloadonly &> $output
-  install_all ${output} '/root/updates/*.rpm'
+  yum -y update &> $output
+  if [[ $centos_version} = 8 ]] ; then
+    yum -y install $(get_raven_repo_download_link $output) &> ${output}
+  fi
+
   yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-${3}.noarch.rpm &> $output
   yum -y install $(get_nox_download_link $output $bit_type) &> $output
-  yum -y update --downloaddir=/root/updates --downloadonly &> $output
-  install_all ${output} '/root/updates/*.rpm'
+  yum -y update &> $output
   yum -y history sync &> $output
-  yum -y install --downloaddir=/root/updates --downloadonly perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
-  install_all ${output} '/root/updates/*.rpm'
-  yum -y groupinstall --downloaddir=/root/updates --downloadonly fonts
-  install_all ${output} '/root/updates/*.rpm'
-  yum -y install --downloaddir=/root/updates --downloadonly gtk2-engines firefox openbox pcmanfm gnome-icon-theme.noarch unzip xarchiver &> ${output}
-  install_all ${output} '/root/updates/*.rpm'
-  rm -rf /root/updates/
+  yum -y install perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
+  yum -y groupinstall fonts
+  yum -y install firefox openbox pcmanfm unzip &> ${output}
+  yum -y install gtk2-engines gnome-icon-theme.noarch &> ${output}
 }
 
 # Sets the SSH port, blocks root login and allows the new user
