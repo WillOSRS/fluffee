@@ -144,6 +144,7 @@ curl -k -o "install-utilities.sh" ${utilities_link}
 curl -k -o "shared-utilities.sh" "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
+sudo chown -R ${user_name} "/home/${user_name}/*"
 
 
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "

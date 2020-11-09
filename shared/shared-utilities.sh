@@ -147,12 +147,22 @@ function install_tribot_15() {
   tar -xzf tribot.tar.gz -C /opt/tribot/ --strip-components=1 &> ${output}
   chown -R ${name} /opt/tribot/*
   rm -rf tribot.tar.gz
-  echo "#!/usr/bin/env bash" >> "/home/${name}/Desktop/run_tribot.sh"
-  echo "" >> "/home/${name}/Desktop/run_tribot.sh"
-  echo "bash /opt/tribot/tribot-gradle-launcher/gradlew -p /opt/tribot/tribot-gradle-launcher runDetached $@" >> "/home/${name}/Desktop/run_tribot.sh"
 
-  chmod +x "/home/${name}/run_tribot.sh"
-  chown ${name} "/home/${name}/run_tribot.sh"
+  mkdir -p /home/${name}/.local/share/applications/
+  touch /home/${name}/.local/share/applications/TRiBot.desktop
+
+  tribot_icon_path=$(ls -ad /opt/tribot/.install4j/* | grep 2x | grep -v i4j)
+
+  echo "[Desktop Entry]" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Encoding=UTF-8" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Version=1.0" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Type=Application" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Terminal=false" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Exec=/opt/tribot/TRiBot" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Name=TRiBot" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+  echo "Icon=${tribot_icon_path}" >> "/home/${name}/.local/share/applications/TRiBot.desktop"
+
+  cp "/home/${name}/.local/share/applications/TRiBot.desktop" "/home/${name}/Desktop"
 }
 
 # Downloads the OpenOSRS launcher from their Github by parsing the latest release page to find the newest version
@@ -169,10 +179,12 @@ function download_openosrs() {
   sed -i '/href/!d' ${temp_file}
   download_link_ending=$(cat test.txt | sed -e 's/.*href=\"\(.*\)\"\ rel=.*/\1/')
 
+  mkdir -p /home/${name}/.local/bin/openosrs/
+
   wget -O "OpenOSRS.jar" "https://github.com${download_link_ending}" &> ${output}
-  mv "OpenOSRS.jar" "/home/${name}/OpenOSRS.jar"
-  chmod +x "/home/${name}/OpenOSRS,jar"
-  chown ${name} "/home/${name}/OpenOSRS.jar"
+  mv "OpenOSRS.jar" "/home/${name}/Desktop/OpenOSRS.jar"
+  chmod +x "/home/${name}/Desktop/OpenOSRS,jar"
+  chown ${name} "/home/${name}/Desktop/OpenOSRS.jar"
 }
 
 # Creates shortcuts on the desktop to allow quickly changing VNC resolution

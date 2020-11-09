@@ -111,8 +111,8 @@ function install_fbpanel() {
   bit_type=$2
   centos_version=$3
   
-  if [[ ${centos_version} == 7 ]] ; then
-    if [[ ${bit_type} = 64 ]] ; then
+  if [[ ${centos_version} >= 7 ]] ; then
+    if [[ ${bit_type} == 64 ]] ; then
       download_link="https://download-ib01.fedoraproject.org/pub/epel/6/x86_64/Packages/f/fbpanel-6.1-4.el6.x86_64.rpm"
     else
       download_link="https://download-ib01.fedoraproject.org/pub/epel/6/i386/Packages/f/fbpanel-6.1-4.el6.i686.rpm"
