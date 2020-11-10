@@ -8,7 +8,7 @@ TIGERVNC_LINK="https://dl.bintray.com/tigervnc/stable/"
 function get_nox_download_link() {
   output=$1
 
-  if [[ $2 == 32 ]] ; then
+  if [[ $2 -eq 32 ]] ; then
     bit_type="i386"
   else
     bit_type="x86_64"
@@ -111,8 +111,8 @@ function install_fbpanel() {
   bit_type=$2
   centos_version=$3
   
-  if [[ ${centos_version} >= 7 ]] ; then
-    if [[ ${bit_type} == 64 ]] ; then
+  if [[ ${centos_version} -ge 7 ]] ; then
+    if [[ ${bit_type} -eq 64 ]] ; then
       download_link="https://download-ib01.fedoraproject.org/pub/epel/6/x86_64/Packages/f/fbpanel-6.1-4.el6.x86_64.rpm"
     else
       download_link="https://download-ib01.fedoraproject.org/pub/epel/6/i386/Packages/f/fbpanel-6.1-4.el6.i686.rpm"
@@ -150,7 +150,7 @@ function initial_setup() {
   centos_version=$3
 
   yum -y update &> $output
-  if [[ ${centos_version} == 8 ]] ; then
+  if [[ ${centos_version} -eq 8 ]] ; then
     yum -y install $(get_raven_repo_download_link $output) &> ${output}
   fi
 

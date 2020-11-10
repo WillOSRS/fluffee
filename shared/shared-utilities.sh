@@ -21,7 +21,7 @@ function determine_output() {
 # @return Name of the package to download
 function get_vnc_version() {
   output=$(determine_output $1)
-  if [[ "$1" == 64 ]] ; then
+  if [[ "$1" -eq 64 ]] ; then
     x64="!"
   else
     x64=""
@@ -83,7 +83,7 @@ function get_jdk_downloads_page() {
 # @return The download link for the JDK
 function get_jdk_download_link() {
   output=$1
-  if [[ $2 == 32 ]] ; then
+  if [[ $2 -eq 32 ]] ; then
     bit_type="i586"
   else
     bit_type="x64"

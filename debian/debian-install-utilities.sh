@@ -116,7 +116,7 @@ function install_java() {
 # @return - None
 function install_firefox() {
   output=$(determine_output $1) 
-  if [[ $2 == 64 ]] ; then
+  if [[ $2 -eq 64 ]] ; then
     bit_type=64
     java_extension=amd64
   else
