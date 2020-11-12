@@ -24,7 +24,7 @@ function get_raven_repo_download_link() {
   output=$1
   raven_link="https://pkgs.dyn.su/el8/base/x86_64/"
 
-  curl -k -s -o raven.txt ${raven_link}
+  safe_download ${output} "raven.txt" ${raven_link}
   sed -i '/raven-release/!d' raven.txt
   raven_link=${raven_link}$(cat raven.txt | sed -e "s/.*href=\"\(.*\)\"\ title.*/\1/")
 

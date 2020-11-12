@@ -287,8 +287,8 @@ function setup_vnc() {
 
 function safe_download {
   output=$1
-  url=$2
-  output_filename=$3
+  output_filename=$2
+  url=$3
 
   if [[ -x "$(which wget)" ]] ; then
     wget --no-check-cert -O ${output_filename} ${url} &> ${output}
