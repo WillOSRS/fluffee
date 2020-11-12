@@ -179,7 +179,7 @@ function download_openosrs() {
   safe_download ${output} ${temp_file} "https://github.com/open-osrs/launcher/releases/latest"
   sed -i '/\.jar/!d' ${temp_file}
   sed -i '/href/!d' ${temp_file}
-  download_link_ending=$(cat test.txt | sed -e 's/.*href=\"\(.*\)\"\ rel=.*/\1/')
+  download_link_ending=$(cat ${temp_file} | sed -e 's/.*href=\"\(.*\)\"\ rel=.*/\1/')
 
   mkdir -p /home/${name}/.local/bin/openosrs/
 
