@@ -27,7 +27,7 @@ function get_vnc_version() {
     x64=""
   fi
 
-  wget -O tiger.txt ${TIGERVNC_LINK} &> $output
+  safe_download ${output} "tiger.txt" ${TIGERVNC_LINK}
   sed -i "/.*tigervnc-[1-9].*86.*/!d" tiger.txt
   sed -i "/.*.tar.gz.*/!d" tiger.txt
   sed -i "/.*x86.*/${x64}d" tiger.txt
@@ -45,7 +45,7 @@ function setup_vnc_initd_service() {
   name=$2
   operating_system=$3
 
-  wget -O /etc/init.d/vncserver https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/tigervnc/vncserver-initd.service
+  safe_download ${output} "/etc/init.d/vncserver" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/tigervnc/vncserver-initd.service
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
   if [[ ${operating_system} == "centos" ]]; then
@@ -70,7 +70,7 @@ function setup_vnc_systemd_service() {
 # @return Extension to the base oracle link where the JDK 8 downloads are found
 function get_jdk_downloads_page() {
   output=$1
-  wget -O java_downloads.txt ${BASE_JAVA}${JAVA_DOWNLOAD_PAGE} &> $output
+  safe_download ${output} "java_downloads.txt" ${BASE_JAVA}${JAVA_DOWNLOAD_PAGE}
   sed -i "/.*jdk8-downloads.*/!d" java_downloads.txt
   sed -i "s/.*href=\"\(.*\)\"><img.*/\1/" java_downloads.txt
   echo $(cat java_downloads.txt | tail -1 && rm -f java_downloads.txt)
@@ -91,7 +91,9 @@ function get_jdk_download_link() {
 
   file_extension=$3
 
-  link=$(curl -s https://api.github.com/repos/frekele/oracle-java/releases/latest | grep "browser_download_url.*jdk.*linux-${bit_type}.*${file_extension}\"" | cut -d : -f 2,3 | sed -e 's/^ "//' -e 's/"$//')
+  safe_download ${output} "jdk_latest.txt" "https://api.github.com/repos/frekele/oracle-java/releases/latest"
+
+  link=$(cat "jdk_latest.txt" | grep "browser_download_url.*jdk.*linux-${bit_type}.*${file_extension}\"" | cut -d : -f 2,3 | sed -e 's/^ "//' -e 's/"$//')
   echo ${link}
 }
 
@@ -106,11 +108,11 @@ function setup_desktop() {
   mkdir -p /home/$name/.config/fbpanel &> $output
   mkdir -p /home/$name/.config/pcmanfm/default &> $output
 
-  wget -O /home/$name/.config/openbox/autostart https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/openbox-autostart.txt &> $output
-  wget -O /home/$name/.config/fbpanel/default https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/fbpanel-default-config.txt &> $output
-  wget -O /home/$name/.config/pcmanfm/default/desktop-items-0.conf https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/pcmanfm-desktop-items.txt &> $output
-  wget -O /home/$name/.config/pcmanfm/default/pcmanfm.conf https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/pcmanfm-default-config.txt &> $output
-  wget -O /home/$name/.gtkrc-2.0 https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/gtk-settings.txt &> $output
+  safe_download ${output} "/home/$name/.config/openbox/autostart" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/openbox-autostart.txt
+  safe_download ${output} "/home/$name/.config/fbpanel/default" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/fbpanel-default-config.txt
+  safe_download ${output} "/home/$name/.config/pcmanfm/default/desktop-items-0.conf" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/pcmanfm-desktop-items.txt
+  safe_download ${output} "/home/$name/.config/pcmanfm/default/pcmanfm.conf" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/pcmanfm-default-config.txt
+  safe_download ${output} "/home/$name/.gtkrc-2.0" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/desktop/gtk-settings.txt
   sed -i "s/user_name/$name/g" /home/$name/.gtkrc-2.0
   chown -R ${name}:${name} /home/${name}/*
   chown -R ${name}:${name} /home/${name}/.*
@@ -143,7 +145,7 @@ function install_tribot_15() {
   name=$2
 
   mkdir -p /opt/tribot &> ${output}
-  wget --no-check-cert -O tribot.tar.gz http://installers.tribot.org/TRiBot-unix-latest.tar.gz &> $output
+  safe_download ${output} "tribot.tar.gz" http://installers.tribot.org/TRiBot-unix-latest.tar.gz
   tar -xzf tribot.tar.gz -C /opt/tribot/ --strip-components=1 &> ${output}
   chown -R ${name} /opt/tribot/*
   rm -rf tribot.tar.gz
@@ -174,14 +176,14 @@ function download_openosrs() {
   name=$2
   temp_file="temp_openosrs.txt"
 
-  curl -o ${temp_file} -L "https://github.com/open-osrs/launcher/releases/latest" &> ${output}
+  safe_download ${output} ${temp_file} "https://github.com/open-osrs/launcher/releases/latest"
   sed -i '/\.jar/!d' ${temp_file}
   sed -i '/href/!d' ${temp_file}
   download_link_ending=$(cat test.txt | sed -e 's/.*href=\"\(.*\)\"\ rel=.*/\1/')
 
   mkdir -p /home/${name}/.local/bin/openosrs/
 
-  wget -O "OpenOSRS.jar" "https://github.com${download_link_ending}" &> ${output}
+  safe_download ${output} "OpenOSRS.jar" "https://github.com${download_link_ending}"
   mv "OpenOSRS.jar" "/home/${name}/Desktop/OpenOSRS.jar"
   chmod +x "/home/${name}/Desktop/OpenOSRS,jar"
   chown ${name} "/home/${name}/Desktop/OpenOSRS.jar"
@@ -240,7 +242,7 @@ function enable_jar_doubleclick() {
 function install_vnc() {
   output=$(determine_output $1)
   vnc_package=$(get_vnc_version $2)
-  wget -O tiger_vnc.tar.gz ${TIGERVNC_LINK}${vnc_package}
+  safe_download ${output} "tiger_vnc.tar.gz" ${TIGERVNC_LINK}${vnc_package}
   tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
   rm -f tiger_vnc.tar.gz
 }
@@ -281,4 +283,16 @@ function setup_vnc() {
   fi
   setup_vnc_initd_service $output $name $operating_system
   service vncserver start &> $output
+}
+
+function safe_download {
+  output=$1
+  url=$2
+  output_filename=$3
+
+  if [[ -x "$(which wget)" ]] ; then
+    wget --no-check-cert -O ${output_filename} ${url} &> ${output}
+  elif [[ -x "$(which curl)" ]] ; then
+    curl -kLo ${output_filename} ${url} &> ${output}
+  fi
 }

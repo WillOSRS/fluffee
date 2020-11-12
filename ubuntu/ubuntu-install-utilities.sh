@@ -12,7 +12,7 @@ function initial_setup() {
   apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 libxfont1 x11-xserver-utils &> $output
   apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme-full fbpanel lxtask xterm curl &> ${output}
 
-  wget -O keyboard-settings.txt https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-function/shared/keyboard-settings.txt
+  safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-function/shared/keyboard-settings.txt
   debconf-set-selections < keyboard-settings.txt &> ${output}
   apt-get install -y keyboard-configuration &> ${output}
   dpkg-reconfigure keyboard-configuration -f noninteractive &> ${output}
@@ -83,7 +83,7 @@ function install_java() {
   output=$(determine_output $1) 
   
   jdk_download=$(get_jdk_download_link $output $2 tar.gz) &> $output
-  wget -O jdk_install.tar.gz --no-check-cert ${jdk_download} &> $output
+  safe_download ${output} "jdk_install.tar.gz" ${jdk_download}
   mkdir -p /usr/lib/jvm/java-8-oracle/ &> $output
   tar -xzf jdk_install.tar.gz -C /usr/lib/jvm/java-8-oracle/ --strip-components=1 &> $output
   update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-oracle/bin/java 100 &> $output
@@ -107,7 +107,7 @@ function install_firefox() {
     java_extension=i386
   fi
   
-  wget --no-check-cert -O firefox.tar.bz2 "https://download.mozilla.org/?product=firefox-esr-latest&os=linux${bit_type}&lang=en-US" &> $output
+  safe_download ${output} "firefox.tar.bz2" "https://download.mozilla.org/?product=firefox-esr-latest&os=linux${bit_type}&lang=en-US"
   mkdir -p /usr/local/firefox
   tar xvjf firefox.tar.bz2 -C /usr/local/ &> $output
   ln -s /usr/local/firefox/firefox /usr/bin/firefox

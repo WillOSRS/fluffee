@@ -40,7 +40,7 @@ function get_fedora_version() {
   output=$1
   fedora_base=$2
 
-  wget -O package-temp.txt ${fedora_base} &> ${output}
+  safe_download ${output} "package-temp.txt" ${fedora_base}
   sed -i '/\[DIR\]/!d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\/\">.*/\1/" package-temp.txt
   echo $(cat package-temp.txt | sed '/.*[0-9].*/!d' | sort -n | awk -F: '$1<=1000000' | tail -1 && rm -f package-temp.txt)
@@ -66,7 +66,7 @@ function get_fedora_download_link() {
   packages_page=${fedora_base}
   packages_page+=$(get_fedora_version ${output} ${fedora_base})
   packages_page+="/Everything/${bit_type}/os/Packages/${package_letter}/"
-  wget -O package-temp.txt ${packages_page} &> ${output}
+  safe_download ${output} "package-temp.txt" ${packages_page}
   sed -i '/'"${package_name}"'/!d' package-temp.txt
   sed -i '/doc/d' package-temp.txt
   sed -i "s/.*href=\"\(.*\)\">.*/\1/" package-temp.txt
@@ -82,7 +82,7 @@ function install_lxtask() {
   bit_type=$2
 
   download_link=$(get_fedora_download_link ${output} ${bit_type} lxtask)
-  wget -O lxtask.rpm ${download_link} &> ${output}
+  safe_download ${output} "lxtask.rpm" ${download_link}
   yum -y localinstall lxtask.rpm
   rm -f lxtask.rpm
 }
@@ -96,7 +96,7 @@ function install_leafpad() {
   bit_type=$2
 
   download_link=$(get_fedora_download_link ${output} ${bit_type} leafpad)
-  wget -O leafpad.rpm ${download_link} &> ${output}
+  safe_download ${output} "leafpad.rpm" ${download_link}
   yum -y localinstall leafpad.rpm
   rm -f leafpad.rpm
 }
@@ -117,7 +117,7 @@ function install_fbpanel() {
     else
       download_link="https://download-ib01.fedoraproject.org/pub/epel/6/i386/Packages/f/fbpanel-6.1-4.el6.i686.rpm"
     fi
-    wget -O fbpanel.rpm ${download_link} &> ${output}
+    safe_download ${output} "fbpanel.rpm" ${download_link}
     yum -y install fbpanel.rpm
     rm -f fbpanell.rpm
   else
@@ -196,18 +196,6 @@ function create_user() {
   echo "$name:$password" | chpasswd
   usermod -aG wheel $name &> $output
   sed -i "s/# %wheel/%wheel/g" /etc/sudoers
-}
-
-# Downloads and sets up Java 8 from the Oracle site.
-# This includes instaling Java, and ensuring .jar double clicking works
-# @param $1 - boolean flag to indicate whether or not to run the function in verbose mode
-# @param $2 - Bit type of the operating system as int, 32 or 64
-# @return - None
-function install_java() {
-  output=$(determine_output $1)
-  jdk_download=$(get_jdk_download_link $output $2 rpm)
-  wget -O jdk_install.rpm --header "Cookie: oraclelicense=accept-securebackup-cookie" --no-check-cert ${jdk_download}
-  yum -y localinstall jdk_install.rpm
 }
 
 source shared-utilities.sh
