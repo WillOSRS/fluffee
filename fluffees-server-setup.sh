@@ -144,7 +144,7 @@ curl -ko "install-utilities.sh" ${utilities_link} || wget --no-check-cert -O "in
 curl -ko "shared-utilities.sh" "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh" || wget --no-check-cert -O "shared-utilities.sh" "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
-sudo chown -R ${username} "/home/${username}/*"
+sudo chown -R ${username} "/home/${username}"
 
 
 echo " -------------------- Fluffee's TRiBot Server Setup Script -------------------- "

@@ -24,8 +24,13 @@ function initial_setup() {
     debconf-set-selections < keyboard-settings.txt &> ${output}
     apt-get install -y keyboard-configuration &> ${output}
   else
+    font_version="libxfont1"
+    if [[ "${debian_version}" -ge 10 ]] ; then
+      font_version="libxfont2"
+    fi
+
     apt update &> ${output}
-    apt install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 x11-xserver-utils &> ${output}
+    apt install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data ${font_version} x11-xserver-utils &> ${output}
     apt install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
 
     safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
