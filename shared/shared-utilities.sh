@@ -222,7 +222,7 @@ function enable_jar_doubleclick() {
 # @param $2 - Bit type of the operating system currently running
 function install_vnc() {
   output=$(determine_output $1)
-  vnc_package=$(get_vnc_version $2)
+  vnc_package=$(get_vnc_version $1 $2)
   safe_download ${output} "tiger_vnc.tar.gz" ${TIGERVNC_LINK}${vnc_package}
   tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
   rm -f tiger_vnc.tar.gz
