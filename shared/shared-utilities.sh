@@ -226,6 +226,10 @@ function install_vnc() {
   safe_download ${output} "tiger_vnc.tar.gz" ${TIGERVNC_LINK}${vnc_package}
   tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
   rm -f tiger_vnc.tar.gz
+
+  if [[ -f /usr/libexec/vncserver && ! -f /usr/bin/vncserver ]] ; then
+    ln -s /usr/libexec/vncserver /usr/bin/vncserver
+  fi
 }
 
 # Sets up tiger vnc for practical use
