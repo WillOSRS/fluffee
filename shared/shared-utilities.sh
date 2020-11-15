@@ -285,6 +285,12 @@ function setup_vnc() {
   service vncserver start &> $output
 }
 
+# Function to download a file using curl or wget depending on what is installed. This ensures better reliability across
+# different platforms, as some OSs come with curl while others come with wget
+# @param $1 - String where command output will be sent
+# @param $2 - Name to save the downloaded file under
+# @param $3 - URL to download the file from
+# @return - None
 function safe_download {
   output=$1
   output_filename=$2

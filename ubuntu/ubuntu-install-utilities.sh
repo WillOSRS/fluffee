@@ -7,10 +7,11 @@ function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
   ubuntu_version=$3
+  [[ ${ubuntu_version} -ge 18 ]] && icon_theme="gnome-icon-theme" || icon_theme="gnome-icon-theme-full"
 
   apt-get update &> $output
   apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 libxfont1 x11-xserver-utils &> $output
-  apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme-full fbpanel lxtask xterm curl &> ${output}
+  apt-get install -y gtk2-engines openbox pcmanfm ${icon_theme} fbpanel lxtask xterm curl &> ${output}
 
   safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-function/shared/keyboard-settings.txt
   debconf-set-selections < keyboard-settings.txt &> ${output}
