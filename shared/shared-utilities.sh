@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 TIGERVNC_LINK="https://dl.bintray.com/tigervnc/stable/"
 BASE_JAVA="https://www.oracle.com"
@@ -51,29 +51,8 @@ function setup_vnc_initd_service() {
   if [[ ${operating_system} == "centos" ]]; then
     chkconfig vncserver on
   else
-    echo ${operating_system}
     update-rc.d vncserver defaults
   fi
-}
-
-# Creates the tiger vnc systemd service
-# @param $1 - boolean flag indicating verbosity of function
-# @param $2 - Name of the user to run the VNC under
-# @return None
-function setup_vnc_systemd_service() {
-  echo ""
-}
-
-# @Deprecated
-# Parses the oracle page to find the link to the JDK 8 downloads
-# @param $1 - String where command output will be sent
-# @return Extension to the base oracle link where the JDK 8 downloads are found
-function get_jdk_downloads_page() {
-  output=$1
-  safe_download ${output} "java_downloads.txt" ${BASE_JAVA}${JAVA_DOWNLOAD_PAGE}
-  sed -i "/.*jdk8-downloads.*/!d" java_downloads.txt
-  sed -i "s/.*href=\"\(.*\)\"><img.*/\1/" java_downloads.txt
-  echo $(cat java_downloads.txt | tail -1 && rm -f java_downloads.txt)
 }
 
 # Parses the JDK downloads page to find the download link
@@ -198,18 +177,18 @@ function create_resolution_change() {
   mkdir -p "/home/$name/Desktop/Change-Screen-Resolution"
   chown $name "/home/$name/Desktop/Change-Screen-Resolution"
   echo 'xrandr -s 640x480' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-640x480.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 800x600' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-800x600.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1024x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1024x768.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x720' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x720.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x800' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x800.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x960' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x960.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1280x1024' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x1024.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1360x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1360x768.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1400x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1400x1050.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1680x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1050.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1680x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1200.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1920x1080' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1080.sh"
-  echo -e '#!/bin/bash\n\nxrandr -s 1920x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1200.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 800x600' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-800x600.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1024x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1024x768.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1280x720' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x720.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1280x800' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x800.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1280x960' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x960.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1280x1024' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1280x1024.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1360x768' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1360x768.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1400x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1400x1050.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1680x1050' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1050.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1680x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1680x1200.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1920x1080' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1080.sh"
+  echo -e '#!/usr/bin/env bash\n\nxrandr -s 1920x1200' >> "/home/$name/Desktop/Change-Screen-Resolution/Change-to-1920x1200.sh"
   chmod -R 754 "/home/$name/Desktop/Change-Screen-Resolution/"
 }
 
@@ -230,8 +209,10 @@ function enable_jar_doubleclick() {
   echo "Icon=oracle_java8" >> JB-java-jdk8.desktop
   echo "MimeType=application/x-java-archive;application/java-archive;application/x-jar;" >> JB-java-jdk8.desktop
   echo "NoDisplay=false" >> JB-java-jdk8.desktop
+
   mv JB-java-jdk8.desktop /usr/share/applications/JB-java-jdk8.desktop
   mkdir -p /home/$name/.local/share/applications
+
   echo "[Added Associations]" >> /home/$name/.local/share/applications/mimeapps.list
   echo "application/x-java-archive=JB-java-jdk8.desktop;" >> /home/$name/.local/share/applications/mimeapps.list
 }
@@ -270,7 +251,7 @@ function setup_vnc() {
   chmod 600 /home/$name/.vnc/passwd &> $output
   su  - $name -c "vncserver" &> $output
   su  - $name -c "vncserver -kill :1" &> $output
-  echo -e '#!/bin/bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
+  echo -e '#!/usr/bin/env bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
   chmod +x /home/$name/.vnc/xstartup
   sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
   if [[ ${operating_system} == "centos" ]]; then
@@ -278,8 +259,6 @@ function setup_vnc() {
     echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
     firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
     firewall-cmd --reload &> $output
-  else
-    echo ${operating_system}
   fi
   setup_vnc_initd_service $output $name $operating_system
   service vncserver start &> $output
