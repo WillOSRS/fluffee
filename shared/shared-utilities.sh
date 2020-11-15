@@ -21,18 +21,18 @@ function determine_output() {
 # @return Name of the package to download
 function get_vnc_version() {
   output=$(determine_output $1)
-  if [[ "$1" -eq 64 ]] ; then
+  if [[ "$2" -eq 64 ]] ; then
     x64="!"
   else
     x64=""
   fi
 
   safe_download ${output} "tiger.txt" ${TIGERVNC_LINK}
-  sed -i "/.*tigervnc-[1-9].*86.*/!d" tiger.txt
-  sed -i "/.*.tar.gz.*/!d" tiger.txt
+  sed -i '/.*tigervnc-[1-9].*86.*/!d' tiger.txt
+  sed -i '/.*\.tar\.gz.*/!d' tiger.txt
   sed -i "/.*x86.*/${x64}d" tiger.txt
   sed -i "s/.*rel=\"nofollow\">\(.*\)<\/a>.*/\1/" tiger.txt
-  echo $(cat tiger.txt | tail -1 && rm -f tiger.txt)
+  echo $(sort -n -t '.' -k 2 tiger.txt | tail -1 && rm -f tiger.txt)
 }
 
 # Creates the tiger vnc init.d service
