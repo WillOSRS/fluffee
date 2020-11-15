@@ -7,36 +7,32 @@ function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
   debian_version=$3
+  apt_name="apt"
+  font_version="libxfont1"
 
   if [[ "${debian_version}" -lt 9 ]] ; then
+    apt_name="apt-get"
+
     sed -i -e 's/\(ftp\.\).*\(debian\.org\)/archive\.\2/g' /etc/apt/sources.list
     sed -i '/wheezy-updates\|jessie-updates\|security\|cdrom\|^$\|^# \+$/d' /etc/apt/sources.list
+
     if [[ "${debian_version}" -eq 8 ]] ; then
       mkdir /dev/fuse
       chmod 777 /dev/fuse
-      apt-get -y install fuse
+      ${apt_name} -y install fuse
     fi
-    apt-get update &> ${output}
-    apt-get install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data libxfont1 x11-xserver-utils &> ${output}
-    apt-get install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
-
-    safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
-    debconf-set-selections < keyboard-settings.txt &> ${output}
-    apt-get install -y keyboard-configuration &> ${output}
-  else
-    font_version="libxfont1"
-    if [[ "${debian_version}" -ge 10 ]] ; then
-      font_version="libxfont2"
-    fi
-
-    apt update &> ${output}
-    apt install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data ${font_version} x11-xserver-utils &> ${output}
-    apt install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
-
-    safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
-    debconf-set-selections < keyboard-settings.txt &> ${output}
-    apt install -y keyboard-configuration &> ${output}
+  elif  [[ "${debian_version}" -ge 10 ]] ; then
+    font_version="libxfont2"
   fi
+
+  ${apt_name} update &> ${output}
+  ${apt_name} install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data ${font_version} x11-xserver-utils &> ${output}
+  ${apt_name} install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
+
+  safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt
+  debconf-set-selections < keyboard-settings.txt &> ${output}
+  ${apt_name} install -y keyboard-configuration &> ${output}
+
   dpkg-reconfigure keyboard-configuration -f noninteractive &> ${output}
 
   export LANG=en_US.UTF-8
@@ -106,11 +102,15 @@ function install_java() {
   
   jdk_download=$(get_jdk_download_link $output $2 tar.gz) &> $output
   safe_download ${output} "jdk_install.tar.gz" ${jdk_download}
+
   mkdir -p /usr/lib/jvm/java-8-oracle/ &> $output
   tar -xzf jdk_install.tar.gz -C /usr/lib/jvm/java-8-oracle/ --strip-components=1 &> $output
+
   update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-oracle/bin/java 100 &> $output
   update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-oracle/bin/javac 100 &> $output
+
   rm /usr/lib/jvm/java-8-oracle/jre/bin/java
+
   ln -s /usr/lib/jvm/java-8-oracle/bin/java /usr/lib/jvm/java-8-oracle/jre/bin/java
   rm -f jdk_install.tar.gz &> $output
 }
@@ -133,8 +133,9 @@ function install_firefox() {
   mkdir -p /usr/local/firefox
   tar xvjf firefox.tar.bz2 -C /usr/local/ &> $output
   ln -s /usr/local/firefox/firefox /usr/bin/firefox
+
   mkdir -p /usr/lib/mozilla/plugins
   update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/firefox/firefox 100 &> $output
-  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk/oracle_jdk_8/jre/lib/${java_extension}/libnpjp2.so 1000 &> $output
-  update-alternatives --set "mozilla-javaplugin.so" "/opt/jdk/oracle_jdk_8/jre/lib/${java_extension}/libnpjp2.so" &> $output
+  update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /usr/lib/jvm/java-8-oracle/jre/lib/${java_extension}/libnpjp2.so 1000 &> $output
+  update-alternatives --set "mozilla-javaplugin.so" "/usr/lib/jvm/java-8-oracle/jre/lib/${java_extension}/libnpjp2.so" &> $output
 }
