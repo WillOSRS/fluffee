@@ -26,7 +26,7 @@ function initial_setup() {
   fi
 
   ${apt_name} update &> ${output}
-  ${apt_name} install -y sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data ${font_version} x11-xserver-utils &> ${output}
+  ${apt_name} install -y xinit sudo locales debconf-utils wget nano libxslt1.1  bzip2 tar xauth x11-xkb-utils xkb-data ${font_version} x11-xserver-utils &> ${output}
   ${apt_name} install -y gtk2-engines openbox pcmanfm gnome-icon-theme fbpanel lxtask xterm curl &> ${output}
 
   safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/keyboard-settings.txt

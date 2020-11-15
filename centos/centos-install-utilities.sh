@@ -158,7 +158,7 @@ function initial_setup() {
   yum -y install $(get_nox_download_link $output $bit_type) &> $output
   yum -y update &> $output
   yum -y history sync &> $output
-  yum -y install perl sudo wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
+  yum -y install perl sudo xorg-x11-xinit wget bzip2 xterm xorg-x11-drivers xorg-x11-xinit xorg-x11-xauth &> $output
   yum -y groupinstall fonts
   yum -y install firefox openbox pcmanfm unzip &> ${output}
   yum -y install gtk2-engines gnome-icon-theme.noarch &> ${output}

@@ -17,7 +17,7 @@ function initial_setup() {
   fi
 
   apt-get update &> $output
-  apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 ${libxfont} x11-xserver-utils &> $output
+  apt-get install -y xinit sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 ${libxfont} x11-xserver-utils &> $output
   apt-get install -y gtk2-engines openbox pcmanfm ${icon_theme} fbpanel lxtask xterm curl &> ${output}
 
   safe_download ${output} "keyboard-settings.txt" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/add-shared-function/shared/keyboard-settings.txt
