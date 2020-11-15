@@ -7,7 +7,14 @@ function initial_setup() {
   output=$(determine_output $1)
   bit_type=$2
   ubuntu_version=$3
-  [[ ${ubuntu_version} -ge 18 ]] && icon_theme="gnome-icon-theme" libxfont="libxfont2" || icon_theme="gnome-icon-theme-full" libxfont="libxfont1"
+
+  if [[ ${ubuntu_version} -ge 18 ]] ; then
+    icon_theme="gnome-icon-theme"
+    libxfont="libxfont2"
+  else
+    icon_theme="gnome-icon-theme-full"
+    libxfont="libxfont1"
+  fi
 
   apt-get update &> $output
   apt-get install -y sudo locales debconf-utils wget nano bzip2 tar xauth x11-xkb-utils xkb-data libxslt1.1 ${libxfont} x11-xserver-utils &> $output
