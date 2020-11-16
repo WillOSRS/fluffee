@@ -16,7 +16,7 @@ export USER='user_name'
 
 case "$1" in
   start)
-    su $USER -c '/usr/bin/vncserver :1'
+    su $USER -c '/usr/bin/vncserver :1 </dev/null &>/dev/null &'
     echo "Starting VNC server for $USER "
     ;;
   stop)
@@ -25,7 +25,7 @@ case "$1" in
     ;;
   restart)
     pkill Xvnc
-    su $USER -c '/usr/bin/vncserver :1'
+    su $USER -c '/usr/bin/vncserver :1 </dev/null &>/dev/null &'
     echo "VNC Server restarted"
     ;;
   *)
