@@ -49,10 +49,25 @@ function setup_vnc_initd_service() {
   sed -i "s/user_name/$name/g" /etc/init.d/vncserver
   chmod +x /etc/init.d/vncserver
   if [[ ${operating_system} == "centos" ]]; then
-    chkconfig vncserver on
+    chkconfig vncserver on &> ${output}
   else
     update-rc.d vncserver defaults
   fi
+
+  service vncserver start &> ${output}
+}
+
+function setup_vnc_systemd_service() {
+  output=$1
+  name=$2
+  
+  safe_download ${output} "/etc/systemd/system/vncserver@.service" https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/tigervnc/vncserver@.service
+  sed -i "s/user_name/$name/g" /etc/systemd/system/vncserver@.service
+  chmod +x /etc/systemd/system/vncserver@.service
+  
+  systemctl daemon-reload &> ${output}
+  systemctl enable  vncserver@:1 &> ${output}
+  systemctl start  vncserver@:1 &> ${output}
 }
 
 # Parses the JDK downloads page to find the download link
@@ -238,6 +253,7 @@ function install_vnc() {
 # @param $3 - Name of user to run VNC under
 # @param $4 - Password string to use for logging in to VNC
 # @param $5 - Name of the operating system currently running on (centos, debian or ubuntu)
+# @param $6 - Version of the operating system we're currently using
 # @return - None
 function setup_vnc() {
   output=$(determine_output $1)
@@ -245,6 +261,7 @@ function setup_vnc() {
   name=$3
   password=$4
   operating_system=$5
+  operating_system_version=$6
 
   mkdir /home/$name/.vnc
   echo $password >/home/$name/.vnc/file #TODO: See if we can pipe those together.
@@ -266,10 +283,14 @@ function setup_vnc() {
     echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
 
     add_tcp_firewall_rule ${output} ${operating_system} ${port} "vnc_port_t"
+
+    if [[ ${operating_system_version} -ge 8 ]] ; then
+      setup_vnc_systemd_service ${output} ${name}
+      return
+    fi
   fi
 
   setup_vnc_initd_service $output $name $operating_system
-  service vncserver start &> $output
 }
 
 # Function to download a file using curl or wget depending on what is installed. This ensures better reliability across

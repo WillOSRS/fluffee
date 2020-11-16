@@ -18,21 +18,21 @@ vnc_password=$4
 vnc_port=$5
 ssh_port=$6
 bit_type=$7
-centos_version=$8
+os_version=$8
 
 source install-utilities.sh #Allows access to utilities functions
 source shared-utilities.sh
 
-initial_setup ${verbose} ${bit_type} ${centos_version}
+initial_setup ${verbose} ${bit_type} ${os_version}
 setup_ssh ${verbose} ${user_name} ${ssh_port}
 install_lxtask ${verbose} ${bit_type}
 install_leafpad ${verbose} ${bit_type}
-install_fbpanel ${verbose} ${bit_type} ${centos_version}
+install_fbpanel ${verbose} ${bit_type} ${os_version}
 create_user ${verbose} ${user_name} ${account_password}
 install_java ${verbose} ${bit_type}
 install_vnc ${verbose} ${bit_type}
 setup_bots ${verbose} ${user_name}
 create_resolution_change ${user_name}
 setup_desktop ${verbose} ${user_name}
-setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} centos
+setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} centos ${os_version}
 enable_jar_doubleclick ${user_name}

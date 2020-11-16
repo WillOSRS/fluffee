@@ -32,5 +32,5 @@ install_vnc ${verbose} ${bit_type}
 setup_bots ${verbose} ${user_name}
 create_resolution_change ${user_name}
 setup_desktop ${verbose} ${user_name}
-setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} ubuntu
+setup_vnc ${verbose} ${vnc_port} ${user_name} ${vnc_password} ubuntu ${os_version}
 enable_jar_doubleclick ${user_name}
