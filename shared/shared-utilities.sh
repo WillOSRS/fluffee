@@ -253,17 +253,21 @@ function setup_vnc() {
   chown $name /home/$name/.vnc &> $output
   chown $name /home/$name/.vnc/passwd &> $output
   chmod 600 /home/$name/.vnc/passwd &> $output
+
   su  - $name -c "vncserver" &> $output
   su  - $name -c "vncserver -kill :1" &> $output
+
   echo -e '#!/usr/bin/env bash\n\nopenbox-session &' > "/home/$name/.vnc/xstartup"
   chmod +x /home/$name/.vnc/xstartup
   sed -i "s/$vncPort = 5900/$vncPort = $port - 1/g" /usr/bin/vncserver
+
   if [[ ${operating_system} == "centos" ]]; then
     echo "VNCSERVERS=\"1:$name\"" >> /etc/sysconfig/vncservers
     echo "VNCSERVERARGS[1]=\"-geometry 1024x786\"" >> /etc/sysconfig/vncservers
-    firewall-cmd --zone=public --add-port=$port/tcp --permanent &> $output
-    firewall-cmd --reload &> $output
+
+    add_tcp_firewall_rule ${output} ${operating_system} ${port} "vnc_port_t"
   fi
+
   setup_vnc_initd_service $output $name $operating_system
   service vncserver start &> $output
 }
@@ -283,5 +287,27 @@ function safe_download {
     wget --no-check-cert -O ${output_filename} ${url} &> ${output}
   elif [[ -x "$(which curl)" ]] ; then
     curl -kLo ${output_filename} ${url} &> ${output}
+  fi
+}
+
+# Function to add a firewall rule to allow incoming connections on x port
+# @param $1 - String where the command outputs will be sent
+# @param $2 - String containing the name of the Operating System that is running
+# @param $3 - Port number
+# @param $4 - Optional name for the rule being added, only used for selinux
+# @return - None
+function add_tcp_firewall_rule {
+  output=$1
+  operating_system=$2
+  port_number=$3
+  optional_rule_name=$4
+
+  if [[ ${operating_system} == "centos" ]]; then
+    if [[ -x "$(which firewall-cmd)" ]] ; then
+      firewall-cmd --zone=public --add-port=${port_number}/tcp --permanent &> ${output}
+      firewall-cmd --reload &> $output
+    elif [[ -x "$(which semanage)" ]] ; then
+      semanage port -a -t ${optional_rule_name} -p tcp ${port_number} &> $output
+    fi
   fi
 }
