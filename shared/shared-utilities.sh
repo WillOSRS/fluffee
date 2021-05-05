@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TIGERVNC_LINK="https://dl.bintray.com/tigervnc/stable/"
+TIGERVNC_LINK="https://github.com/accetto/tigervnc/releases/tag/v1.11.0-mirror"
 BASE_JAVA="https://www.oracle.com"
 JAVA_DOWNLOAD_PAGE="/technetwork/java/javase/downloads/index.html"
 
