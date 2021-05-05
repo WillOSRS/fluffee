@@ -141,7 +141,7 @@ read -p "Please enter your desired SSH password: " ssh_password
 
 curl -ko "install.sh" ${install_link} || wget --no-check-cert -O "install.sh" ${install_link}
 curl -ko "install-utilities.sh" ${utilities_link} || wget --no-check-cert -O "install-utilities.sh" ${utilities_link}
-curl -ko "shared-utilities.sh" "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh" || wget --no-check-cert -O "shared-utilities.sh" "https://bitbucket.org/teamfluffee/fluffees-server-setup/raw/master/shared/shared-utilities.sh"
+curl -ko "shared-utilities.sh" "https://raw.githubusercontent.com/bomzene/fluffee/master/shared/shared-utilities.sh" || wget --no-check-cert -O "shared-utilities.sh" "https://raw.githubusercontent.com/bomzene/fluffee/master/shared/shared-utilities.sh"
 bash install.sh ${verbose} ${username} ${ssh_password} ${vnc_password} ${vnc_port} ${ssh_port} ${bit_type} ${os_version}
 rm install.sh
 sudo chown -R ${username} "/home/${username}"
