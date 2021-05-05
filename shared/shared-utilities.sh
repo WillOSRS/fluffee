@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TIGERVNC_LINK="https://github.com/accetto/tigervnc/releases/tag/v1.11.0-mirror"
+TIGERVNC_LINK="https://github.com/accetto/tigervnc/releases/download/v1.11.0-mirror/tigervnc-1.11.0.x86_64.tar.gz"
 BASE_JAVA="https://www.oracle.com"
 JAVA_DOWNLOAD_PAGE="/technetwork/java/javase/downloads/index.html"
 
@@ -27,12 +27,12 @@ function get_vnc_version() {
     x64=""
   fi
 
-  safe_download ${output} "tiger.txt" ${TIGERVNC_LINK}
-  sed -i '/.*tigervnc-[1-9].*86.*/!d' tiger.txt
-  sed -i '/.*\.tar\.gz.*/!d' tiger.txt
-  sed -i "/.*x86.*/${x64}d" tiger.txt
-  sed -i "s/.*rel=\"nofollow\">\(.*\)<\/a>.*/\1/" tiger.txt
-  echo $(sort -n -t '.' -k 2 tiger.txt | tail -1 && rm -f tiger.txt)
+  #safe_download ${output} "tiger.txt" ${TIGERVNC_LINK}
+  #sed -i '/.*tigervnc-[1-9].*86.*/!d' tiger.txt
+  #sed -i '/.*\.tar\.gz.*/!d' tiger.txt
+  #sed -i "/.*x86.*/${x64}d" tiger.txt
+  #sed -i "s/.*rel=\"nofollow\">\(.*\)<\/a>.*/\1/" tiger.txt
+  #echo $(sort -n -t '.' -k 2 tiger.txt | tail -1 && rm -f tiger.txt)
 }
 
 # Creates the tiger vnc init.d service
@@ -237,8 +237,9 @@ function enable_jar_doubleclick() {
 # @param $2 - Bit type of the operating system currently running
 function install_vnc() {
   output=$(determine_output $1)
-  vnc_package=$(get_vnc_version $1 $2)
-  safe_download ${output} "tiger_vnc.tar.gz" ${TIGERVNC_LINK}${vnc_package}
+  #vnc_package=$(get_vnc_version $1 $2)
+  safe_download ${output} "tiger_vnc.tar.gz" ${TIGERVNC_LINK}
+  #${vnc_package}
   tar -zxf tiger_vnc.tar.gz --strip 1 -C /  &> $output
   rm -f tiger_vnc.tar.gz
 
